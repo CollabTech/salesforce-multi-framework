@@ -29,8 +29,10 @@ Out: Files delivery, MF-MODEL-REP, budgets (SMF-14); collaboration on the model.
   `MF-MODEL-FALLBACK.png` (960×640, software-rasterised from the model geometry, no metadata).
 - **Load timing:** request start → bytes → parsed → first frame → interactive (next frame).
 - **3D-02 protocol:** time-based camera path (orbit, zoom, elevation sweep, one part selected per
-  second), user input disabled, every frame interval sampled; median/p5/p95 fps, long frames
-  (> 50 ms). Targets fixed in code (`TARGETS`): usable ≤ 10 s and median ≥ 30 fps.
+  second), user input disabled, every frame interval sampled with performance.now() after a
+  1-pixel readPixels that forces the frame to finish on the GPU (conservative: no pipelining;
+  rAF timestamps were found to run ahead of wall time on SwiftShader); median/p5/p95 fps, long
+  frames (> 50 ms). Targets fixed in code (`TARGETS`): usable ≤ 10 s and median ≥ 30 fps.
 - **Failure handling:** missing model (404 or an SPA HTML page) → "invalid/missing" → static
   image + parts list; `webglcontextlost` → static image until `webglcontextrestored`;
   WebGL unavailable (real or simulated) → static image; unmount disposes geometries,

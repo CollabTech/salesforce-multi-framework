@@ -11,5 +11,6 @@ log(){ printf '[smf-orgs] %s\n' "$*" >&2; }
 printf '%s' "$SF_AUTH_URL_DEVHUB" | sf org login sfdx-url --sfdx-url-stdin - --alias smf-devhub --json >/dev/null 2>&1 \
   && log "OK  smf-devhub" \
   || { log "BLOCKED smf-devhub: auth URL rejected, or login.salesforce.com/*.my.salesforce.com not allowed by the environment network policy"; exit 1; }
-python3 scripts/cloud/vault.py restore
+if [ "${SMF_VAULT_APPROVED:-}" = yes ]; then python3 scripts/cloud/vault.py restore
+else log "SKIP vault restore: ADR-0004 not approved (HUMAN-SETUP H7)"; fi
 sf alias list --json 2>/dev/null | python3 -c "import json,sys;d={r['alias']:r['value'] for r in json.load(sys.stdin).get('result',[]) if r['alias'].startswith('smf-')};json.dump(d,open('private/orgs.json','w'),indent=2);print('[smf-orgs] aliases:', ', '.join(sorted(d)), file=sys.stderr)"

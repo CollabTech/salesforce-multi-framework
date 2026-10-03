@@ -14,4 +14,5 @@ for alias in smf-dev smf-install-test; do
      --target-dev-hub smf-devhub --duration-days 30 --wait 30 --json >/dev/null 2>&1 \
      && echo "OK  $alias created" || { echo "BLOCKED: $alias creation failed (capacity? see readiness report)"; exit 2; }
 done
-python3 scripts/cloud/vault.py save
+if [ "${SMF_VAULT_APPROVED:-}" = yes ]; then python3 scripts/cloud/vault.py save
+else echo "NOTE: vault not approved (HUMAN-SETUP H7); org sessions last only for this container"; fi

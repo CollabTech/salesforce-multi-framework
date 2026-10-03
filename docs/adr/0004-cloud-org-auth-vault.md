@@ -1,6 +1,6 @@
 # ADR-0004: One human secret; org sessions restored from an encrypted vault in the Dev Hub
 
-- **Status:** Proposed
+- **Status:** Proposed — **not in use until the owner approves (HUMAN-SETUP H7)**
 - **Date:** 2026-10-03
 - **Story / case IDs:** SMF-2 (ENV-01..03), SMF-3 (DATA-01..03), all cloud-automated cases
 - **Deciders:** Project owner (review); implementing agent (proposal)

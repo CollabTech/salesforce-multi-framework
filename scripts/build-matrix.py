@@ -166,8 +166,19 @@ def sync(matrix, index, contract):
                     r = by_id.get(rid) or blank_row(s, c, env, area, contract)
                     r.setdefault("executor", EXECUTOR[env])
                     rel = record_path(s["key"], c["id"], env)
+                    if not (ROOT / rel).exists() and env != "n/a":
+                        # a single record may cover several rows: its "Environment row" lists them
+                        base = record_path(s["key"], c["id"], "n/a")
+                        if (ROOT / base).exists() and env in parse_record(ROOT / base).get("Environment row", ""):
+                            rel = base
                     if (ROOT / rel).exists():
-                        fill_from_record(r, rel, parse_record(ROOT / rel))
+                        cur = re.search(r"Current result:\s*>?\s*`([^`]+)`", (ROOT / rel).read_text(encoding="utf-8"))
+                        if cur:  # historical record superseded by a newer run (never overwritten)
+                            newer = f"evidence/{s['key']}/{cur.group(1)}"
+                            fill_from_record(r, newer, parse_record(ROOT / newer))
+                            r["evidence"] = f"{newer}; {rel} (historical)"
+                        else:
+                            fill_from_record(r, rel, parse_record(ROOT / rel))
                     rows.append(r)
     extra = [r for r in matrix["rows"] if r["row_id"] not in {x["row_id"] for x in rows}]
     matrix["rows"] = rows + extra   # unknown rows are kept so validation reports them

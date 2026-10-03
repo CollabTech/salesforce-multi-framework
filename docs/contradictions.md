@@ -106,3 +106,18 @@ action that closes it. Story text in Jira stays authoritative.
   SUPPORT gets no asset access (the contract gives SUPPORT the case, not the equipment).
 - **To close:** reviewer confirms; if the org rejects the Asset OWD deploy, the fallback is a
   recorded decision on a separate parent for MF-ASSET-002.
+
+## C-SMF7-1 — CALL-03 "expired participant authorization" cannot be produced on demand
+- **Affects:** CALL-03 (and the REC-03 rejoin path that reuses a previous token)
+- **Gap:** SMF-7 asks to reject "expired" participant authorization. RealtimeKit participant
+  tokens are JWTs that expire exactly 100 days after issue; start/expiry cannot be configured
+  (cloudflare-docs `realtimekit/concepts/participant.mdx`, `faq.mdx`). An expired token
+  therefore needs one issued ≥100 days earlier.
+- **Meanwhile:** the probe and cloud spec test (a) a malformed token, (b) the real token with an
+  altered signature, and (c) a **revoked** token (participant deleted via the Cloudflare API) as
+  the nearest available control, each recorded separately; "expired" itself stays NOT TESTED.
+  Security finding recorded in `docs/smf-7/realtimekit-setup.md`: issued tokens outlive a
+  removal of case access unless the participant is deleted.
+- **To close:** owner decides either to accept the revoked-token control for the "expired"
+  wording, or to keep "expired" open until a token is ≥100 days old (record the issue date of a
+  kept test token privately).

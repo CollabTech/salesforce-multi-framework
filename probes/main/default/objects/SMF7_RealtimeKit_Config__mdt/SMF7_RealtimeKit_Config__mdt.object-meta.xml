@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>SMF-7: non-secret RealtimeKit identifiers. The Default record is generated at deploy time by scripts/cloud/stages/45-smf7-realtimekit.sh from CF_ACCOUNT_ID and the RealtimeKit app it finds or creates; it is never committed.</description>
+    <label>SMF7 RealtimeKit Config</label>
+    <pluralLabel>SMF7 RealtimeKit Configs</pluralLabel>
+    <visibility>Protected</visibility>
+</CustomObject>

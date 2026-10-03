@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ParticipantId__c</fullName>
+    <description>RealtimeKit participant id (provider identifier; private).</description>
+    <externalId>false</externalId>
+    <unique>false</unique>
+    <label>Participant Id</label>
+    <length>64</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

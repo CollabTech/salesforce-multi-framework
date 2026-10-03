@@ -14,7 +14,7 @@ settings, never into chat, Jira, or Git. A new cloud session picks up changes.
 | H4 | Brandon | dash.cloudflare.com | Create an API token scoped to the project account with **Realtime: Edit** (RealtimeKit apps, meetings, participants) and **Workers Scripts: Edit** + **Workers R2 Storage: Edit** (markup sync service). Set **`CF_ACCOUNT_ID`** and **`CF_API_TOKEN`** | CALL-*, SHARE-*, REC-*, SYNC-* |
 | H5 | Brandon | tldraw.dev → license (trial or commercial) | Set **`TLDRAW_LICENSE_KEY`** (needed because the app is served over HTTPS from a Salesforce domain = tldraw "production") | MARK-*, SYNC-* host rows |
 | H7 | Brandon | Review ADR-0004 | **Approve or reject** the encrypted org-session vault (stores agent-created scratch-org/persona auth URLs, encrypted, as a private File in the Dev Hub). Until approved, `vault.py save` is not run: orgs and personas created in a session last only for that session, and a new session recreates them (2 of the 6 daily Developer-Edition scratch orgs) | cross-session continuity |
-| H8 | Brandon | Salesforce Setup (smf-dev) after the agent deploys SMF-7 / SMF-12 | Enter the Cloudflare API token into the SMF-7 External Credential principal and the markup room-token signing secret into the SMF-12 credential, as named in `docs/smf-7`/`docs/smf-12` handoffs. Secrets are never written by scripts | CALL-*, SYNC-* |
+| H8 | Brandon | Salesforce Setup (smf-dev) after the agent deploys SMF-7 / SMF-12 | Enter the Cloudflare API token into the SMF-7 External Credential principal and the markup room-token signing secret into the SMF-12 credential, (SMF-7: step **O-SMF7-1** in `docs/smf-7/realtimekit-setup.md`, Authentication Parameter `ApiToken` on principal `SMF7_Principal`; repeat after each scratch-org recreation, stage 45 detects it; SMF-12: its handoff). Secrets are never written by scripts | CALL-*, SYNC-* |
 | H6 | Brandon | Same environment settings | Set **`SMF_TESTER_EMAIL`** to the mailbox that should receive persona verification/password-reset email for device logins (only stored on the synthetic persona users in the scratch org) | device rows of all stories |
 
 ## H1 domain list
@@ -34,6 +34,8 @@ developer.salesforce.com
 help.salesforce.com
 api.cloudflare.com
 *.realtime.cloudflare.com
+stun.cloudflare.com
+turn.cloudflare.com
 *.workers.dev
 dl.google.com
 ```
@@ -41,7 +43,10 @@ dl.google.com
 `dl.google.com` lets the agent install branded **Google Chrome** for the ENV-DESKTOP-CHROME row;
 without it, only Playwright **Chromium** (a separate, non-substitute row) is available.
 Microsoft Edge already installs from `packages.microsoft.com` (allowed by default).
-The SMF-7/SMF-12 handoffs list any additional RealtimeKit or tldraw hosts if the SDKs need them.
+`stun.cloudflare.com`/`turn.cloudflare.com` are the RealtimeKit ICE servers (SMF-7..9). Cloud
+browsers reach them only over TCP/TLS through the egress proxy; if the proxy cannot carry them,
+the cloud call rows report BLOCKED with that reason (people on real networks are unaffected).
+The SMF-12 handoff lists any additional tldraw hosts.
 
 ## What the agent does after H1–H2 (no further human steps)
 

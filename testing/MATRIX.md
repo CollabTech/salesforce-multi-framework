@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 275 |
-| PASS | 10 |
+| NOT TESTED | 262 |
+| PASS | 11 |
 | FAIL | 0 |
 | PARTIAL | 0 |
-| BLOCKED | 43 |
+| BLOCKED | 55 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -155,30 +155,30 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| CALL-01 | playback; two-way A/V | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CALL-01 | playback; two-way A/V | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CALL-01 | playback; two-way A/V | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| CALL-01 | playback; two-way A/V | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| CALL-01 | playback; two-way A/V | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-7/CALL-01.md](../evidence/SMF-7/CALL-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-01 | playback; two-way A/V | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-7/CALL-01.md](../evidence/SMF-7/CALL-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-01 | playback; two-way A/V | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-7/CALL-01.md](../evidence/SMF-7/CALL-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-01 | playback; two-way A/V | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-7/CALL-01.md](../evidence/SMF-7/CALL-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | CALL-01 | playback; two-way A/V | ENV-MOBILE-SAFARI | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | CALL-01 | playback; two-way A/V | ENV-MOBILE-CHROME | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | CALL-01 | playback; two-way A/V | ENV-CLOUD-CHROMIUM | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
 | CALL-01 | playback; two-way A/V | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CALL-02 | camera; mic; playback; two-way A/V | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CALL-02 | camera; mic; playback; two-way A/V | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CALL-02 | camera; mic; playback; two-way A/V | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| CALL-02 | camera; mic; playback; two-way A/V | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| CALL-02 | camera; mic; playback; two-way A/V | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-7/CALL-02.md](../evidence/SMF-7/CALL-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-02 | camera; mic; playback; two-way A/V | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-7/CALL-02.md](../evidence/SMF-7/CALL-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-02 | camera; mic; playback; two-way A/V | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-7/CALL-02.md](../evidence/SMF-7/CALL-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-02 | camera; mic; playback; two-way A/V | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-7/CALL-02.md](../evidence/SMF-7/CALL-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | CALL-02 | camera; mic; playback; two-way A/V | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | CALL-02 | camera; mic; playback; two-way A/V | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | CALL-02 | camera; mic; playback; two-way A/V | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
 | CALL-02 | camera; mic; playback; two-way A/V | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CALL-03 | two-way A/V | ENV-DESKTOP-CHROME | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
-| CALL-03 | two-way A/V | ENV-DESKTOP-EDGE | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
-| CALL-03 | two-way A/V | ENV-SFMOBILE-IOS | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
-| CALL-03 | two-way A/V | ENV-SFMOBILE-ANDROID | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
+| CALL-03 | two-way A/V | ENV-DESKTOP-CHROME | MF-RESTRICTED | agent | **BLOCKED** | [evidence/SMF-7/CALL-03.md](../evidence/SMF-7/CALL-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-03 | two-way A/V | ENV-DESKTOP-EDGE | MF-RESTRICTED | agent | **BLOCKED** | [evidence/SMF-7/CALL-03.md](../evidence/SMF-7/CALL-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-03 | two-way A/V | ENV-SFMOBILE-IOS | MF-RESTRICTED | human | **BLOCKED** | [evidence/SMF-7/CALL-03.md](../evidence/SMF-7/CALL-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CALL-03 | two-way A/V | ENV-SFMOBILE-ANDROID | MF-RESTRICTED | human | **BLOCKED** | [evidence/SMF-7/CALL-03.md](../evidence/SMF-7/CALL-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | CALL-03 | two-way A/V | ENV-MOBILE-SAFARI | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
 | CALL-03 | two-way A/V | ENV-MOBILE-CHROME | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
 | CALL-03 | two-way A/V | ENV-CLOUD-CHROMIUM | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
-| CALL-03 | two-way A/V | ENV-EMULATION-LOCALHOST | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
+| CALL-03 | two-way A/V | ENV-EMULATION-LOCALHOST | MF-RESTRICTED | agent | **PASS** | [evidence/SMF-7/CALL-03-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-7/CALL-03-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
 
 ## SMF-8 [08] Validate screen sharing and graceful unsupported behavior
 

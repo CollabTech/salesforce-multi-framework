@@ -48,6 +48,22 @@ Public interface for other tracks: `src/probes/files/lib/index.ts` (policy/valid
 | FILE-04 | No physical iOS/Android device | Brandon: run §FILE-04 on an iPhone and an Android phone in the Salesforce app |
 | Apex | Apex tests cannot run here | Run `sf apex run test --class-names SMF10_CaseFilesServiceTest SMF10_CaseFilesResourceTest --target-org smf-dev` |
 
+## Cloud execution (after owner setup H1/H2)
+`scripts/cloud/stages/46-smf10-files-access.sh` assigns `SMF10_Access` (and `SMF11_Access`)
+to the three personas and runs the SMF-10/11 Apex tests in `smf-dev`;
+`52-smf10-files-e2e.sh` runs `testing/cloud-e2e/tests/smf-10-files.spec.ts` as the real
+personas (FILE-01 TECH→SUPPORT fresh context, FILE-02 three denials + admin
+ContentDistribution count, FILE-03 rejections, CDP-throttled cancel, offline failure, retry,
++2 Files check) in ENV-DESKTOP-EDGE and ENV-CLOUD-CHROMIUM. Physical mobile rows (FILE-04)
+stay human. Record Ids come from `private/fixtures.json` (MF-CASE-001 falls back to an admin
+query on the SMF-3 subject); fixture assets from `testing/fixtures/MF-*` (SMF-3).
+
+## Static analysis
+`sf code-analyzer run --rule-selector Recommended` on the SMF-10 classes: 0 sev1–2; 22
+sev3–4 remaining — test-method names with `_` (the official `platform-apex-test-generate`
+naming convention conflicts with PMD MethodNamingConventions), `doGet` cyclomatic complexity
+10, 4 input-validation tests without `System.runAs`.
+
 ## Licensing / cost
 No new licences. Feature package is Salesforce-published (`SEE LICENSE IN LICENSE.txt`).
 

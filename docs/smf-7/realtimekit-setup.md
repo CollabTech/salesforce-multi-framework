@@ -90,4 +90,4 @@ The bundle never stores, logs, renders or copies the participant token (`redact(
 line); an invalid/expired token fails once with `TOKEN_REJECTED` and is never retried
 automatically. SDK finding from localhost: a malformed JWT is rejected inside the SDK before any
 network request; a validly-shaped but tampered/revoked token can only be rejected by the service
-(cloud stage 52 checks this).
+(cloud stage 53 checks this).

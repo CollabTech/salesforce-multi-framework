@@ -135,13 +135,24 @@
         ]
       },
       {
+        "id": "ENV-CLOUD-CHROMIUM",
+        "kind": "cloud automation browser (Playwright Chromium, Linux)",
+        "required": false,
+        "record": [
+          "Chromium version",
+          "OS version"
+        ],
+        "note": "Separate evidence from the cloud workflow (docs/cloud/WORKFLOW.md); never a substitute for ENV-DESKTOP-CHROME or any other row."
+      },
+      {
         "id": "ENV-EMULATION-LOCALHOST",
         "kind": "emulation / localhost",
         "required": false,
         "note": "Separate evidence; never a substitute for any row above (SMF-3 AC3)."
       }
     ],
-    "rows_note": "Row IDs are repository labels for the environments SMF-3 names; they add no new coverage. SMF-3 AC3: Define separate environments for desktop browser versions, physical Salesforce mobile on iOS and Android, and mobile Safari/Chrome. Emulation and localhost are separate evidence, never substitutes."
+    "rows_note": "Row IDs are repository labels for the environments SMF-3 names; they add no new coverage. SMF-3 AC3: Define separate environments for desktop browser versions, physical Salesforce mobile on iOS and Android, and mobile Safari/Chrome. Emulation and localhost are separate evidence, never substitutes.",
+    "execution_note": "Cloud-first execution (owner direction 2026-10-03, docs/cloud/WORKFLOW.md): repository/org rows and the desktop browser rows that automation can attest (ENV-DESKTOP-EDGE = official Microsoft Edge on Linux; ENV-DESKTOP-CHROME once branded Chrome can be installed; ENV-CLOUD-CHROMIUM) are executed by the agent in the cloud after HUMAN-SETUP H1/H2. Physical Salesforce mobile, mobile browsers, interactive password/MFA logins, OS permission prompts and observed audio/video stay human (testing/HUMAN-ACTIONS.md)."
   },
   "outcomes": {
     "values": [
@@ -153,13 +164,13 @@
     ],
     "default": "NOT TESTED",
     "definitions": {
-      "NOT TESTED": "Not yet executed. Initial state of every matrix row.",
-      "PASS": "Executed in the declared environment; actual result meets the expected result; evidence attached.",
-      "FAIL": "Executed; actual result does not meet the expected result.",
-      "PARTIAL": "Executed; some required behaviour works and some does not; the record states which.",
-      "BLOCKED": "Could not be executed because a prerequisite (licence, device, tool, access, dependency) is missing; the record names it and the unblocking action."
+      "NOT TESTED": "Not yet executed in this environment row. The initial state of every matrix row; a specification, plan, script or successful build is not an execution.",
+      "PASS": "Executed in the declared environment row with the specified personas and fixtures; the actual result meets the expected result; sanitized evidence is attached and names the tester.",
+      "FAIL": "Executed; the actual result does not meet the expected result (a missed target is a FAIL). The record states what was observed.",
+      "PARTIAL": "Executed; some required behaviour meets the expected result and some does not; the record states which parts did and which did not.",
+      "BLOCKED": "Could not be executed because a prerequisite (licence, device, tool, access, dependency) is missing; the record names the missing prerequisite and the smallest unblocking action."
     },
-    "definitions_note": "SMF-3 AC5 requires these definitions to be defined; the wording here is a proposed draft pending SMF-3 review. Define PASS, FAIL, PARTIAL, BLOCKED, and NOT TESTED; enumerate camera, mic, playback, two-way A/V, screen sharing, Files, markup sync/persistence, 3D, recovery, and packaging.",
+    "definitions_note": "Defined by SMF-3 AC5 (finalized in SMF-3; meanings unchanged from the SMF-1 wording). An outcome applies to one case ID in one environment row (and, where a case records them separately, one capability area); it is a capability result, not a Jira column. Changing these definitions needs a recorded project-owner decision before it is applied to any run.",
     "capability_areas": [
       "camera",
       "mic",
@@ -171,7 +182,110 @@
       "3D",
       "recovery",
       "packaging"
-    ]
+    ],
+    "capability_area_cases": {
+      "camera": [
+        "CAP-01",
+        "CAP-02",
+        "CAP-03",
+        "CALL-02"
+      ],
+      "mic": [
+        "CAP-01",
+        "CAP-02",
+        "CAP-03",
+        "CALL-02"
+      ],
+      "playback": [
+        "CALL-01",
+        "CALL-02"
+      ],
+      "two-way A/V": [
+        "CALL-01",
+        "CALL-02",
+        "CALL-03"
+      ],
+      "screen sharing": [
+        "SHARE-01",
+        "SHARE-02",
+        "SHARE-03"
+      ],
+      "Files": [
+        "DATA-02",
+        "FILE-01",
+        "FILE-02",
+        "FILE-03",
+        "FILE-04",
+        "MARK-02",
+        "MARK-04"
+      ],
+      "markup sync/persistence": [
+        "MARK-01",
+        "MARK-02",
+        "MARK-03",
+        "MARK-04",
+        "SYNC-01",
+        "SYNC-02",
+        "SYNC-03",
+        "SYNC-04"
+      ],
+      "3D": [
+        "3D-01",
+        "3D-02",
+        "3D-03",
+        "BUDGET-01",
+        "BUDGET-02",
+        "BUDGET-03",
+        "BUDGET-04"
+      ],
+      "recovery": [
+        "REC-01",
+        "REC-02",
+        "REC-03",
+        "SYNC-02"
+      ],
+      "packaging": [
+        "PKG-01",
+        "PKG-02",
+        "PKG-03",
+        "E2E-03"
+      ]
+    },
+    "supporting_areas": {
+      "note": "Foundation and decision cases that are not AC5 capability areas but still have matrix rows.",
+      "governance": [
+        "GOV-01",
+        "GOV-02",
+        "GOV-03"
+      ],
+      "org readiness": [
+        "ENV-01",
+        "ENV-02",
+        "ENV-03"
+      ],
+      "test data and baseline access": [
+        "DATA-01",
+        "DATA-02",
+        "DATA-03",
+        "DATA-04"
+      ],
+      "app hosting": [
+        "HOST-01",
+        "HOST-02",
+        "HOST-03"
+      ],
+      "decision gate": [
+        "GATE-01",
+        "GATE-02",
+        "GATE-03"
+      ],
+      "vertical slice": [
+        "E2E-01",
+        "E2E-02",
+        "E2E-03",
+        "E2E-04"
+      ]
+    }
   },
   "matrix": {
     "initialisation_owner": "SMF-3",
@@ -190,7 +304,8 @@
       "tester",
       "date",
       "limitation"
-    ]
+    ],
+    "file": "testing/matrix.json (rendered as testing/MATRIX.md; built and validated by scripts/build-matrix.py)"
   },
   "evidence_fields_text": "Record test-case ID, persona pair, fixture IDs/hash/version, build/commit, host/device/OS/app/browser version, timestamp, preconditions, steps, expected and actual results, outcome, sanitized evidence link, tester, and follow-up limitation.",
   "evidence_fields": [

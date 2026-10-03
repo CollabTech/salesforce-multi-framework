@@ -41,7 +41,7 @@ Out: transmitting media (SMF-7), screen capture (SMF-8), recording or upload of 
   `camera`/`microphone`, and whether background/lock stops capture. The probe records these.
 
 ## Cloud-first execution (owner direction 2026-10-03)
-Desktop rows: functional checks automated by `scripts/cloud/stages/51-smf6-capture-e2e.sh`
+Desktop rows: functional checks automated by `scripts/cloud/stages/52-smf6-capture-e2e.sh`
 (`testing/cloud-e2e/tests/smf-6-capture.spec.ts`; MF-TECH via `personaContext`; Edge + Chromium,
 fake devices; deny→grant→retry via a second browser launched with `--deny-permission-prompts`).
 They attest probe logic, host framing/policy and track lifecycle only. Real camera/mic,

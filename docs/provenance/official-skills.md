@@ -30,7 +30,8 @@ It installs any missing or failing official skill with the pinned CLI, restores
 - **Windows bootstrap (documented, verified by unit tests only):** install Python 3.8+
   and Node 18+; `git clone`; `py -3 scripts\bootstrap-skills.py`. Line endings do not
   matter: `.gitattributes` keeps tracked text LF and the integrity check tolerates CRLF.
-  Not yet run on a real Windows host — see `evidence/SMF-1/GOV-01-portability.md`.
+  Verified on GitHub-hosted Windows runners (symlink and forced-junction variants) by
+  `.github/workflows/repo-checks.yml`; results in `evidence/SMF-1/GOV-01-portability.md`.
 - **Codex / other Agent Skills tools** read `.agents/skills/` and `AGENTS.md`.
 - **Agentforce Vibes** auto-installs its own copy of the same library; still follow
   `AGENTS.md` and the `smf-*` skills.

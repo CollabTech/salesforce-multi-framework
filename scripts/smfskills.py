@@ -138,6 +138,8 @@ def make_dir_link(link: Path, target: Path) -> str:
             shutil.rmtree(link)
     link.parent.mkdir(parents=True, exist_ok=True)
     try:
+        if os.environ.get("SMF_FORCE_JUNCTION") == "1" and os.name == "nt":
+            raise OSError("symlink skipped to exercise the junction fallback")
         os.symlink(os.path.relpath(target, link.parent), link, target_is_directory=True)
         return "symlink"
     except (OSError, NotImplementedError):
@@ -148,3 +150,14 @@ def make_dir_link(link: Path, target: Path) -> str:
             return "junction"
     shutil.copytree(target, link)
     return "copy"
+
+
+def remove_entry(p: Path) -> None:
+    """Remove a generated .claude/skills entry of any kind (symlink, junction, copy, file)."""
+    kind = link_kind(p)
+    if kind in ("symlink", "file"):
+        p.unlink()
+    elif kind == "junction":
+        os.rmdir(p)
+    elif kind == "copy":
+        shutil.rmtree(p)

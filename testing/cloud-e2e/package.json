@@ -1,0 +1,14 @@
+{
+  "name": "smf-cloud-e2e",
+  "private": true,
+  "description": "Cloud browser automation against the deployed Field Support PoC as real persona sessions (Edge + Chromium). Not a substitute for physical Salesforce mobile or observed A/V tests.",
+  "scripts": {
+    "test": "playwright test",
+    "report": "node record-results.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.5",
+    "typescript": "5.9.3"
+  }
+}

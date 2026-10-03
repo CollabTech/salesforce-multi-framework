@@ -42,6 +42,7 @@ Before any task:
 
 | Need | Location |
 |---|---|
+| Capability matrix (every case ID × environment row; outcomes from evidence) | `testing/matrix.json` → `testing/MATRIX.md` (`scripts/build-matrix.py`) |
 | Story ↔ case-ID index (16 stories, 54 cases) with each story's personas, fixtures, test data, expected results and required evidence | `testing/test-plan-index.json` (human view: `testing/README.md`) |
 | Personas, fixtures, environments, outcomes, evidence fields, DoD | `testing/contract.json` |
 | Dated Jira text (fallback only) | `docs/jira-snapshot/2026-10-03/SMF-<n>.md` |
@@ -163,7 +164,8 @@ docs/poc-briefs/             one brief per PoC story (template + index)
 docs/provenance/             official-skill provenance, curated session records
 docs/jira-snapshot/          dated, read-only copy of SMF story text
 docs/dry-runs/               bounded planning dry runs (SMF-1 GOV-02: SMF-2 plan)
-testing/                     test-plan index, shared contract, matrix schema
+testing/                     test-plan index, shared contract, capability matrix,
+                             fixtures (SMF-3), provisioning kit (SMF-3)
 evidence/                    per-story, per-case evidence records
 scripts/                     install/verify tooling (no org access)
 private/                     git-ignored; local-only mappings, never committed
@@ -192,4 +194,6 @@ python3 scripts/verify-skills.py        # skills discoverable, pinned, unmodifie
 python3 scripts/check-test-plan.py      # 54 case IDs, each owned by exactly one story
 python3 scripts/scan-public-content.py  # no credentials / private identifiers
 python3 -m unittest discover -s scripts/tests   # portability tests for the scripts
+python3 scripts/build-matrix.py         # matrix covers every case ID; outcomes/evidence links valid
+python3 testing/fixtures/generate.py --check   # SMF-3 fixture files/hashes match the manifest
 ```

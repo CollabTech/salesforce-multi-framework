@@ -51,7 +51,7 @@ Public interface for other tracks: `src/probes/files/lib/index.ts` (policy/valid
 ## Cloud execution (after owner setup H1/H2)
 `scripts/cloud/stages/46-smf10-files-access.sh` assigns `SMF10_Access` (and `SMF11_Access`)
 to the three personas and runs the SMF-10/11 Apex tests in `smf-dev`;
-`52-smf10-files-e2e.sh` runs `testing/cloud-e2e/tests/smf-10-files.spec.ts` as the real
+`70-smf10-files-e2e.sh` runs `testing/cloud-e2e/tests/smf-10-files.spec.ts` as the real
 personas (FILE-01 TECH→SUPPORT fresh context, FILE-02 three denials + admin
 ContentDistribution count, FILE-03 rejections, CDP-throttled cancel, offline failure, retry,
 +2 Files check) in ENV-DESKTOP-EDGE and ENV-CLOUD-CHROMIUM. Physical mobile rows (FILE-04)

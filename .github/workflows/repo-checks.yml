@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: repo-checks-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   checks:
     strategy:

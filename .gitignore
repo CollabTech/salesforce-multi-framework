@@ -1,0 +1,21 @@
+# --- Never commit credentials, auth state, or private mappings (see AGENTS.md §5) ---
+private/
+.sf/
+.sfdx/
+*.authfile
+*auth*.json
+!**/skills/**
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+
+# --- Tooling / build output ---
+node_modules/
+dist/
+coverage/
+.DS_Store
+__pycache__/
+*.pyc

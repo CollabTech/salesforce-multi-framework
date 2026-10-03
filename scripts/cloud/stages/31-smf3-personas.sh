@@ -5,8 +5,9 @@
 # deployed it), then save the persona sessions to the encrypted vault (ADR-0004).
 # Persona e-mail: $SMF_TESTER_EMAIL when set (HUMAN-SETUP H6), else example.com.
 # needs: 30
+T="${SMF_TARGET_ORG:-smf-dev}"   # SMF-5 reuses these stages for smf-install-test
 set -uo pipefail
-python3 testing/provisioning/personas.py --target-org smf-dev --reconcile
+python3 testing/provisioning/personas.py --target-org "$T" --reconcile
 rc=$?
 case $rc in
   0) ;;
@@ -14,7 +15,7 @@ case $rc in
   2) echo "BLOCKED: persona deviations remain (see DEVIATION lines; a missing alias means the vault was not restored)"; exit 2 ;;
   *) exit 1 ;;
 esac
-for a in smf-dev-tech smf-dev-support smf-dev-restricted; do
+for a in "$T-tech" "$T-support" "$T-restricted"; do
   sf org display --target-org "$a" --json >/dev/null 2>&1 || { echo "BLOCKED: persona alias $a missing"; exit 2; }
 done
 if [ "${SMF_VAULT_APPROVED:-}" = yes ] && [ -n "${SF_AUTH_URL_DEVHUB:-}" ]; then   # ADR-0004 needs owner approval (HUMAN-SETUP H7)

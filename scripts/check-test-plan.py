@@ -6,7 +6,8 @@
 - Every case ID resolves to exactly one owning story; none omitted or duplicated
   (cross-checked against a raw scan of every snapshot file).
 - Every dependency names an indexed story.
-- Logical persona/fixture IDs referenced by cases exist in testing/contract.json.
+- Every story carries its verbatim test users, test data and required-evidence text.
+- Logical persona/fixture IDs referenced by stories and cases exist in testing/contract.json.
 - Any evidence record under evidence/ names an indexed case ID and a valid outcome.
 """
 import json, re, subprocess, sys
@@ -60,6 +61,14 @@ for item in contract["personas"] + contract["fixtures"]:
     known.update(x.strip() for x in item["id"].split("/"))
 short = {"TECH", "SUPPORT", "RESTRICTED", "ADMIN"}
 for s in stories:
+    for fld in ("test_users", "test_data"):
+        check(s.get(fld), f"{s['key']} is missing {fld}")
+        for ref in re.findall(r"\bMF-[A-Z]+(?:-[A-Z0-9]+)*\b", s.get(fld, "")):
+            check(ref in known, f"{s['key']} {fld} references {ref}, which is not defined in testing/contract.json")
+    ev = s.get("required_evidence", {})
+    check(ev.get("completion") and ev.get("record"), f"{s['key']} is missing its required-evidence text")
+    for ref in s.get("persona_refs", []) + s.get("fixture_refs", []):
+        check(ref in known, f"{s['key']} lists {ref}, which is not defined in testing/contract.json")
     for c in s["cases"]:
         for ref in re.findall(r"\bMF-[A-Z]+(?:-[A-Z0-9]+)*\b", c["spec"]):
             check(ref in known, f"{c['id']} references {ref}, which is not defined in testing/contract.json")

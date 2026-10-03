@@ -12,10 +12,24 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "testing" / "test-plan-index.json"
-INDEX_VERSION = "1.0.0"
+INDEX_VERSION = "1.1.0"
 TABLE = ROOT / "testing" / "README.md"
 
 CASE_RE = re.compile(r"^\* ([A-Z0-9]+-\d{2}): (.+)$", re.M)
+PERSONA_RE = re.compile(r"\b(?:MF-)?(ADMIN|TECH|SUPPORT|RESTRICTED)\b")
+FIXTURE_RE = re.compile(r"\bMF-(?!ADMIN\b|TECH\b|SUPPORT\b|RESTRICTED\b)[A-Z]+(?:-[A-Z0-9]+)*\b")
+
+
+def refs(text: str) -> dict:
+    """Logical persona/fixture IDs mentioned in text (short persona names normalised to MF-*)."""
+    personas = sorted({f"MF-{m}" for m in PERSONA_RE.findall(text)})
+    fixtures = sorted(set(FIXTURE_RE.findall(text)))
+    return {"persona_refs": personas, "fixture_refs": fixtures}
+
+
+def field(body: str, label: str) -> str:
+    m = re.search(rf"^\*\*{re.escape(label)}:\*\* (.+)$", body, re.M)
+    return m.group(1).strip() if m else ""
 
 
 def latest_snapshot() -> Path:
@@ -35,7 +49,12 @@ def parse_story(path: Path) -> dict:
     deps_line = re.search(r"^\*\*Dependencies:\*\*(.*)$", body, re.M)
     deps = sorted(set(re.findall(r"\[(SMF-\d+)\]", deps_line.group(1))), key=lambda k: int(k[4:])) if deps_line else []
     checklist = re.search(r"\*\*Acceptance test checklist[^\n]*\*\*\n\n(.*?)\n\n", body, re.S)
-    cases = [{"id": cid, "spec": spec.strip()} for cid, spec in CASE_RE.findall(checklist.group(1) if checklist else "")]
+    cases = [{"id": cid, "spec": spec.strip(), **refs(spec)}
+             for cid, spec in CASE_RE.findall(checklist.group(1) if checklist else "")]
+    test_users = field(body, "Test users / actors")
+    test_data = field(body, "Test data / prerequisites")
+    evidence = re.search(r"^\*\*Required evidence and completion:\*\* (.+?)\n\n(Record case ID[^\n]+)", body, re.M | re.S)
+    story_refs = refs(" ".join([test_users, test_data] + [c["spec"] for c in cases]))
     return {
         "key": meta["key"],
         "summary": summary,
@@ -45,6 +64,15 @@ def parse_story(path: Path) -> dict:
         "reference": order.group(3) if order else None,
         "dependencies": deps,
         "snapshot": str(path.relative_to(ROOT)),
+        "test_users": test_users,
+        "test_data": test_data,
+        **story_refs,
+        "required_evidence": {
+            "completion": evidence.group(1).strip() if evidence else "",
+            "record": evidence.group(2).strip() if evidence else "",
+            "fields": "testing/contract.json#evidence_fields",
+            "template": "evidence/TEMPLATE.md",
+        },
         "cases": cases,
     }
 
@@ -57,7 +85,10 @@ def build(snapshot: Path) -> dict:
         "source": "Jira project SMF (answersllc.atlassian.net); Jira descriptions are authoritative",
         "retrieved": snapshot.name,
         "snapshot_dir": str(snapshot.relative_to(ROOT)),
-        "note": "Specifications only. No execution results are recorded here; see evidence/.",
+        "note": "Specifications only. No execution results are recorded here; see evidence/. "
+                "test_users, test_data, case spec (expected outcome) and required_evidence are quoted verbatim "
+                "from the snapshot; persona_refs/fixture_refs are extracted logical IDs defined in testing/contract.json. "
+                "Personas and fixtures are specifications, not proof that accounts or data exist.",
         "story_count": len(stories),
         "case_count": sum(len(s["cases"]) for s in stories),
         "stories": stories,
@@ -77,16 +108,21 @@ def render_markdown(idx: dict) -> str:
         "Shared personas, fixtures, environments, evidence fields and Definition of Done: "
         "[`contract.json`](contract.json) (from SMF-3). Results go in [`../evidence/`](../evidence/).",
         "",
-        "| Story | Order · Track | Depends on | Case IDs |",
-        "|---|---|---|---|",
+        "| Story | Order · Track | Depends on | Case IDs | Personas | Fixtures |",
+        "|---|---|---|---|---|---|",
     ]
     for s in idx["stories"]:
         deps = ", ".join(s["dependencies"]) or "—"
         ids = ", ".join(c["id"] for c in s["cases"])
-        lines.append(f"| [{s['key']}]({s['url']}) {s['summary']} | {s['backlog_order']} · {s['track']} | {deps} | {ids} |")
+        pers = ", ".join(s["persona_refs"]) or "—"
+        fix = ", ".join(s["fixture_refs"]) or "—"
+        lines.append(f"| [{s['key']}]({s['url']}) {s['summary']} | {s['backlog_order']} · {s['track']} | {deps} | {ids} | {pers} | {fix} |")
     lines += ["", "## Case specifications", ""]
     for s in idx["stories"]:
         lines.append(f"### {s['key']} — [{s['snapshot'].split('/')[-1]}](../{s['snapshot']})")
+        lines.append("")
+        lines.append(f"- *Test users / actors:* {s['test_users']}")
+        lines.append(f"- *Test data / prerequisites:* {s['test_data']}")
         lines.append("")
         for c in s["cases"]:
             lines.append(f"- **{c['id']}**: {c['spec']}")

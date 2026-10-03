@@ -1,9 +1,9 @@
 {
-  "index_version": "1.0.0",
+  "index_version": "1.1.0",
   "source": "Jira project SMF (answersllc.atlassian.net); Jira descriptions are authoritative",
   "retrieved": "2026-10-03",
   "snapshot_dir": "docs/jira-snapshot/2026-10-03",
-  "note": "Specifications only. No execution results are recorded here; see evidence/.",
+  "note": "Specifications only. No execution results are recorded here; see evidence/. test_users, test_data, case spec (expected outcome) and required_evidence are quoted verbatim from the snapshot; persona_refs/fixture_refs are extracted logical IDs defined in testing/contract.json. Personas and fixtures are specifications, not proof that accounts or data exist.",
   "story_count": 16,
   "case_count": 54,
   "stories": [
@@ -16,18 +16,34 @@
       "reference": "POC-01",
       "dependencies": [],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-1.md",
+      "test_users": "Implementing agent + Brandon/reviewer; no Salesforce user or org mutation required.",
+      "test_data": "Existing public Git repo, existing SMF board, the current stories, official skills source/revision.",
+      "persona_refs": [],
+      "fixture_refs": [],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "GOV-01",
-          "spec": "In a fresh contributor session, follow repo instructions; verify official/project skills can be discovered and loaded without undocumented machine-global dependencies."
+          "spec": "In a fresh contributor session, follow repo instructions; verify official/project skills can be discovered and loaded without undocumented machine-global dependencies.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "GOV-02",
-          "spec": "Dry-run SMF-2 planning and verify selected skills, explicit target-org requirement, persona/fixture references, evidence template, and stop conditions are present."
+          "spec": "Dry-run SMF-2 planning and verify selected skills, explicit target-org requirement, persona/fixture references, evidence template, and stop conditions are present.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "GOV-03",
-          "spec": "Review the diff and curated provenance for accidental credentials/private data; verify the task does not recreate the existing repository or Jira board."
+          "spec": "Review the diff and curated provenance for accidental credentials/private data; verify the task does not recreate the existing repository or Jira board.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -42,18 +58,36 @@
         "SMF-1"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-2.md",
+      "test_users": "MF-ADMIN for setup; Brandon for passkey or required interactive authorization.",
+      "test_data": "Existing Developer org; completed repo/board baseline; private org-identity mapping.",
+      "persona_refs": [
+        "MF-ADMIN"
+      ],
+      "fixture_refs": [],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "ENV-01",
-          "spec": "Authenticate and verify the actual org identity/edition before any writes; independently verify Dev Hub, unlocked 2GP, and the current Multi-Framework prerequisites."
+          "spec": "Authenticate and verify the actual org identity/edition before any writes; independently verify Dev Hub, unlocked 2GP, and the current Multi-Framework prerequisites.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "ENV-02",
-          "spec": "Record scratch-org/package capacity and licenses sufficient for the defined test personas; shortages produce explicit blockers."
+          "spec": "Record scratch-org/package capacity and licenses sufficient for the defined test personas; shortages produce explicit blockers.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "ENV-03",
-          "spec": "Document separate dev/install-test targets and the repeatable setup path. Report each readiness item as observed PASS/BLOCKED; do not claim a package has been tested."
+          "spec": "Document separate dev/install-test targets and the repeatable setup path. Report each readiness item as observed PASS/BLOCKED; do not claim a package has been tested.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -69,22 +103,57 @@
         "SMF-2"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-3.md",
+      "test_users": "MF-ADMIN provisions; MF-TECH, MF-SUPPORT, and MF-RESTRICTED validate their own access.",
+      "test_data": "All fixtures and persona grants in the shared test contract.",
+      "persona_refs": [
+        "MF-ADMIN",
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-CASE-001",
+        "MF-CASE-002",
+        "MF-FILE-DENIED"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. The complete test contract is below.",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "DATA-01",
-          "spec": "Seed the data twice; counts and logical identities remain stable, with no duplicate test records."
+          "spec": "Seed the data twice; counts and logical identities remain stable, with no duplicate test records.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "DATA-02",
-          "spec": "TECH and SUPPORT can access MF-CASE-001 and its image; RESTRICTED cannot. All business personas are denied MF-CASE-002 and MF-FILE-DENIED."
+          "spec": "TECH and SUPPORT can access MF-CASE-001 and its image; RESTRICTED cannot. All business personas are denied MF-CASE-002 and MF-FILE-DENIED.",
+          "persona_refs": [
+            "MF-RESTRICTED",
+            "MF-SUPPORT",
+            "MF-TECH"
+          ],
+          "fixture_refs": [
+            "MF-CASE-001",
+            "MF-CASE-002",
+            "MF-FILE-DENIED"
+          ]
         },
         {
           "id": "DATA-03",
-          "spec": "Verify profiles/roles/sharing/permission sets match the intended baseline; store actual usernames and Salesforce/provider IDs privately."
+          "spec": "Verify profiles/roles/sharing/permission sets match the intended baseline; store actual usernames and Salesforce/provider IDs privately.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "DATA-04",
-          "spec": "Generate the fixtures, hashes, cleanup/reset script, and per-environment test scripts. Populate all matrix rows as NOT TESTED until executed."
+          "spec": "Generate the fixtures, hashes, cleanup/reset script, and per-environment test scripts. Populate all matrix rows as NOT TESTED until executed.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -100,18 +169,42 @@
         "SMF-3"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-4.md",
+      "test_users": "MF-TECH and MF-SUPPORT; MF-RESTRICTED with app permission temporarily removed for the denial scenario.",
+      "test_data": "MF-CASE-001; verified app permission baseline.",
+      "persona_refs": [
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-CASE-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "HOST-01",
-          "spec": "Each intended user launches the deployed internal app, refreshes, navigates, and retains the correct authenticated context."
+          "spec": "Each intended user launches the deployed internal app, refreshes, navigates, and retains the correct authenticated context.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "HOST-02",
-          "spec": "RESTRICTED without the app permission cannot open the app; restore baseline after the test."
+          "spec": "RESTRICTED without the app permission cannot open the app; restore baseline after the test.",
+          "persona_refs": [
+            "MF-RESTRICTED"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "HOST-03",
-          "spec": "Repeat on desktop Chrome/Edge and physical Salesforce mobile iOS/Android; capture host/version and failed launch behavior separately."
+          "spec": "Repeat on desktop Chrome/Edge and physical Salesforce mobile iOS/Android; capture host/version and failed launch behavior separately.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -126,18 +219,40 @@
         "SMF-4"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-5.md",
+      "test_users": "MF-ADMIN installs; TECH/SUPPORT equivalents in the separate installation-test org verify behavior.",
+      "test_data": "Minimal UIBundle package v1 and v2; independently seeded MF-CASE-001 baseline in the subscriber test org.",
+      "persona_refs": [
+        "MF-ADMIN",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-CASE-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "PKG-01",
-          "spec": "Create/install unlocked v1, assign intended access, and verify a non-admin can launch the installed app."
+          "spec": "Create/install unlocked v1, assign intended access, and verify a non-admin can launch the installed app.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "PKG-02",
-          "spec": "Install v2 over v1, verify activation/version behavior, and confirm the seeded case/file state is preserved."
+          "spec": "Install v2 over v1, verify activation/version behavior, and confirm the seeded case/file state is preserved.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "PKG-03",
-          "spec": "Repeat the app permission-denial scenario in the install-test org. Capture package operation reports and limitations without auth material."
+          "spec": "Repeat the app permission-denial scenario in the install-test org. Capture package operation reports and limitations without auth material.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -152,18 +267,38 @@
         "SMF-4"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-6.md",
+      "test_users": "MF-TECH performs capture; Brandon/device tester handles browser/OS permission prompts.",
+      "test_data": "MF-ASSET-001 context and synthetic equipment scene; no recording persisted.",
+      "persona_refs": [
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-ASSET-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "CAP-01",
-          "spec": "From a user gesture, test camera-only, mic-only, and combined capture; verify actual tracks and preview/input activity."
+          "spec": "From a user gesture, test camera-only, mic-only, and combined capture; verify actual tracks and preview/input activity.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "CAP-02",
-          "spec": "Deny/cancel permission, retry, simulate unavailable hardware, and switch devices where exposed; UI reports the real outcome."
+          "spec": "Deny/cancel permission, retry, simulate unavailable hardware, and switch devices where exposed; UI reports the real outcome.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "CAP-03",
-          "spec": "Leave/unmount and confirm capture stops. Repeat on every required host; record camera and mic results separately."
+          "spec": "Leave/unmount and confirm capture stops. Repeat on every required host; record camera and mic results separately.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -179,18 +314,49 @@
         "SMF-6"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-7.md",
+      "test_users": "MF-TECH + MF-SUPPORT in independent simultaneous sessions; MF-RESTRICTED for authorization failure.",
+      "test_data": "MF-CASE-001, MF-ROOM-001; MF-ROOM-002, invalid and expired participant authorization as negative controls.",
+      "persona_refs": [
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-CASE-001",
+        "MF-ROOM-001",
+        "MF-ROOM-002"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "CALL-01",
-          "spec": "TECH/SUPPORT join MF-ROOM-001 for five minutes; each reads a short test phrase heard by the other and displays a changing visual marker visible remotely."
+          "spec": "TECH/SUPPORT join MF-ROOM-001 for five minutes; each reads a short test phrase heard by the other and displays a changing visual marker visible remotely.",
+          "persona_refs": [
+            "MF-SUPPORT",
+            "MF-TECH"
+          ],
+          "fixture_refs": [
+            "MF-ROOM-001"
+          ]
         },
         {
           "id": "CALL-02",
-          "spec": "Verify mute/unmute, camera toggle, join and leave; record send and receive separately for desktop↔desktop and desktop↔physical Salesforce mobile iOS/Android."
+          "spec": "Verify mute/unmute, camera toggle, join and leave; record send and receive separately for desktop↔desktop and desktop↔physical Salesforce mobile iOS/Android.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "CALL-03",
-          "spec": "RESTRICTED and wrong-case users cannot obtain/join the room; expired/invalid authorization is rejected without leaking credentials."
+          "spec": "RESTRICTED and wrong-case users cannot obtain/join the room; expired/invalid authorization is rejected without leaking credentials.",
+          "persona_refs": [
+            "MF-RESTRICTED"
+          ],
+          "fixture_refs": []
         }
       ]
     },
@@ -205,18 +371,39 @@
         "SMF-7"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-8.md",
+      "test_users": "MF-SUPPORT as initial sharer, MF-TECH as receiver; reverse roles where the host offers sharing.",
+      "test_data": "A synthetic diagnostic screen with a visible changing marker; MF-ROOM-001.",
+      "persona_refs": [
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-ROOM-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "SHARE-01",
-          "spec": "Start from a gesture, confirm the other participant sees the changing screen, then stop and restart."
+          "spec": "Start from a gesture, confirm the other participant sees the changing screen, then stop and restart.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "SHARE-02",
-          "spec": "Test mobile receiving separately from mobile originating; cancellation or unsupported sharing leaves the call usable and shows the approved image fallback."
+          "spec": "Test mobile receiving separately from mobile originating; cancellation or unsupported sharing leaves the call usable and shows the approved image fallback.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "SHARE-03",
-          "spec": "If screen audio is offered, test it separately. Mark unsupported/cancelled cases honestly; do not count a visible button as success."
+          "spec": "If screen audio is offered, test it separately. Mark unsupported/cancelled cases honestly; do not count a visible button as success.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -231,18 +418,39 @@
         "SMF-7"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-9.md",
+      "test_users": "MF-TECH on a physical mobile device + MF-SUPPORT on desktop; device tester performs interruptions.",
+      "test_data": "Active MF-ROOM-001 call and a fixed synthetic visual/audio test script.",
+      "persona_refs": [
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-ROOM-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "REC-01",
-          "spec": "Repeat network loss/recovery and network switching three times; record disconnect detection, recovery time, restored A/V, and duplicate participants."
+          "spec": "Repeat network loss/recovery and network switching three times; record disconnect detection, recovery time, restored A/V, and duplicate participants.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "REC-02",
-          "spec": "Repeat background/foreground and lock/unlock three times; exercise an incoming-call interruption where feasible."
+          "spec": "Repeat background/foreground and lock/unlock three times; exercise an incoming-call interruption where feasible.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "REC-03",
-          "spec": "Verify explicit leave/rejoin recovery and that local media stops on leave. Any unperformed interruption remains BLOCKED/NOT TESTED."
+          "spec": "Verify explicit leave/rejoin recovery and that local media stops on leave. Any unperformed interruption remains BLOCKED/NOT TESTED.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -258,22 +466,56 @@
         "SMF-4"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-10.md",
+      "test_users": "MF-TECH uploads; MF-SUPPORT reads independently; MF-RESTRICTED attempts unauthorized access.",
+      "test_data": "MF-CASE-001, MF-IMAGE-001, MF-CASE-002, MF-FILE-DENIED, MF-UPLOAD-INVALID.",
+      "persona_refs": [
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-CASE-001",
+        "MF-CASE-002",
+        "MF-FILE-DENIED",
+        "MF-IMAGE-001",
+        "MF-UPLOAD-INVALID"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "FILE-01",
-          "spec": "Upload the valid image, verify its correct record link, then read it as SUPPORT from a fresh session."
+          "spec": "Upload the valid image, verify its correct record link, then read it as SUPPORT from a fresh session.",
+          "persona_refs": [
+            "MF-SUPPORT"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "FILE-02",
-          "spec": "RESTRICTED cannot retrieve it; TECH/SUPPORT cannot retrieve the negative-control File; there is no public-link workaround."
+          "spec": "RESTRICTED cannot retrieve it; TECH/SUPPORT cannot retrieve the negative-control File; there is no public-link workaround.",
+          "persona_refs": [
+            "MF-RESTRICTED",
+            "MF-SUPPORT",
+            "MF-TECH"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "FILE-03",
-          "spec": "Reject .txt and >5 MiB images cleanly, test cancel/failure/retry, and confirm retries do not create unintended duplicate attachments."
+          "spec": "Reject .txt and >5 MiB images cleanly, test cancel/failure/retry, and confirm retries do not create unintended duplicate attachments.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "FILE-04",
-          "spec": "Repeat the supported upload/view flow on physical Salesforce mobile iOS/Android as well as desktop."
+          "spec": "Repeat the supported upload/view flow on physical Salesforce mobile iOS/Android as well as desktop.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -288,22 +530,49 @@
         "SMF-10"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-11.md",
+      "test_users": "MF-TECH authors, MF-SUPPORT reopens, MF-RESTRICTED attempts denied access.",
+      "test_data": "MF-IMAGE-001 and MF-MARKUP-001; linked editable snapshot and export.",
+      "persona_refs": [
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-IMAGE-001",
+        "MF-MARKUP-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "MARK-01",
-          "spec": "Use mouse and mobile touch to create the prescribed circle, arrow, and label; verify pan/zoom and readable annotation positioning."
+          "spec": "Use mouse and mobile touch to create the prescribed circle, arrow, and label; verify pan/zoom and readable annotation positioning.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "MARK-02",
-          "spec": "Save snapshot/export to Files, close the session, and reopen as SUPPORT; image and all annotations persist without browser-local state."
+          "spec": "Save snapshot/export to Files, close the session, and reopen as SUPPORT; image and all annotations persist without browser-local state.",
+          "persona_refs": [
+            "MF-SUPPORT"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "MARK-03",
-          "spec": "Fail/retry a save and attempt concurrent versions; preserve existing versions or show an explicit conflict rather than silent data loss."
+          "spec": "Fail/retry a save and attempt concurrent versions; preserve existing versions or show an explicit conflict rather than silent data loss.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "MARK-04",
-          "spec": "Verify restricted users cannot retrieve the underlying image, snapshot, or export."
+          "spec": "Verify restricted users cannot retrieve the underlying image, snapshot, or export.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -318,22 +587,47 @@
         "SMF-11"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-12.md",
+      "test_users": "MF-TECH + MF-SUPPORT simultaneously; MF-RESTRICTED for denied joins.",
+      "test_data": "MF-ROOM-001, MF-MARKUP-001, Salesforce image/snapshot Files; wrong-case room control.",
+      "persona_refs": [
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-MARKUP-001",
+        "MF-ROOM-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "SYNC-01",
-          "spec": "Independently create the circle and arrow/text; both sessions converge and show presence. Measure propagation delay; initial PoC target is <=2 seconds on a recorded stable network."
+          "spec": "Independently create the circle and arrow/text; both sessions converge and show presence. Measure propagation delay; initial PoC target is <=2 seconds on a recorded stable network.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "SYNC-02",
-          "spec": "Perform concurrent edits, disconnect/reconnect one client, and restart the collaboration service under the chosen persistence design; verify the agreed state/assets recover."
+          "spec": "Perform concurrent edits, disconnect/reconnect one client, and restart the collaboration service under the chosen persistence design; verify the agreed state/assets recover.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "SYNC-03",
-          "spec": "Deny restricted/wrong-case room and asset access; test revoked access and document the actual enforcement timing."
+          "spec": "Deny restricted/wrong-case room and asset access; test revoked access and document the actual enforcement timing.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "SYNC-04",
-          "spec": "Run desktop↔physical mobile pairs and verify final Salesforce snapshot/version association. Record missed targets as FAIL/PARTIAL, not hidden exceptions."
+          "spec": "Run desktop↔physical mobile pairs and verify final Salesforce snapshot/version association. Record missed targets as FAIL/PARTIAL, not hidden exceptions.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -348,18 +642,39 @@
         "SMF-4"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-13.md",
+      "test_users": "MF-TECH on desktop and physical mobile; MF-SUPPORT reviews selected-part behavior.",
+      "test_data": "MF-MODEL-SMALL, missing-asset control, static equipment-image fallback.",
+      "persona_refs": [
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-MODEL-SMALL"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "3D-01",
-          "spec": "Load the small model, orbit/zoom/select/reset, rotate the device, and verify touch/resize behavior in each required host."
+          "spec": "Load the small model, orbit/zoom/select/reset, rotate the device, and verify touch/resize behavior in each required host.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "3D-02",
-          "spec": "Measure 60 seconds of repeatable interaction; initial target is usable within 10 seconds and median >=30 fps on the recorded device/network. Report measured values even when below target."
+          "spec": "Measure 60 seconds of repeatable interaction; initial target is usable within 10 seconds and median >=30 fps on the recorded device/network. Report measured values even when below target.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "3D-03",
-          "spec": "Exercise missing model, unavailable/lost graphics context, and remount; verify a usable static-image fallback and released resources."
+          "spec": "Exercise missing model, unavailable/lost graphics context, and remount; verify a usable static-image fallback and released resources.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -375,22 +690,48 @@
         "SMF-13"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-14.md",
+      "test_users": "MF-TECH on the target field devices; MF-RESTRICTED for protected asset delivery.",
+      "test_data": "MF-MODEL-SMALL and MF-MODEL-REP with hashes, sizes, mesh/texture counts; protected asset negative control.",
+      "persona_refs": [
+        "MF-RESTRICTED",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-MODEL-REP",
+        "MF-MODEL-SMALL"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "BUDGET-01",
-          "spec": "Compare the two models using the same load/60-second interaction protocol and record device/network measurements."
+          "spec": "Compare the two models using the same load/60-second interaction protocol and record device/network measurements.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "BUDGET-02",
-          "spec": "Open/close each model five times and test orientation plus foreground recovery; record errors, context loss, and available resource measurements."
+          "spec": "Open/close each model five times and test orientation plus foreground recovery; record errors, context loss, and available resource measurements.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "BUDGET-03",
-          "spec": "Verify authorized delivery of model and textures and denial for RESTRICTED if Files is used; report any asset path that bypasses access checks."
+          "spec": "Verify authorized delivery of model and textures and denial for RESTRICTED if Files is used; report any asset path that bypasses access checks.",
+          "persona_refs": [
+            "MF-RESTRICTED"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "BUDGET-04",
-          "spec": "Publish the maximum tested scene budget and fallback trigger from the results; do not claim a larger untested operating range."
+          "spec": "Publish the maximum tested scene budget and fallback trigger from the results; do not claim a larger untested operating range.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -409,18 +750,34 @@
         "SMF-14"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-15.md",
+      "test_users": "Brandon as scope decision-maker; implementing agent and testing assistant present evidence.",
+      "test_data": "All matrix rows and evidence from SMF-4 through SMF-14; no new user accounts.",
+      "persona_refs": [],
+      "fixture_refs": [],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "GATE-01",
-          "spec": "Check every planned capability/environment row against actual evidence, persona, fixture, build, and tester; reject unsupported PASS claims."
+          "spec": "Check every planned capability/environment row against actual evidence, persona, fixture, build, and tester; reject unsupported PASS claims.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "GATE-02",
-          "spec": "Choose supported devices/capabilities and named fallbacks; record exclusions and any explicit reduced-scope decision."
+          "spec": "Choose supported devices/capabilities and named fallbacks; record exclusions and any explicit reduced-scope decision.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "GATE-03",
-          "spec": "Confirm packaging, licensing, service prerequisites, and access-control findings before allowing SMF-16 to start."
+          "spec": "Confirm packaging, licensing, service prerequisites, and access-control findings before allowing SMF-16 to start.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     },
@@ -435,22 +792,57 @@
         "SMF-15"
       ],
       "snapshot": "docs/jira-snapshot/2026-10-03/SMF-16.md",
+      "test_users": "MF-TECH + MF-SUPPORT on declared supported hosts; MF-RESTRICTED for negative checks; MF-ADMIN installs only.",
+      "test_data": "MF-CASE-001, MF-ASSET-001, MF-IMAGE-001, MF-ROOM-001, MF-MARKUP-001, optional approved 3D model; equivalent subscriber-org fixture set.",
+      "persona_refs": [
+        "MF-ADMIN",
+        "MF-RESTRICTED",
+        "MF-SUPPORT",
+        "MF-TECH"
+      ],
+      "fixture_refs": [
+        "MF-ASSET-001",
+        "MF-CASE-001",
+        "MF-IMAGE-001",
+        "MF-MARKUP-001",
+        "MF-ROOM-001"
+      ],
+      "required_evidence": {
+        "completion": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+        "record": "Record case ID, actors, fixture version, build, host/device versions, timestamp, expected/actual result, outcome, evidence link, and who tested it. Use the persona grants, fixture definitions, environment matrix, and testing responsibilities in [SMF-3](https://answersllc.atlassian.net/browse/SMF-3).",
+        "fields": "testing/contract.json#evidence_fields",
+        "template": "evidence/TEMPLATE.md"
+      },
       "cases": [
         {
           "id": "E2E-01",
-          "spec": "TECH opens the case, SUPPORT joins, both communicate, inspect/annotate the image, use 3D only if approved, and save the diagnostic outcome."
+          "spec": "TECH opens the case, SUPPORT joins, both communicate, inspect/annotate the image, use 3D only if approved, and save the diagnostic outcome.",
+          "persona_refs": [
+            "MF-SUPPORT",
+            "MF-TECH"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "E2E-02",
-          "spec": "SUPPORT reopens the saved outcome in a fresh session; RESTRICTED cannot access the case, room, or resulting Files."
+          "spec": "SUPPORT reopens the saved outcome in a fresh session; RESTRICTED cannot access the case, room, or resulting Files.",
+          "persona_refs": [
+            "MF-RESTRICTED",
+            "MF-SUPPORT"
+          ],
+          "fixture_refs": []
         },
         {
           "id": "E2E-03",
-          "spec": "Exercise approved permission/network/save-error fallbacks on each supported host and repeat the complete scenario after installation in the separate test org."
+          "spec": "Exercise approved permission/network/save-error fallbacks on each supported host and repeat the complete scenario after installation in the separate test org.",
+          "persona_refs": [],
+          "fixture_refs": []
         },
         {
           "id": "E2E-04",
-          "spec": "Publish the curated demo and explicit supported/unsupported matrix; no universal mobile claim and no unpublished test evidence."
+          "spec": "Publish the curated demo and explicit supported/unsupported matrix; no universal mobile claim and no unpublished test evidence.",
+          "persona_refs": [],
+          "fixture_refs": []
         }
       ]
     }

@@ -42,7 +42,7 @@ Before any task:
 
 | Need | Location |
 |---|---|
-| Story ↔ case-ID index (16 stories, 54 cases) | `testing/test-plan-index.json` (human view: `testing/README.md`) |
+| Story ↔ case-ID index (16 stories, 54 cases) with each story's personas, fixtures, test data, expected results and required evidence | `testing/test-plan-index.json` (human view: `testing/README.md`) |
 | Personas, fixtures, environments, outcomes, evidence fields, DoD | `testing/contract.json` |
 | Dated Jira text (fallback only) | `docs/jira-snapshot/2026-10-03/SMF-<n>.md` |
 | Flagged contradictions / open questions | `docs/contradictions.md` |

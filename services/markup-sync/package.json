@@ -1,0 +1,33 @@
+{
+  "name": "smf-markup-sync",
+  "private": true,
+  "version": "0.1.0",
+  "description": "SMF-12 authenticated tldraw sync service (live transport only; Salesforce Files is durable storage). Node server for localhost/self-hosting and a Cloudflare Worker + Durable Object build for hosting.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/node/server.js",
+    "dev": "tsx src/node/server.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.worker.json --noEmit",
+    "worker:dry-run": "wrangler deploy --dry-run --outdir .wrangler-dry-run",
+    "mint:local": "tsx src/node/mintCli.ts"
+  },
+  "dependencies": {
+    "@tldraw/sync-core": "5.5.2",
+    "@tldraw/tlschema": "5.5.2",
+    "ws": "8.18.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20251003.0",
+    "@types/node": "22.18.8",
+    "@types/ws": "8.18.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4",
+    "wrangler": "4.42.0"
+  }
+}

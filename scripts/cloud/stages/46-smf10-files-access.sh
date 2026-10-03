@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# SMF-10/11 post-deploy access and Apex tests (the classes/permission sets deploy with force-app in stage 40).
+# SMF-10/11/12 post-deploy access and Apex tests (the classes/permission sets deploy with force-app in stage 40).
 # Assigns the story permission sets to MF-TECH, MF-SUPPORT and MF-RESTRICTED alike (denials must come
 # from sharing, not Apex class access), then runs the stories' Apex tests in smf-dev.
 # needs: 30 40
 set -uo pipefail
 ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"; cd "$ROOT"
-PERMSETS=$(ls force-app/main/default/permissionsets/SMF1[01]_Access.permissionset-meta.xml 2>/dev/null | xargs -n1 basename | sed 's/.permissionset-meta.xml//')
-TESTS=$(ls force-app/main/default/classes/SMF1[01]_*Test.cls 2>/dev/null | xargs -n1 basename | sed 's/.cls$//')
-[ -n "$PERMSETS" ] || { echo "BLOCKED: no SMF10/11 permission sets in this checkout"; exit 2; }
+PERMSETS=$(ls force-app/main/default/permissionsets/SMF1[012]_Access.permissionset-meta.xml 2>/dev/null | xargs -n1 basename | sed 's/.permissionset-meta.xml//')
+TESTS=$(ls force-app/main/default/classes/SMF1[012]_*Test.cls 2>/dev/null | xargs -n1 basename | sed 's/.cls$//')
+[ -n "$PERMSETS" ] || { echo "BLOCKED: no SMF10-12 permission sets in this checkout"; exit 2; }
 sf org display --target-org smf-dev --json >/dev/null 2>&1 || { echo "BLOCKED: smf-dev not authenticated (stage 20)"; exit 2; }
 for p in tech support restricted; do
   u=$(sf org display user --target-org "smf-dev-$p" --json 2>/dev/null | python3 -c 'import json,sys;print(json.load(sys.stdin)["result"]["username"])') \

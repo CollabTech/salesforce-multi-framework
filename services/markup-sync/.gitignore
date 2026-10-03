@@ -1,0 +1,7 @@
+node_modules/
+dist/
+data/
+.wrangler/
+.wrangler-dry-run/
+# Local wrangler secrets — never commit
+.dev.vars

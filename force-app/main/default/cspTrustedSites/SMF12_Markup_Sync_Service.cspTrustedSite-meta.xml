@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CspTrustedSite xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SMF12_Markup_Sync_Service</fullName>
+    <description>Allow access to the SMF-12 markup sync service (WebSocket connect-src). Placeholder URL; cloud stage 47 deploys the real Worker origin.</description>
+    <endpointUrl>https://smf-markup-sync.invalid</endpointUrl>
+    <isActive>true</isActive>
+    <context>All</context>
+    <isApplicableToConnectSrc>true</isApplicableToConnectSrc>
+    <isApplicableToFontSrc>false</isApplicableToFontSrc>
+    <isApplicableToFrameSrc>false</isApplicableToFrameSrc>
+    <isApplicableToImgSrc>false</isApplicableToImgSrc>
+    <isApplicableToMediaSrc>false</isApplicableToMediaSrc>
+    <isApplicableToStyleSrc>false</isApplicableToStyleSrc>
+</CspTrustedSite>

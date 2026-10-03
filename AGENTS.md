@@ -194,6 +194,8 @@ python3 scripts/bootstrap-skills.py     # once per clone: install pinned skills 
 python3 scripts/verify-skills.py        # skills discoverable, pinned, unmodified
 python3 scripts/check-test-plan.py      # 54 case IDs, each owned by exactly one story
 python3 scripts/scan-public-content.py  # no credentials / private identifiers
+python3 scripts/build-matrix.py --check # matrix rows match evidence records
+python3 scripts/gate-check.py           # SMF-15 GATE-01: no unsupported PASS/FAIL/PARTIAL claims
 python3 -m unittest discover -s scripts/tests   # portability tests for the scripts
 python3 scripts/build-matrix.py         # matrix covers every case ID; outcomes/evidence links valid
 python3 testing/fixtures/generate.py --check   # SMF-3 fixture files/hashes match the manifest

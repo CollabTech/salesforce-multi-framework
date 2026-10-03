@@ -42,6 +42,8 @@ jobs:
       - run: python scripts/verify-skills.py
       - run: python scripts/check-test-plan.py
       - run: python scripts/scan-public-content.py
+      - run: python scripts/build-matrix.py --check
+      - run: python scripts/gate-check.py
       - run: python -m unittest discover -s scripts/tests -v
       - name: Negative check - tampered official skill must fail
         shell: bash

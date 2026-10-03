@@ -10,7 +10,7 @@ pre-filled, so no scope or result is implied.
 | POC-02 | [SMF-2](https://answersllc.atlassian.net/browse/SMF-2) [02] Confirm the org can host Multi-Framework and own unlocked packages | Foundation | ENV-01, ENV-02, ENV-03 | not yet written |
 | POC-03 | [SMF-3](https://answersllc.atlassian.net/browse/SMF-3) [03] Provision the defined test users, synthetic equipment data, and capability matrix | Foundation | DATA-01, DATA-02, DATA-03, DATA-04 | not yet written |
 | POC-04 | [SMF-4](https://answersllc.atlassian.net/browse/SMF-4) [04] Prove the minimal app launches for intended users on desktop and Salesforce mobile | Foundation | HOST-01, HOST-02, HOST-03 | not yet written |
-| POC-05 | [SMF-5](https://answersllc.atlassian.net/browse/SMF-5) [05] Prove unlocked 2GP creation, clean installation, and a minimal upgrade | Foundation | PKG-01, PKG-02, PKG-03 | not yet written |
+| POC-05 | [SMF-5](https://answersllc.atlassian.net/browse/SMF-5) [05] Prove unlocked 2GP creation, clean installation, and a minimal upgrade | Foundation | PKG-01, PKG-02, PKG-03 | [SMF-5.md](SMF-5.md) |
 | POC-06 | [SMF-6](https://answersllc.atlassian.net/browse/SMF-6) [06] Validate camera and microphone capture inside each Salesforce host | Realtime | CAP-01, CAP-02, CAP-03 | not yet written |
 | POC-07 | [SMF-7](https://answersllc.atlassian.net/browse/SMF-7) [07] Prove authorized RealtimeKit two-person audio and video | Realtime | CALL-01, CALL-02, CALL-03 | not yet written |
 | POC-08 | [SMF-8](https://answersllc.atlassian.net/browse/SMF-8) [08] Validate screen sharing and graceful unsupported behavior | Realtime | SHARE-01, SHARE-02, SHARE-03 | not yet written |

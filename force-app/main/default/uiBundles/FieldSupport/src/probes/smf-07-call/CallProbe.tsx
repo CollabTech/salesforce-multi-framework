@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ComponentType } from 'react';
 import {
   Alert,
   AlertDescription,
@@ -52,12 +52,27 @@ function RemoteTile({ p, onVideo }: { p: RemoteParticipant; onVideo: (id: string
   );
 }
 
+/** Context handed to story extensions (SMF-8 screen share, SMF-9 recovery). */
+export interface CallExtensionContext {
+  session: CallSession;
+  state: SessionState;
+  role: 'TECH' | 'SUPPORT';
+  /** Replace the outgoing camera/marker video with a custom track (null = camera off). */
+  sendCustomVideo(track: MediaStreamTrack | null): Promise<void>;
+}
+
+export interface CallProbeProps {
+  tag?: string;
+  heading?: string;
+  Extension?: ComponentType<CallExtensionContext>;
+}
+
 /**
  * SMF-7 probe: authorized two-person RealtimeKit call bound to MF-CASE-001 (MF-ROOM-001).
  * Shows send/receive state per track, a changing marker carried inside the outgoing video, a
  * fixed test phrase, the 5-minute timer, and explicit denial / invalid-token outcomes.
  */
-export default function CallProbe() {
+export default function CallProbe({ tag = 'SMF-7 · CALL-01..03', heading = 'Two-person call (RealtimeKit)', Extension }: CallProbeProps = {}) {
   const session = useMemo(() => new CallSession({ requestToken: requestCallToken, createClient: createRealtimeKitClient }), []);
   const [s, setS] = useState<SessionState>(session.state);
   const [role, setRole] = useState<'TECH' | 'SUPPORT'>('TECH');
@@ -111,6 +126,15 @@ export default function CallProbe() {
     micMeter.current.close();
     fiveMinLogged.current = false;
   }, [session, stopMarker]);
+
+  const sendCustomVideo = useCallback(
+    async (track: MediaStreamTrack | null): Promise<void> => {
+      const r = stopMarker();
+      if (r.length) session.log(`marker source stopped: ${r.join(', ')}`);
+      await session.setCamera(track !== null, track ?? undefined);
+    },
+    [session, stopMarker],
+  );
 
   const setCamera = async (on: boolean): Promise<void> => {
     if (!on) {
@@ -203,8 +227,8 @@ export default function CallProbe() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6" data-testid="smf7-probe">
-      <p className="text-xs font-semibold uppercase tracking-widest text-amber-700">SMF-7 · CALL-01..03</p>
-      <h1 className="mt-1 text-2xl font-bold text-slate-900">Two-person call (RealtimeKit)</h1>
+      <p className="text-xs font-semibold uppercase tracking-widest text-amber-700">{tag}</p>
+      <h1 className="mt-1 text-2xl font-bold text-slate-900">{heading}</h1>
       <p className="mt-2 text-sm text-slate-600">
         MF-ROOM-001 is the call room of MF-CASE-001. The org checks your access to the case before issuing a participant authorization. Nothing is recorded.
       </p>
@@ -290,6 +314,8 @@ export default function CallProbe() {
           )}
         </CardContent>
       </Card>
+
+      {Extension && <Extension session={session} state={s} role={role} sendCustomVideo={sendCustomVideo} />}
 
       <Card className="mt-4">
         <CardHeader>

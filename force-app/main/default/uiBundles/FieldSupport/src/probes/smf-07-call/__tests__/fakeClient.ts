@@ -16,6 +16,7 @@ export class FakeClient implements CallClient {
   remoteList: RemoteParticipant[] = [];
   conn: ConnectionState = { socket: 'connected', reconnectAttempt: 0, send: 'connected', recv: 'connected' };
   calls: string[] = [];
+  setScreenShare?: (on: boolean) => Promise<void>;
   constructor(public token: string) {}
   selfId = (): string => 'self-1';
   async join(): Promise<void> {

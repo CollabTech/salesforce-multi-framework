@@ -12,6 +12,9 @@ function toRemote(p: SdkParticipant): RemoteParticipant {
     videoEnabled: p.videoEnabled,
     audioTrack: p.audioTrack ?? undefined,
     videoTrack: p.videoTrack ?? undefined,
+    screenShareEnabled: p.screenShareEnabled,
+    screenVideoTrack: p.screenShareTracks?.video ?? undefined,
+    screenAudioTrack: p.screenShareTracks?.audio ?? undefined,
   };
 }
 
@@ -56,11 +59,12 @@ export async function createRealtimeKitClient(authToken: string): Promise<CallCl
     emit({ type: 'connection', state: { ...conn } });
   });
   const joined = meeting.participants.joined;
-  for (const ev of ['participantJoined', 'participantLeft', 'audioUpdate', 'videoUpdate', 'participantsCleared'] as const) {
+  for (const ev of ['participantJoined', 'participantLeft', 'audioUpdate', 'videoUpdate', 'screenShareUpdate', 'participantsCleared'] as const) {
     joined.on(ev as 'participantJoined', () => emit({ type: 'remotes' }));
   }
   meeting.self.on('audioUpdate', () => emit({ type: 'local' }));
   meeting.self.on('videoUpdate', () => emit({ type: 'local' }));
+  meeting.self.on('screenShareUpdate', p => emit({ type: 'screenShare', enabled: p.screenShareEnabled }));
   meeting.self.on('roomJoined', p => emit({ type: 'roomJoined', reconnected: p.reconnected }));
   meeting.self.on('roomLeft', p => emit({ type: 'roomLeft', state: String(p.state) }));
   meeting.self.on('autoplayError', () => emit({ type: 'autoplayBlocked' }));
@@ -86,12 +90,23 @@ export async function createRealtimeKitClient(authToken: string): Promise<CallCl
       if (on) await meeting.self.enableVideo(track);
       else await meeting.self.disableVideo();
     },
+    async setScreenShare(on) {
+      try {
+        if (on) await meeting.self.enableScreenShare();
+        else await meeting.self.disableScreenShare();
+      } catch (e) {
+        throw e instanceof Error ? e : new Error(String(e));
+      }
+    },
     resumeAudio: () => meeting.self.playAudio(),
     local: () => ({
       audioEnabled: meeting.self.audioEnabled,
       videoEnabled: meeting.self.videoEnabled,
       audioTrack: meeting.self.audioTrack ?? undefined,
       videoTrack: meeting.self.videoTrack ?? undefined,
+      screenShareEnabled: meeting.self.screenShareEnabled,
+      screenVideoTrack: meeting.self.screenShareTracks?.video ?? undefined,
+      screenAudioTrack: meeting.self.screenShareTracks?.audio ?? undefined,
     }),
     remotes: () => Array.from(joined.values()).map(toRemote),
     connection: readConn,
@@ -102,6 +117,8 @@ export async function createRealtimeKitClient(authToken: string): Promise<CallCl
     releaseLocalMedia() {
       meeting.self.audioTrack?.stop();
       meeting.self.videoTrack?.stop();
+      meeting.self.screenShareTracks?.video?.stop();
+      meeting.self.screenShareTracks?.audio?.stop();
       meeting.self.cleanUpTracks();
     },
   };

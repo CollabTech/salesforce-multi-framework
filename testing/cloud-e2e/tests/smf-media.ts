@@ -1,4 +1,4 @@
-import type { BrowserContext, Frame, Page } from '@playwright/test';
+import { expect, type BrowserContext, type Frame, type Page } from '@playwright/test';
 
 /**
  * Shared helpers for the SMF-6..9 media specs (cloud desktop rows only).
@@ -21,11 +21,11 @@ export async function frameWithHeading(page: Page, name: string | RegExp, timeou
 }
 
 /** From the launch check, open a probe through in-app navigation (no deep link assumed). */
-export async function openProbe(page: Page, story: string, heading: string | RegExp): Promise<Page | Frame> {
+export async function openProbe(page: Page, story: string, heading: string | RegExp, link?: RegExp): Promise<Page | Frame> {
   const home = await frameWithHeading(page, 'Launch check');
   await home.getByRole('link', { name: 'Capability probes' }).first().click();
   const list = await frameWithHeading(page, 'Capability probes');
-  await list.getByRole('link', { name: new RegExp(`^${story} ·`) }).first().click();
+  await list.getByRole('link', { name: link ?? new RegExp(`^${story} ·`) }).first().click();
   return frameWithHeading(page, heading);
 }
 
@@ -52,6 +52,19 @@ export async function observedTrackStates(f: Page | Frame): Promise<string[]> {
   return f.evaluate(() =>
     ((window as unknown as { __smfTracks?: MediaStreamTrack[] }).__smfTracks ?? []).map(t => `${t.kind}:${t.readyState}`),
   );
+}
+
+/** SMF-7 probe (and its SMF-8/9 extensions): find MF-CASE-001 as the persona and join MF-ROOM-001 with mic + camera on. */
+export async function joinCaseRoom(app: Page | Frame, role: 'TECH' | 'SUPPORT', media = true): Promise<void> {
+  await app.getByRole('button', { name: role, exact: true }).click();
+  await app.getByTestId('find-case').click();
+  await expect(app.getByTestId('case-lookup')).toHaveText('MF-CASE-001 visible to you (id hidden)', { timeout: 30_000 });
+  await app.getByTestId('join').click();
+  await expect(app.getByTestId('phase')).toHaveText('joined', { timeout: 60_000 });
+  if (media) {
+    await app.getByTestId('toggle-mic').click();
+    await app.getByTestId('toggle-camera').click();
+  }
 }
 
 /** Keep only the diagnostics lines safe to publish (no user agent build IDs beyond versions, no URLs). */

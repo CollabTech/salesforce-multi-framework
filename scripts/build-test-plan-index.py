@@ -34,7 +34,8 @@ def field(body: str, label: str) -> str:
 
 def rel_posix(p, root=ROOT) -> str:
     """Repository-relative path with "/" separators on every OS (index and Markdown links)."""
-    return PurePath(p).relative_to(root).as_posix()
+    p = p if isinstance(p, PurePath) else Path(p)
+    return p.relative_to(root).as_posix()
 
 
 def latest_snapshot() -> Path:

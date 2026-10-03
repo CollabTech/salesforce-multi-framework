@@ -25,7 +25,8 @@ action that closes it. Story text in Jira stays authoritative.
 - **Affects:** GOV-01, GOV-03 (public provenance)
 - **Gap:** `forcedotcom/afv-library` at `3c15867b` ships `LICENSE.txt` = Apache-2.0, but its
   `package.json` (and the npm package `@salesforce/afv-skills`) declares CC-BY-NC-4.0.
-  This public repo redistributes 28 skill folders.
+  Until revision 2 of ADR-0001 this public repo redistributed 28 skill folders (still present
+  in the SMF-1 branch history and PR refs).
 - **Meanwhile:** installed from the GitHub repository (Apache-2.0 `LICENSE.txt`), recorded both
   values in `docs/provenance/official-skills.md`.
 - **Resolved (2026-10-03, SMF-1 review):** the owner chose pinned, project-local

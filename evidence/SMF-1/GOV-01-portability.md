@@ -17,4 +17,18 @@
 | Outcome | PASS |
 | Evidence link | evidence/SMF-1/logs/gov-portability-2026-10-03.txt; scripts/tests/gov-portability-run.sh; scripts/tests/test_portability.py |
 | Tester | Implementing agent. Independent review: separate reviewer agent (see PR). Brandon: not performed |
-| Limitation / follow-up | Windows/macOS: covered by `.github/workflows/repo-checks.yml` (GitHub-hosted runners: Linux, macOS, Windows symlink, Windows forced junction); the CI result for this commit is appended below once the run completes. The local unit test for the junction path is mocked. Earlier Linux results remain in GOV-01.md. Codex not exercised. |
+| Limitation / follow-up | Windows/macOS: covered by `.github/workflows/repo-checks.yml` (GitHub-hosted runners: Linux, macOS, Windows symlink, Windows forced junction); CI run 37157869381 on commit `2ae656d` passed on all four jobs (see below). The local unit test for the junction path is mocked; the CI junction job exercises the real junction path. Earlier Linux results remain in GOV-01.md. Codex not exercised. |
+
+## CI result (GitHub-hosted runners, 2026-10-03)
+
+Workflow `repo-checks`, run 37157869381, commit `2ae656d` (= this record's design plus the two
+Windows test fixes found by the first CI run): **all jobs passed**: ubuntu-latest, macos-latest,
+windows-latest (default checkout, `core.autocrlf=true`, real symlinks) and windows-latest with
+`SMF_FORCE_JUNCTION=1` (real directory junctions). Each job: bootstrap of the 28 pinned skills,
+`verify-skills`, `check-test-plan`, `scan-public-content`, unit tests, tamper negative check,
+text-placeholder negative check with repair.
+
+Findings from the first Windows run (commit `da7e41e`) were test defects only: test-written
+symlink targets used `/` (unresolvable on Windows) and one test assumed a symlink when the job
+forced junctions. Bootstrap and verification passed on Windows in that run too.
+https://github.com/CollabTech/salesforce-multi-framework/actions/runs/37157869381

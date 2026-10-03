@@ -33,9 +33,9 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| GOV-01 | governance | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **PASS** | [evidence/SMF-1/GOV-01.md](../evidence/SMF-1/GOV-01.md) | Implementing agent (Claude Code cloud session). Review: Brandon (pending) | 2026-10-03 |
-| GOV-02 | governance | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **PASS** | [evidence/SMF-1/GOV-02.md](../evidence/SMF-1/GOV-02.md) | Implementing agent ran and checked it. Review: Brandon (pending) | 2026-10-03 |
-| GOV-03 | governance | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **PASS** | [evidence/SMF-1/GOV-03.md](../evidence/SMF-1/GOV-03.md) | Implementing agent. Review: Brandon (pending — the human diff review is part of this case) | 2026-10-03 |
+| GOV-01 | governance | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **PASS** | [evidence/SMF-1/GOV-01-portability.md](../evidence/SMF-1/GOV-01-portability.md) [evidence/SMF-1/GOV-01.md](../evidence/SMF-1/GOV-01.md) | Implementing agent. Independent review: separate reviewer agent (see PR). Brandon: not performed | 2026-10-03 |
+| GOV-02 | governance | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **PASS** | [evidence/SMF-1/GOV-02-run3.md](../evidence/SMF-1/GOV-02-run3.md) [evidence/SMF-1/GOV-02.md](../evidence/SMF-1/GOV-02.md) | Implementing agent | 2026-10-03 |
+| GOV-03 | governance | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **PASS** | [evidence/SMF-1/GOV-03-portability.md](../evidence/SMF-1/GOV-03-portability.md) [evidence/SMF-1/GOV-03.md](../evidence/SMF-1/GOV-03.md) | Implementing agent; independent review by a separate reviewer agent (PR comment). Brandon: not performed | 2026-10-03 |
 
 ## SMF-2 [02] Confirm the org can host Multi-Framework and own unlocked packages
 

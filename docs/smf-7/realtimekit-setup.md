@@ -91,3 +91,7 @@ line); an invalid/expired token fails once with `TOKEN_REJECTED` and is never re
 automatically. SDK finding from localhost: a malformed JWT is rejected inside the SDK before any
 network request; a validly-shaped but tampered/revoked token can only be rejected by the service
 (cloud stage 53 checks this).
+
+## Where the metadata lives
+All SMF-7 server metadata is in `probes/main/default/` (not packaged; ADR-0005). Stage 45 deploys
+it to the target org; stage 40 deploys only the app shell in `force-app/`.

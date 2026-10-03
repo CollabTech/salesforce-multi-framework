@@ -3,6 +3,10 @@
     {
       "path": "force-app",
       "default": true
+    },
+    {
+      "path": "probes",
+      "default": false
     }
   ],
   "name": "salesforce-multi-framework",

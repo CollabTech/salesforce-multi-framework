@@ -84,7 +84,8 @@ class ClaudeEntries(unittest.TestCase):
 
     def test_symlink_ok_and_repair(self):
         (self.claude / "smf-a").write_text("../../.agents/skills/smf-a", encoding="utf-8")
-        self.assertEqual(S.make_dir_link(self.claude / "smf-a", self.agents / "smf-a"), "symlink")
+        want = "junction" if os.environ.get("SMF_FORCE_JUNCTION") == "1" and os.name == "nt" else "symlink"
+        self.assertEqual(S.make_dir_link(self.claude / "smf-a", self.agents / "smf-a"), want)
         self.assertEqual(S.verify_claude_entry("smf-a"), [])
 
     def test_copy_fallback_when_symlinks_unavailable(self):

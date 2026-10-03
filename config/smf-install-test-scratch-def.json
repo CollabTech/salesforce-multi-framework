@@ -1,0 +1,10 @@
+{
+  "orgName": "SMF PoC install-test (synthetic data only)",
+  "edition": "Enterprise",
+  "language": "en_US",
+  "features": ["EnableSetPasswordInApi"],
+  "settings": {
+    "lightningExperienceSettings": { "enableS1DesktopEnabled": true },
+    "mobileSettings": { "enableS1EncryptedStoragePref2": false }
+  }
+}

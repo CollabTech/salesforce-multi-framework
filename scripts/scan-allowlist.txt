@@ -1,0 +1,2 @@
+package-lock.json:^i@izs\.me$  # public npm package author metadata in the generated lockfile (template dependency), not private data
+scripts/org-setup.mjs:^001X+$  # placeholder record ID in the official template script's usage text

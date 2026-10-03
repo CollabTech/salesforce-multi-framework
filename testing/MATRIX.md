@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 318 |
-| PASS | 3 |
+| NOT TESTED | 305 |
+| PASS | 4 |
 | FAIL | 0 |
 | PARTIAL | 0 |
-| BLOCKED | 7 |
+| BLOCKED | 19 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -65,26 +65,26 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| HOST-01 | app hosting | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| HOST-01 | app hosting | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| HOST-01 | app hosting | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| HOST-01 | app hosting | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| HOST-01 | app hosting | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-4/HOST-01.md](../evidence/SMF-4/HOST-01.md) | Implementing agent (build/localhost only); host rows: not performed | 2026-10-03 |
+| HOST-01 | app hosting | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-4/HOST-01.md](../evidence/SMF-4/HOST-01.md) | Implementing agent (build/localhost only); host rows: not performed | 2026-10-03 |
+| HOST-01 | app hosting | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-4/HOST-01.md](../evidence/SMF-4/HOST-01.md) | Implementing agent (build/localhost only); host rows: not performed | 2026-10-03 |
+| HOST-01 | app hosting | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-4/HOST-01.md](../evidence/SMF-4/HOST-01.md) | Implementing agent (build/localhost only); host rows: not performed | 2026-10-03 |
 | HOST-01 | app hosting | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | HOST-01 | app hosting | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | HOST-01 | app hosting | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| HOST-01 | app hosting | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| HOST-02 | app hosting | ENV-DESKTOP-CHROME | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
-| HOST-02 | app hosting | ENV-DESKTOP-EDGE | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
-| HOST-02 | app hosting | ENV-SFMOBILE-IOS | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
-| HOST-02 | app hosting | ENV-SFMOBILE-ANDROID | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
+| HOST-01 | app hosting | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-4/HOST-01-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-4/HOST-01-ENV-EMULATION-LOCALHOST.md) | Implementing agent | 2026-10-03 |
+| HOST-02 | app hosting | ENV-DESKTOP-CHROME | MF-RESTRICTED | agent | **BLOCKED** | [evidence/SMF-4/HOST-02.md](../evidence/SMF-4/HOST-02.md) | Not performed | 2026-10-03 |
+| HOST-02 | app hosting | ENV-DESKTOP-EDGE | MF-RESTRICTED | agent | **BLOCKED** | [evidence/SMF-4/HOST-02.md](../evidence/SMF-4/HOST-02.md) | Not performed | 2026-10-03 |
+| HOST-02 | app hosting | ENV-SFMOBILE-IOS | MF-RESTRICTED | human | **BLOCKED** | [evidence/SMF-4/HOST-02.md](../evidence/SMF-4/HOST-02.md) | Not performed | 2026-10-03 |
+| HOST-02 | app hosting | ENV-SFMOBILE-ANDROID | MF-RESTRICTED | human | **BLOCKED** | [evidence/SMF-4/HOST-02.md](../evidence/SMF-4/HOST-02.md) | Not performed | 2026-10-03 |
 | HOST-02 | app hosting | ENV-MOBILE-SAFARI | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
 | HOST-02 | app hosting | ENV-MOBILE-CHROME | MF-RESTRICTED | human | **NOT TESTED** | — | — | — |
 | HOST-02 | app hosting | ENV-CLOUD-CHROMIUM | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
 | HOST-02 | app hosting | ENV-EMULATION-LOCALHOST | MF-RESTRICTED | agent | **NOT TESTED** | — | — | — |
-| HOST-03 | app hosting | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| HOST-03 | app hosting | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| HOST-03 | app hosting | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| HOST-03 | app hosting | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| HOST-03 | app hosting | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-4/HOST-03.md](../evidence/SMF-4/HOST-03.md) | Not performed | 2026-10-03 |
+| HOST-03 | app hosting | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-4/HOST-03.md](../evidence/SMF-4/HOST-03.md) | Not performed | 2026-10-03 |
+| HOST-03 | app hosting | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-4/HOST-03.md](../evidence/SMF-4/HOST-03.md) | Not performed | 2026-10-03 |
+| HOST-03 | app hosting | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-4/HOST-03.md](../evidence/SMF-4/HOST-03.md) | Not performed | 2026-10-03 |
 | HOST-03 | app hosting | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | HOST-03 | app hosting | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | HOST-03 | app hosting | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |

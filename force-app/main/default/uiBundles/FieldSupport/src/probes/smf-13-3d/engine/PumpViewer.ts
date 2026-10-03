@@ -114,6 +114,8 @@ export class PumpViewer {
   private frameHook: ((now: number) => void) | null = null;
   private firstFrameResolvers: ((now: number) => void)[] = [];
   private contextLost = false;
+  private syncEachFrame = false;
+  private readonly pixel = new Uint8Array(4);
   private disposed = false;
 
   constructor(container: HTMLElement, options: ViewerOptions = {}) {
@@ -172,7 +174,7 @@ export class PumpViewer {
     this.resizeObserver?.observe(container);
     this.resize();
     this.applyPose(HOME_POSE);
-    this.renderer.setAnimationLoop(now => this.tick(now));
+    this.renderer.setAnimationLoop(() => this.tick());
   }
 
   private listen(target: EventTarget, type: string, fn: (e: Event) => void): void {
@@ -180,16 +182,31 @@ export class PumpViewer {
     this.cleanups.push(() => target.removeEventListener(type, fn));
   }
 
-  private tick(now: number): void {
+  /**
+   * One frame. Timing uses performance.now(), not the rAF timestamp: with a software or busy GPU
+   * the browser can keep issuing rAF callbacks with vsync-spaced timestamps while frames queue up
+   * (observed on SwiftShader). When `syncEachFrame` is set (protocol runs and load marks) a
+   * 1-pixel readPixels forces the frame to finish on the GPU, so intervals are completed frames —
+   * a conservative measure that removes GPU pipelining.
+   */
+  private tick(): void {
     if (this.disposed || this.contextLost) return;
-    this.frameHook?.(now);
+    const start = performance.now();
+    this.frameHook?.(start);
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
+    if (this.syncEachFrame || this.firstFrameResolvers.length) this.syncGpu();
     if (this.firstFrameResolvers.length) {
       const resolvers = this.firstFrameResolvers;
       this.firstFrameResolvers = [];
-      resolvers.forEach(r => r(performance.now()));
+      const done = performance.now();
+      resolvers.forEach(r => r(done));
     }
+  }
+
+  private syncGpu(): void {
+    const gl = this.renderer.getContext();
+    gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, this.pixel);
   }
 
   private nextFrame(): Promise<number> {
@@ -364,6 +381,7 @@ export class PumpViewer {
       };
       this.canvas.addEventListener('webglcontextlost', lostListener);
       this.controls.enabled = false;
+      this.syncEachFrame = true;
       const parts = this.partNodes.map(p => p.info.name);
       let lastSelect: number | null = null;
       this.frameHook = now => {
@@ -387,6 +405,7 @@ export class PumpViewer {
         }
         if (elapsed >= durationMs || this.disposed) {
           this.frameHook = null;
+          this.syncEachFrame = false;
           this.controls.enabled = true;
           this.canvas.removeEventListener('webglcontextlost', lostListener);
           this.reset();

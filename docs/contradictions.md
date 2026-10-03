@@ -106,3 +106,74 @@ action that closes it. Story text in Jira stays authoritative.
   SUPPORT gets no asset access (the contract gives SUPPORT the case, not the equipment).
 - **To close:** reviewer confirms; if the org rejects the Asset OWD deploy, the fallback is a
   recorded decision on a separate parent for MF-ASSET-002.
+
+## C-SMF5-1 — "No namespace ⇒ org-dependent" (skill) vs org-dependent packages in a scratch subscriber
+- **Affects:** PKG-01..03
+- **Gap:** `experience-ui-bundle-2gp-deploy` maps "no registered namespace" to the
+  org-dependent unlocked flavour. Official-page excerpts (developer.salesforce.com, via web
+  search; direct fetch is blocked here) say org-dependent packages "can only be installed in
+  orgs that contain the metadata that the package depends on" and recommend sandboxes for
+  testing them, while SMF-2 makes `smf-install-test` a scratch org. The package depends on
+  no subscriber metadata, so a scratch install is expected to work, but that is unverified.
+- **Meanwhile:** followed the skill (`--org-dependent --no-namespace`, the latter because
+  `sf package create --help` asks for it when no namespace is defined).
+- **To close:** first real install. If a scratch org refuses it, the smallest change is a
+  recorded owner decision to recreate the package as plain no-namespace unlocked
+  (`--no-namespace` without `--org-dependent`) — no file in this repo changes except the
+  runbook command.
+
+## C-SMF5-2 — Can a beta (unpromoted) unlocked version be upgraded?
+- **Affects:** PKG-02
+- **Gap:** the skill says "beta can't upgrade beta" (remedy: promote v1 or uninstall it).
+  The official excerpts reachable here state this for second-generation *managed*
+  packages; for unlocked packages it could not be confirmed.
+- **Meanwhile:** runbook step 11 attempts the upgrade on the validated v1, records a
+  refusal as a run, and only then promotes v1 (irreversible) after Brandon approves.
+  Uninstall + fresh install is excluded because it is not an upgrade.
+- **To close:** the first PKG-02 run.
+
+## C-SMF5-3 — Skill step 1d deploys source to the Dev Hub; AGENTS.md says the Dev Hub is not a test org
+- **Affects:** PKG-01
+- **Gap:** not a true conflict: the skill deploys metadata to the Dev Hub before
+  `package create`; the project rule forbids using the Dev Hub for application tests.
+- **Meanwhile:** the runbook keeps step 1d (vendor skill wins for mechanics) but does no
+  permission-set assignment (skill 1e), persona or test run in the Dev Hub.
+- **To close:** nothing, unless the owner prefers to skip 1d (the build org is separate).
+
+## C-SMF5-4 — Where SMF-3 fixture metadata lives (packaging boundary)
+- **Affects:** PKG-01..03; DATA-01..03 (SMF-3 owns the files)
+- **Gap:** SMF-3 is built in parallel and may place `MF_Case_Worker` (and other fixture
+  metadata) under `force-app/`, which is the packaged directory.
+- **Meanwhile:** SMF-5 added a non-packaged package directory `unpackaged/` and
+  `scripts/smf5/check_package.py`, which fails if anything other than the UI bundle, its
+  CustomApplication and `FieldSupport_Access` is under `force-app/`.
+- **To close:** when merging SMF-3, move its fixture metadata to `unpackaged/main/default/`
+  and deploy it with `--source-dir unpackaged` (SMF-3 tooling).
+
+## C-SMF5-5 — Package build details the skill does not settle
+- **Affects:** PKG-01, PKG-02
+- **Gap:** (a) the official scaffold's CustomApplication references `c__FieldSupport`,
+  while the skill's asset uses the bare bundle name inside a package; with no namespace both
+  should resolve. (b) The skill's examples use `sourceApiVersion` 68.0; the template and
+  SMF-2 R10 use 67.0. (c) No `definitionFile` is set for the version build org.
+- **Meanwhile:** unchanged (SMF-4 owns the app file; 67.0 kept). `check_package.py`
+  accepts either uiBundle reference.
+- **To close:** if `sf package version create` rejects any of these, record the sanitized
+  error as the PKG-01 run, then apply the smallest fix (bare `FieldSupport` reference via
+  SMF-4; API 68.0; or a `definitionFile`) and rerun.
+
+## C-SMF5-6 — Running SMF-3 provisioning against the subscriber org (interface SMF-5 relies on)
+- **Affects:** PKG-01..03 (subscriber personas and the independently seeded MF-CASE-001)
+- **Gap:** SMF-5 must seed the SMF-3 baseline in `smf-install-test` with SMF-3's own logic,
+  but SMF-3's cloud stages (30–39) are being written in parallel and their interface is not
+  yet fixed.
+- **Meanwhile:** stage 62 runs every SMF-3 stage with `SMF_TARGET_ORG=smf-install-test` and
+  expects: persona users in that org with CLI aliases `smf-install-test-{tech,support,restricted}`
+  (`<org alias>-<persona>`, matching `smf-dev-<persona>`), FederationIdentifier `MF-*`,
+  fixtures seeded, and record IDs under the `install-test` key of `private/fixtures.json`.
+  If the aliases do not appear, stage 62 exits BLOCKED with that reason.
+- **Resolved (2026-10-03, integration):** SMF-3 stages 30–34 honour `SMF_TARGET_ORG`, persona
+  aliases are `<target>-tech|support|restricted`, and fixture IDs are stored under the org
+  alias key (`smf-install-test`) of `private/fixtures.json`; SMF-5 reads that shape.
+- **To close:** SMF-3 honours `SMF_TARGET_ORG` (default `smf-dev`) with that alias rule, or
+  tells SMF-5 its interface and stage 62 is adapted.

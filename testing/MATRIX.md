@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 305 |
+| NOT TESTED | 302 |
 | PASS | 4 |
 | FAIL | 0 |
 | PARTIAL | 0 |
-| BLOCKED | 19 |
+| BLOCKED | 22 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -94,9 +94,9 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| PKG-01 | packaging | n/a | MF-ADMIN + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| PKG-02 | packaging | n/a | MF-ADMIN + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| PKG-03 | packaging | n/a | MF-ADMIN + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
+| PKG-01 | packaging | n/a | MF-ADMIN + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-5/PKG-01.md](../evidence/SMF-5/PKG-01.md) | Implementing agent (Claude Code cloud session) — offline checks only | 2026-10-03 |
+| PKG-02 | packaging | n/a | MF-ADMIN + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-5/PKG-02.md](../evidence/SMF-5/PKG-02.md) | Implementing agent — offline checks only | 2026-10-03 |
+| PKG-03 | packaging | n/a | MF-ADMIN + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-5/PKG-03.md](../evidence/SMF-5/PKG-03.md) | Implementing agent — offline checks only | 2026-10-03 |
 
 ## SMF-6 [06] Validate camera and microphone capture inside each Salesforce host
 

@@ -27,3 +27,21 @@ __pycache__/
 /.agents/skills/*
 !/.agents/skills/smf-*/
 /.claude/skills/
+
+# Agent worktrees
+/.claude/worktrees/
+
+# --- Salesforce project (merged from the reactinternalapp scaffold, SMF-4) ---
+.localdevserver/
+deploy-options.json
+**/lwc/jsconfig.json
+logs
+*.log
+.pmdCache
+.eslintcache
+*.tsbuildinfo
+**/.venv/
+**/venv/
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/

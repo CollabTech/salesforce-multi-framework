@@ -32,3 +32,13 @@ requires bundles under `force-app/main/default/uiBundles/<AppName>/`.
 - No Salesforce scaffold exists in this repository until SMF-4.
 - If SMF-2 finds the template or CLI unavailable for the chosen org/API version, SMF-4
   records a blocker and amends this ADR rather than hand-scaffolding.
+
+## Outcome (SMF-4, 2026-10-03)
+Generated with `node <skill>/scripts/generate-project.mjs FieldSupport <tmp> reactinternalapp`
+(Salesforce CLI 2.152.14, template `@salesforce/ui-bundle-template-base-sfdx-project` 12.4.5,
+`sourceApiVersion` 67.0) into a temporary directory and merged: governance files kept, the
+template `README.md` saved as `docs/scaffold/README-reactinternalapp.md`, its 144 KB
+`CHANGELOG.md` dropped, `.gitignore` entries merged, project renamed
+`salesforce-multi-framework`. The template's Account-search example was removed (the
+template README says to remove it once an app feature exists). `org-setup.config.json`
+assigns `FieldSupport_Access` to nobody by default (personas are assigned by SMF-3 tooling).

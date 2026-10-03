@@ -20,6 +20,10 @@ metadata:
   PoC records. Use the target org's verified schema — do not invent field names.
 - Real usernames, org IDs, record IDs, provider room IDs, and tokens live in `private/`
   (git-ignored) or the local credential store, never in Git, PRs, or Jira.
+- Some official `dx-*` skills auto-write raw command JSON (username, org ID) to
+  `force-app/main/adk-eval-output/` if it exists, or to `/tmp`. That folder is git-ignored;
+  do not create it. Point such output into `private/` and sanitize before copying anything
+  into `evidence/`.
 
 **Authorization**
 - Salesforce is the source of truth for who can see a case, its Files, and its rooms.

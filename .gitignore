@@ -11,6 +11,8 @@ private/
 *.key
 *.p12
 *.jks
+# Official dx-* skills write raw org JSON (usernames, org IDs) here when the folder exists
+**/adk-eval-output/
 
 # --- Tooling / build output ---
 node_modules/

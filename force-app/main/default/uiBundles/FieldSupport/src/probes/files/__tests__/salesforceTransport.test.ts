@@ -38,6 +38,12 @@ describe('salesforceTransport wiring (SDK mocked; proves call shapes only)', () 
     expect(fetchMock.mock.calls[0][0]).toBe(`/services/apexrest/smf10/v1/versions/${VERSION}/data`);
   });
 
+  it('reports a missing Apex endpoint as NOT CONFIGURED, not as a denial', async () => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify([{ errorCode: 'NOT_FOUND', message: 'Could not find a match for URL' }]), { status: 404 }));
+    const { NotConfiguredError } = await import('../lib/transport');
+    await expect(salesforceTransport.listCaseFiles(CASE)).rejects.toBeInstanceOf(NotConfiguredError);
+  });
+
   it('refuses an Id that could inject into the path', async () => {
     await expect(salesforceTransport.listCaseFiles('../../sobjects')).rejects.toThrow(/not a valid Salesforce Id/);
     expect(fetchMock).not.toHaveBeenCalled();

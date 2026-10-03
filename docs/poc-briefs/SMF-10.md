@@ -26,6 +26,7 @@ evidence block. Out: markup (SMF-11), sync (SMF-12), 3D assets (SMF-14), fixture
 | Idempotent retry | Client UUID per *selection*, written as `smf10:key=<uuid>` in `Description`. Before writing and after any link error, the flow reads the case's Files and looks for the key; if found it only verifies. A ContentBody uploaded by a failed attempt is reused. A new selection = new key (intended second upload). Limitation: check-then-write is not atomic across two tabs retrying the same key simultaneously. |
 | Validation | Fixed policy: PNG/JPEG only, ≤ 5 MiB (5,242,880 bytes accepted, +1 rejected); extension, MIME and magic bytes must agree (a renamed .txt is rejected). HEIC is rejected unless the host transcodes it — a FILE-04 observation to record. |
 | Access | Permission set `SMF10_Access` grants only the Apex class; assign to TECH, SUPPORT **and** RESTRICTED so denial comes from sharing, not class access. |
+| Packaging boundary | All SMF-10 server metadata (Apex, `SMF10_Access`) lives in the **non-packaged** `probes/` package directory (`probes/main/default/...`), never in `force-app` (which SMF-5 packages as exactly the app, CustomApplication and `FieldSupport_Access`). Stage 46 deploys it explicitly. Without it the probe shows "NOT CONFIGURED" (Salesforce `NOT_FOUND`/`FORBIDDEN` error list) instead of a denial. |
 
 Public interface for other tracks: `src/probes/files/lib/index.ts` (policy/validation,
 `FilesTransport` with `listCaseFiles`/`uploadBody`/`createVersion`/`fetchVersionData`,
@@ -51,7 +52,7 @@ Public interface for other tracks: `src/probes/files/lib/index.ts` (policy/valid
 ## Cloud execution (after owner setup H1/H2)
 `scripts/cloud/stages/46-smf10-files-access.sh` assigns `SMF10_Access` (and `SMF11_Access`)
 to the three personas and runs the SMF-10/11 Apex tests in `smf-dev`;
-`52-smf10-files-e2e.sh` runs `testing/cloud-e2e/tests/smf-10-files.spec.ts` as the real
+`70-smf10-files-e2e.sh` runs `testing/cloud-e2e/tests/smf-10-files.spec.ts` as the real
 personas (FILE-01 TECH→SUPPORT fresh context, FILE-02 three denials + admin
 ContentDistribution count, FILE-03 rejections, CDP-throttled cancel, offline failure, retry,
 +2 Files check) in ENV-DESKTOP-EDGE and ENV-CLOUD-CHROMIUM. Physical mobile rows (FILE-04)

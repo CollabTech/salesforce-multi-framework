@@ -20,8 +20,9 @@ concurrent saves without silent loss, and keep RESTRICTED out?
 | Version association (chosen mechanism) | Each save creates **two new Files** linked to the case by `FirstPublishLocationId` (→ ContentDocumentLink): `MF-MARKUP-001 snapshot r<n>` and `MF-MARKUP-001 export r<n>`. Descriptions: `smf11;kind=snapshot;rev=n;save=<key>;image=<CV>;base=<previous snapshot CV>` and `smf11;kind=export;rev=n;save=<key>;snapshot=<snapshot CV>`. Justification: every revision stays immutable and retrievable (MARK-03 "preserve existing versions"); works whichever persona saved last (adding a *version* to an existing ContentDocument needs owner/collaborator rights on it, which SUPPORT may not have on TECH's File); the export→snapshot→image chain is explicit and queryable. Alternative not chosen: new ContentVersions of one ContentDocument (`ContentDocumentId` + `ReasonForChange`). |
 | Conflicts | Apex locks the Case row (`FOR UPDATE`), reads the latest revision, and returns **409** with the current revision when the caller's base is stale — nothing is written. UI offers "Load latest (discard mine)" or "Save mine as a new revision on top" (explicit, prior revisions preserved). |
 | Failed save / retry | Save key (UUID) per save; uploaded bodies cached per key; Apex returns the existing revision for an already-committed key (no duplicate). |
+| Packaging boundary | `SMF11_*` Apex and `SMF11_Access` live in the non-packaged `probes/` directory (deployed by stage 46), never in `force-app`. Without them the probe reports NOT CONFIGURED. |
 | Denial (MARK-04) | Apex `with sharing` + `USER_MODE`; snapshot/export/image retrieval through SMF-10's endpoint; `SMF11_Access` grants only the class (assign to all three personas). |
-| Licensing (AC5) | tldraw SDK requires a license key in production (HTTPS + non-loopback host + production build — i.e. inside Salesforce); without it the editor stops rendering after ~5 s. Keys are domain-bound: the key must cover the host serving the UI bundle (Salesforce/scratch-org domains — confirm on first deploy). Key read at build from `VITE_TLDRAW_LICENSE_KEY`; cloud stage 45 maps the owner's `TLDRAW_LICENSE_KEY` env var to it and redeploys. The probe shows `gate: not-required | key-present | BLOCKED-no-key`. Production use is gated on an appropriate license (trial = 100 days; commercial for production). |
+| Licensing (AC5) | tldraw SDK requires a license key in production (HTTPS + non-loopback host + production build — i.e. inside Salesforce); without it the editor stops rendering after ~5 s. Keys are domain-bound: the key must cover the host serving the UI bundle (Salesforce/scratch-org domains — confirm on first deploy). Key read at build from `VITE_TLDRAW_LICENSE_KEY`; cloud stage 48 maps the owner's `TLDRAW_LICENSE_KEY` env var to it and redeploys. The probe shows `gate: not-required | key-present | BLOCKED-no-key`. Production use is gated on an appropriate license (trial = 100 days; commercial for production). |
 | Asset hosting (AC5) | Fonts/icons/translations self-hosted via `@tldraw/assets@5.5.2` `getAssetUrlsByImport` (`imports.vite`) — bundled into the UI bundle; no CDN, no CSP Trusted Site needed. Localhost e2e asserts zero non-localhost requests. |
 
 ## Test plan per case ID
@@ -33,19 +34,19 @@ concurrent saves without silent loss, and keep RESTRICTED out?
 | MARK-04 | RESTRICTED | image, snapshot, export | same | §MARK-04 | Restricted users cannot retrieve the image, snapshot or export. |
 
 ## Cloud execution (after H1/H2/H5)
-Stage `45-smf11-tldraw-license.sh` (rebuild with key, redeploy bundle; BLOCKED without
-`TLDRAW_LICENSE_KEY`), `46` (permission sets + Apex tests), `53-smf11-markup-e2e.sh` →
+Stage `48-smf11-tldraw-license.sh` (rebuild with key, redeploy bundle; BLOCKED without
+`TLDRAW_LICENSE_KEY`), `46` (permission sets + Apex tests), `71-smf11-markup-e2e.sh` →
 `testing/cloud-e2e/tests/smf-11-markup.spec.ts` (MARK-01 mouse, MARK-02, MARK-03, MARK-04 as
 real personas in Edge/Chromium). Touch on physical Salesforce mobile is human-only.
 
 ## Prerequisites and blockers
 | Case | Gap | Smallest unblocking action |
 |---|---|---|
-| MARK-01..04 | SMF-2 ENV-01..03 BLOCKED (no org credential; Salesforce egress denied); SMF-3/SMF-4/SMF-10 not verified in an org | Owner H1 + H2, then `pipeline.sh 20 30 40 45 46 52 53` |
+| MARK-01..04 | SMF-2 ENV-01..03 BLOCKED (no org credential; Salesforce egress denied); SMF-3/SMF-4/SMF-10 not verified in an org | Owner H1 + H2, then `pipeline.sh 20 30 40 46 48 70 71` |
 | MARK-01..03 host rows | No tldraw license key | Owner H5: `TLDRAW_LICENSE_KEY` covering the Salesforce host(s) |
 | MARK-01 touch, MARK-02 mobile | No physical devices | Device tester: HUMAN-ACTIONS rows (SMF-11) |
 | Apex | Cannot run here | Stage 46 runs `SMF11_*Test` in smf-dev |
-| Assumption | `ContentBodyId` settable from Apex on insert (set dynamically) — verify on first deploy; fallback: create the two ContentVersions via UI API `createRecord` after an Apex reservation | Stage 46/53 result |
+| Assumption | `ContentBodyId` settable from Apex on insert (set dynamically) — verify on first deploy; fallback: create the two ContentVersions via UI API `createRecord` after an Apex reservation | Stage 46/71 result |
 
 ## Static analysis
 Code Analyzer (Recommended) on SMF11 classes: 0 sev1–2; 27 sev3–4 (test-method naming per the

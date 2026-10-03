@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 305 |
-| PASS | 4 |
+| NOT TESTED | 275 |
+| PASS | 10 |
 | FAIL | 0 |
 | PARTIAL | 0 |
-| BLOCKED | 19 |
+| BLOCKED | 43 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -102,54 +102,54 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| CAP-01 | camera | ENV-DESKTOP-CHROME | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-01 | mic | ENV-DESKTOP-CHROME | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-01 | camera | ENV-DESKTOP-EDGE | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-01 | mic | ENV-DESKTOP-EDGE | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-01 | camera | ENV-SFMOBILE-IOS | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-01 | mic | ENV-SFMOBILE-IOS | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-01 | camera | ENV-SFMOBILE-ANDROID | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-01 | mic | ENV-SFMOBILE-ANDROID | MF-TECH | human | **NOT TESTED** | — | — | — |
+| CAP-01 | camera | ENV-DESKTOP-CHROME | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | mic | ENV-DESKTOP-CHROME | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | camera | ENV-DESKTOP-EDGE | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | mic | ENV-DESKTOP-EDGE | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | camera | ENV-SFMOBILE-IOS | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | mic | ENV-SFMOBILE-IOS | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | camera | ENV-SFMOBILE-ANDROID | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-01 | mic | ENV-SFMOBILE-ANDROID | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-01.md](../evidence/SMF-6/CAP-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | CAP-01 | camera | ENV-MOBILE-SAFARI | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-01 | mic | ENV-MOBILE-SAFARI | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-01 | camera | ENV-MOBILE-CHROME | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-01 | mic | ENV-MOBILE-CHROME | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-01 | camera | ENV-CLOUD-CHROMIUM | MF-TECH | agent | **NOT TESTED** | — | — | — |
 | CAP-01 | mic | ENV-CLOUD-CHROMIUM | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-01 | camera | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-01 | mic | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | camera | ENV-DESKTOP-CHROME | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | mic | ENV-DESKTOP-CHROME | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | camera | ENV-DESKTOP-EDGE | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | mic | ENV-DESKTOP-EDGE | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | camera | ENV-SFMOBILE-IOS | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-02 | mic | ENV-SFMOBILE-IOS | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-02 | camera | ENV-SFMOBILE-ANDROID | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-02 | mic | ENV-SFMOBILE-ANDROID | MF-TECH | human | **NOT TESTED** | — | — | — |
+| CAP-01 | camera | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **PASS** | [evidence/SMF-6/CAP-01-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-6/CAP-01-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| CAP-01 | mic | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **PASS** | [evidence/SMF-6/CAP-01-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-6/CAP-01-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| CAP-02 | camera | ENV-DESKTOP-CHROME | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | mic | ENV-DESKTOP-CHROME | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | camera | ENV-DESKTOP-EDGE | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | mic | ENV-DESKTOP-EDGE | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | camera | ENV-SFMOBILE-IOS | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | mic | ENV-SFMOBILE-IOS | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | camera | ENV-SFMOBILE-ANDROID | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-02 | mic | ENV-SFMOBILE-ANDROID | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-02.md](../evidence/SMF-6/CAP-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | CAP-02 | camera | ENV-MOBILE-SAFARI | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-02 | mic | ENV-MOBILE-SAFARI | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-02 | camera | ENV-MOBILE-CHROME | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-02 | mic | ENV-MOBILE-CHROME | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-02 | camera | ENV-CLOUD-CHROMIUM | MF-TECH | agent | **NOT TESTED** | — | — | — |
 | CAP-02 | mic | ENV-CLOUD-CHROMIUM | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | camera | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-02 | mic | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | camera | ENV-DESKTOP-CHROME | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | mic | ENV-DESKTOP-CHROME | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | camera | ENV-DESKTOP-EDGE | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | mic | ENV-DESKTOP-EDGE | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | camera | ENV-SFMOBILE-IOS | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-03 | mic | ENV-SFMOBILE-IOS | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-03 | camera | ENV-SFMOBILE-ANDROID | MF-TECH | human | **NOT TESTED** | — | — | — |
-| CAP-03 | mic | ENV-SFMOBILE-ANDROID | MF-TECH | human | **NOT TESTED** | — | — | — |
+| CAP-02 | camera | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **PASS** | [evidence/SMF-6/CAP-02-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-6/CAP-02-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| CAP-02 | mic | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **PASS** | [evidence/SMF-6/CAP-02-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-6/CAP-02-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| CAP-03 | camera | ENV-DESKTOP-CHROME | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | mic | ENV-DESKTOP-CHROME | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | camera | ENV-DESKTOP-EDGE | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | mic | ENV-DESKTOP-EDGE | MF-TECH | agent | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | camera | ENV-SFMOBILE-IOS | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | mic | ENV-SFMOBILE-IOS | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | camera | ENV-SFMOBILE-ANDROID | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| CAP-03 | mic | ENV-SFMOBILE-ANDROID | MF-TECH | human | **BLOCKED** | [evidence/SMF-6/CAP-03.md](../evidence/SMF-6/CAP-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | CAP-03 | camera | ENV-MOBILE-SAFARI | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-03 | mic | ENV-MOBILE-SAFARI | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-03 | camera | ENV-MOBILE-CHROME | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-03 | mic | ENV-MOBILE-CHROME | MF-TECH | human | **NOT TESTED** | — | — | — |
 | CAP-03 | camera | ENV-CLOUD-CHROMIUM | MF-TECH | agent | **NOT TESTED** | — | — | — |
 | CAP-03 | mic | ENV-CLOUD-CHROMIUM | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | camera | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **NOT TESTED** | — | — | — |
-| CAP-03 | mic | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **NOT TESTED** | — | — | — |
+| CAP-03 | camera | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **PASS** | [evidence/SMF-6/CAP-03-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-6/CAP-03-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| CAP-03 | mic | ENV-EMULATION-LOCALHOST | MF-TECH | agent | **PASS** | [evidence/SMF-6/CAP-03-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-6/CAP-03-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
 
 ## SMF-7 [07] Prove authorized RealtimeKit two-person audio and video
 

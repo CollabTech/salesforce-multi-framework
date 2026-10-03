@@ -11,13 +11,20 @@ IDs on the left. Suggested files — the field names are a convention, not a con
   "install-test": { "alias": "<local sf alias>", "org_id": "<private>" } }
 ```
 
-`private/personas.json` — written by SMF-3
+`private/personas.json` — written by SMF-3 (`testing/provisioning/personas.py`)
 ```json
-{ "MF-ADMIN": { "org": "dev", "username": "<private>", "user_id": "<private>" },
-  "MF-TECH": { "...": "..." }, "MF-SUPPORT": { "...": "..." }, "MF-RESTRICTED": { "...": "..." } }
+{ "MF-ADMIN": { "org": "dev", "org_alias": "smf-dev", "username": "<private>", "user_id": "<private>" },
+  "MF-TECH": { "org": "dev", "org_alias": "smf-dev", "cli_alias": "smf-dev-tech",
+               "username": "<private>", "user_id": "<private>", "profile": "...", "role": null,
+               "permission_sets": ["..."] },
+  "MF-SUPPORT": { "...": "..." }, "MF-RESTRICTED": { "...": "..." } }
 ```
+In the org, personas are found by `User.FederationIdentifier` = the logical persona ID, so no
+username is needed in public files.
 
-`private/fixtures.json` — written by SMF-3: logical fixture ID → per-org record IDs.
+`private/fixtures.json` — written by SMF-3 (`fixtures.py`): per org alias, logical fixture ID →
+record IDs. `private/smf3/` holds raw CLI output of the SMF-3 scripts (may contain usernames,
+IDs and, for `sf org create user`, the generated password) — never copy it into `evidence/`.
 
 Credentials (passwords, passkeys, tokens, auth URLs) go in the `sf` CLI's credential store
 only — not in these files. Evidence refers to `dev`, `install-test`, and persona IDs.

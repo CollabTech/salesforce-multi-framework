@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Cloud session setup for the SMF PoC (idempotent, non-interactive).
-# Runs from .claude/hooks/session-start.sh in Claude Code cloud sessions; safe to run by hand.
+# Run as the first command of each Claude Code cloud session (idempotent; ~seconds when cached).
 #   1. Salesforce CLI (npm, project-pinned major) on PATH, telemetry off
 #   2. Official skills bootstrap (pinned, verified) — scripts/bootstrap-skills.py
 #   3. Microsoft Edge stable (packages.microsoft.com) for ENV-DESKTOP-EDGE automation

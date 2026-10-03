@@ -43,7 +43,7 @@ The SMF-7/SMF-12 handoffs list any additional RealtimeKit or tldraw hosts if the
 
 ## What the agent does after H1–H2 (no further human steps)
 
-1. `scripts/cloud/session-setup.sh` (runs automatically at session start): sf CLI, skills,
+1. `bash scripts/cloud/session-setup.sh` (first command of each cloud session): sf CLI, skills,
    Microsoft Edge, bundle deps, Dev Hub login from `SF_AUTH_URL_DEVHUB`, restore of the
    dev/install-test/persona sessions from the encrypted vault in the Dev Hub (ADR-0004).
 2. `scripts/cloud/pipeline.sh all`: readiness (ENV-*), scratch orgs, SMF-3 provisioning and

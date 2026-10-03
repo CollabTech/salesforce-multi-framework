@@ -17,6 +17,7 @@ import { upload, type FileUploadProgress } from '@salesforce/ui-bundle-template-
 import { isSalesforceId } from './ids';
 import {
   CancelledError,
+  NotConfiguredError,
   NotFoundOrDeniedError,
   UploadFailedError,
   type CaseFileInfo,
@@ -40,10 +41,20 @@ function requireId(value: string, label: string): string {
   return value;
 }
 
+/** Salesforce platform errors are a JSON array of {errorCode, message}; probe errors are an object. */
+export function platformErrorCode(body: unknown): string | null {
+  if (Array.isArray(body) && body[0] && typeof body[0] === 'object' && 'errorCode' in body[0]) {
+    return String((body[0] as { errorCode: unknown }).errorCode);
+  }
+  return null;
+}
+
 async function errorFrom(res: Response): Promise<Error> {
   let message = `${res.status} ${res.statusText}`;
   try {
     const body: unknown = await res.json();
+    const code = platformErrorCode(body);
+    if (code && [403, 404].includes(res.status)) return new NotConfiguredError(code, res.status);
     if (body && typeof body === 'object' && 'message' in body && typeof body.message === 'string') {
       message = body.message;
     }

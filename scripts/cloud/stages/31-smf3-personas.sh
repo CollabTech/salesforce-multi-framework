@@ -17,8 +17,8 @@ esac
 for a in smf-dev-tech smf-dev-support smf-dev-restricted; do
   sf org display --target-org "$a" --json >/dev/null 2>&1 || { echo "BLOCKED: persona alias $a missing"; exit 2; }
 done
-if [ -n "${SF_AUTH_URL_DEVHUB:-}" ]; then
+if [ "${SMF_VAULT_APPROVED:-}" = yes ] && [ -n "${SF_AUTH_URL_DEVHUB:-}" ]; then   # ADR-0004 needs owner approval (HUMAN-SETUP H7)
   python3 scripts/cloud/vault.py save || { echo "[31] vault save failed (personas still usable this session)"; exit 1; }
 else
-  echo "[31] SF_AUTH_URL_DEVHUB not set: vault not saved; personas last only for this session"
+  echo "[31] vault not saved (ADR-0004 not approved, HUMAN-SETUP H7): personas last only for this container"
 fi

@@ -16,7 +16,7 @@ probe `src/probes/smf-07-call/` (route `/probes/call`): case lookup, join/leave,
 autoplay recovery, a changing marker composited into the outgoing video and decoded on the
 receiving side, the fixed test phrase, 5-minute timer, send/receive table, negative controls
 (invalid, tampered, previous/revoked token), copyable redacted diagnostics. Stages 45 (deploy +
-readiness) and 52 (cloud e2e). Out: screen share (SMF-8), recovery measurements (SMF-9), UI Kit.
+readiness) and 53 (cloud e2e). Out: screen share (SMF-8), recovery measurements (SMF-9), UI Kit.
 
 ## Design
 See `docs/smf-7/realtimekit-setup.md` (boundary, prerequisites, owner step, CSP hosts, limitation).

@@ -8,7 +8,7 @@ TECH reads the SMF-7 test phrase; SUPPORT confirms heard; both read the other's 
 **Preconditions:** SMF-7 CALL-01 passes in the same pair (stage 45 OK, O-SMF7-1 done).
 
 Rows: ENV-SFMOBILE-IOS and ENV-SFMOBILE-ANDROID (physical phone, Salesforce app) ↔ desktop.
-Desktop network loss and leave/rejoin are also automated in stage 54 (fake devices).
+Desktop network loss and leave/rejoin are also automated in stage 55 (fake devices).
 
 ## Before every run
 1. Both join MF-ROOM-001 (SMF-7 script steps 1–2), mic and camera on; TECH's tile counter is

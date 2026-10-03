@@ -24,9 +24,9 @@ logic without a call. Out: changing the SDK's reconnect policy; any background-c
 ## Test plan per case ID
 | Case | Personas | Rows | Executor | Expected |
 |---|---|---|---|---|
-| REC-01 | TECH (phone) + SUPPORT (desktop) | SFMOBILE-IOS/ANDROID; desktop network loss automated | humans (phone, 3× loss, 3× switch); stage 54 (desktop loss ×3) | detection, recovery time, A/V restored, duplicates recorded per run |
+| REC-01 | TECH (phone) + SUPPORT (desktop) | SFMOBILE-IOS/ANDROID; desktop network loss automated | humans (phone, 3× loss, 3× switch); stage 55 (desktop loss ×3) | detection, recovery time, A/V restored, duplicates recorded per run |
 | REC-02 | same | SFMOBILE-IOS/ANDROID | humans only | 3× background, 3× lock, incoming call where feasible |
-| REC-03 | same | phone + desktop | humans; stage 54 (desktop ×3) | leave stops local media; rejoin recovers, no duplicate |
+| REC-03 | same | phone + desktop | humans; stage 55 (desktop ×3) | leave stops local media; rejoin recovers, no duplicate |
 
 ## Prerequisites and blockers
 SMF-7 prerequisites (H1, H2, H4, O-SMF7-1, stages 20–45); physical iPhone and Android with the

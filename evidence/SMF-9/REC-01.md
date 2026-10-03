@@ -6,18 +6,18 @@
 | Story | SMF-9 |
 | Persona pair | MF-TECH on a physical phone + MF-SUPPORT on desktop; device tester performs interruptions |
 | Fixture IDs / hash / version | Active MF-ROOM-001 call; fixed synthetic A/V script (SMF-7 test phrase + counters); not provisioned |
-| Build / commit | branch claude/smf-9-recovery (probe smf-09-recovery; stage 54); not deployed |
+| Build / commit | branch claude/smf-9-recovery (probe smf-09-recovery; stage 55); not deployed |
 | Host / device / OS / app / browser | none — no Salesforce host, Cloudflare service or physical device reachable |
 | Environment row | ENV-SFMOBILE-IOS, ENV-SFMOBILE-ANDROID (physical phone as MF-TECH) ↔ desktop MF-SUPPORT; desktop rows exploratory/automated |
 | Timestamp | 2026-10-03T22:50:00Z |
 | Preconditions | Depends on SMF-7, whose rows are all BLOCKED: SMF-2 ENV-01..03 BLOCKED (no org credential; Salesforce egress denied), no Cloudflare account/token (HUMAN-SETUP H4), api.cloudflare.com blocked; no physical iPhone/Android, no SIM/cellular, no third phone for the incoming call. |
-| Steps | Not executed. Human script: docs/test-scripts/SMF-9-RECOVERY.md (REC-01). Automated desktop part: testing/cloud-e2e/tests/smf-9-recovery.spec.ts (stage 54). |
+| Steps | Not executed. Human script: docs/test-scripts/SMF-9-RECOVERY.md (REC-01). Automated desktop part: testing/cloud-e2e/tests/smf-9-recovery.spec.ts (stage 55). |
 | Expected result | Repeat network loss/recovery and network switching three times; record disconnect detection, recovery time, restored A/V, and duplicate participants. |
 | Actual result | Not executed in any required environment. |
 | Outcome | BLOCKED |
 | Evidence link | docs/test-scripts/SMF-9-RECOVERY.md; docs/poc-briefs/SMF-9.md |
 | Tester | Implementing agent (Claude Code cloud session) — recorded the blocker only |
-| Limitation / follow-up | Smallest unblocking actions: everything in evidence/SMF-7/CALL-01.md (H1, H2, H4, stages 20–45, O-SMF7-1); agent: stage 54 (desktop rows); humans: docs/test-scripts/SMF-9-RECOVERY.md REC-01 (airplane mode 20 s ×3; Wi-Fi→cellular→Wi-Fi ×3) on a physical iPhone and a physical Android phone in the Salesforce app, with the A/V script after each run |
+| Limitation / follow-up | Smallest unblocking actions: everything in evidence/SMF-7/CALL-01.md (H1, H2, H4, stages 20–45, O-SMF7-1); agent: stage 55 (desktop rows); humans: docs/test-scripts/SMF-9-RECOVERY.md REC-01 (airplane mode 20 s ×3; Wi-Fi→cellular→Wi-Fi ×3) on a physical iPhone and a physical Android phone in the Salesforce app, with the A/V script after each run |
 
 Per-scenario rows (3 runs each, AC4):
 
@@ -27,6 +27,6 @@ Per-scenario rows (3 runs each, AC4):
 | Network loss/recovery | ENV-SFMOBILE-ANDROID | 0/3 | BLOCKED | human |
 | Network switch Wi-Fi↔cellular | ENV-SFMOBILE-IOS | 0/3 | BLOCKED | human (SIM needed) |
 | Network switch Wi-Fi↔cellular | ENV-SFMOBILE-ANDROID | 0/3 | BLOCKED | human (SIM needed) |
-| Network loss/recovery (setOffline) | ENV-DESKTOP-EDGE / ENV-CLOUD-CHROMIUM | 0/3 | BLOCKED | agent stage 54 (fake devices) |
+| Network loss/recovery (setOffline) | ENV-DESKTOP-EDGE / ENV-CLOUD-CHROMIUM | 0/3 | BLOCKED | agent stage 55 (fake devices) |
 
 No interruption was performed; every row stays BLOCKED until executed. No claim of uninterrupted background capture is made.

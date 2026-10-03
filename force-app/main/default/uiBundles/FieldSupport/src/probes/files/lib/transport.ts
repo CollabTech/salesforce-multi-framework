@@ -59,6 +59,20 @@ export class NotFoundOrDeniedError extends Error {
   }
 }
 
+/**
+ * The probe's server-side metadata (probes/ package directory: Apex endpoint, permission
+ * set) is not deployed in this org, or the user lacks the probe permission set. Salesforce
+ * answers with its own error list instead of the probe's JSON envelope.
+ */
+export class NotConfiguredError extends Error {
+  readonly status: number;
+  constructor(detail: string, status: number) {
+    super(`NOT CONFIGURED: probe server metadata missing in this org or probe permission set not assigned (${status} ${detail}).`);
+    this.name = 'NotConfiguredError';
+    this.status = status;
+  }
+}
+
 export class CancelledError extends Error {
   constructor(message = 'Upload cancelled.') {
     super(message);

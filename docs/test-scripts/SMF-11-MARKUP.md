@@ -1,7 +1,7 @@
 # SMF-11 MARK-01..04 — human-run script (desktop and physical Salesforce mobile)
 
 **Who:** Brandon or a designated device tester. Desktop Edge/Chromium rows are automated by
-`testing/cloud-e2e/tests/smf-11-markup.spec.ts` (stage 53); run this script for physical
+`testing/cloud-e2e/tests/smf-11-markup.spec.ts` (stage 71); run this script for physical
 Salesforce mobile (touch) and for Chrome until branded Chrome is available in the cloud.
 **Personas:** MF-TECH, MF-SUPPORT, MF-RESTRICTED (`private/personas.json`). **Fixtures:**
 MF-CASE-001, MF-IMAGE-001, MF-MARKUP-001. **App:** Field Support PoC → Probes → "SMF-11 ·

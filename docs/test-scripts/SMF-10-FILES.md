@@ -21,7 +21,7 @@ evidence** block (Ids are masked). Real record Ids go only into `private/` notes
 Mobile Safari/Chrome are separate exploratory rows and never satisfy ENV-SFMOBILE-*.
 
 ## 0. Setup (MF-ADMIN, once)
-1. `sf project deploy start --source-dir force-app --target-org smf-dev --wait 30`
+1. App (stage 40): `sf project deploy start --source-dir force-app --target-org smf-dev --wait 30`; probe metadata (not packaged, stage 46): `sf project deploy start --source-dir probes/main/default/classes --source-dir probes/main/default/permissionsets/SMF10_Access.permissionset-meta.xml --target-org smf-dev --wait 30`
 2. Assign `SMF10_Access` to MF-TECH, MF-SUPPORT **and** MF-RESTRICTED:
    `sf org assign permset --name SMF10_Access --on-behalf-of <user> --target-org smf-dev` (×3).
 3. `sf apex run test --class-names SMF10_CaseFilesServiceTest --class-names SMF10_CaseFilesResourceTest --target-org smf-dev --result-format human --code-coverage --wait 20` — record pass/fail counts and coverage.

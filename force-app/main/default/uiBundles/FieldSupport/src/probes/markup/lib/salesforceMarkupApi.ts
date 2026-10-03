@@ -4,7 +4,7 @@
  * row, rejects stale bases (409) and is idempotent by save key. Runs as the signed-in user.
  */
 import { createDataSDK } from '@salesforce/platform-sdk';
-import { NotFoundOrDeniedError, isSalesforceId, salesforceTransport, type FilesTransport } from '../../files/lib';
+import { NotConfiguredError, NotFoundOrDeniedError, isSalesforceId, platformErrorCode, salesforceTransport, type FilesTransport } from '../../files/lib';
 import { EXPORT_TITLE, MarkupConflictError, SNAPSHOT_TITLE, type MarkupApi, type MarkupRevision, type SaveInput, type SaveResult } from './markupApi';
 
 const BASE = '/services/apexrest/smf11/v1/cases';
@@ -24,6 +24,8 @@ async function apex(path: string, init?: RequestInit): Promise<{ status: number;
   if (!sdk.fetch) throw new Error('The Salesforce data SDK has no fetch on this surface.');
   const res = await sdk.fetch(path, { ...init, headers: { 'Content-Type': 'application/json', Accept: 'application/json' } });
   const body: unknown = await res.json().catch(() => ({ success: false, message: `${res.status} ${res.statusText}` }));
+  const code = platformErrorCode(body);
+  if (code) throw new NotConfiguredError(code, res.status);
   if (!isApexResponse(body)) throw new Error('Unexpected markup response shape.');
   return { status: res.status, body };
 }

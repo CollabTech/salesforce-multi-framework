@@ -68,6 +68,7 @@ public with sharing class SMF12_RoomTokenService {
         List<UserRecordAccess> access = [
             SELECT RecordId, HasEditAccess FROM UserRecordAccess
             WHERE UserId = :UserInfo.getUserId() AND RecordId = :caseId
+            WITH USER_MODE
         ];
         return !access.isEmpty() && access[0].HasEditAccess;
     }

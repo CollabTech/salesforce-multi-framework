@@ -5,9 +5,9 @@
 export { IMAGE_UPLOAD_POLICY, JPEG, MIB, PNG, extensionOf, formatBytes, validateFile } from './policy';
 export type { AllowedType, FileLike, RejectCode, UploadPolicy, ValidationResult } from './policy';
 export { isSalesforceId, maskId, sameId } from './ids';
-export { CancelledError, NotFoundOrDeniedError, UploadFailedError } from './transport';
+export { CancelledError, NotConfiguredError, NotFoundOrDeniedError, UploadFailedError } from './transport';
 export type { CaseFileInfo, CreateVersionInput, FilesTransport, UploadBodyOptions } from './transport';
-export { salesforceTransport } from './salesforceTransport';
+export { platformErrorCode, salesforceTransport } from './salesforceTransport';
 export { MOCK_IDS, createMockTransport } from './mockTransport';
 export type { MockFault, MockOptions, MockSeedEntry, MockTransport } from './mockTransport';
 export { isLocalhostOrigin, parseFaults, selectFilesTransport } from './selectTransport';

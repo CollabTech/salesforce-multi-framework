@@ -2,7 +2,7 @@
 # SMF-11 MARK-01 (mouse) .. MARK-04 as real personas in Edge / Chromium. Touch on physical
 # Salesforce mobile stays human (testing/HUMAN-ACTIONS.md, docs/test-scripts/SMF-11-MARKUP.md).
 # Optional: SMF_INLET_BOX="x,y,w,h" (MF-IMAGE-001 inlet, image pixels, from the SMF-3 fixture manifest).
-# needs: 30 40 45 46 52
+# needs: 30 40 46 48 70
 set -uo pipefail
 ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"; cd "$ROOT"
 for a in smf-dev-tech smf-dev-support smf-dev-restricted; do

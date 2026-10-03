@@ -5,7 +5,7 @@
  * window.__smf12Mint (Playwright), minted with a local test secret.
  */
 import { createDataSDK } from '@salesforce/platform-sdk';
-import { NotFoundOrDeniedError, isLocalhostOrigin, isSalesforceId } from '../../files/lib';
+import { NotConfiguredError, NotFoundOrDeniedError, isLocalhostOrigin, isSalesforceId, platformErrorCode } from '../../files/lib';
 
 export interface RoomTicket {
   token: string;
@@ -42,6 +42,8 @@ export const salesforceTokenSource: TokenSource = {
       headers: { Accept: 'application/json' },
     });
     const body: unknown = await res.json().catch(() => null);
+    const code = platformErrorCode(body);
+    if (code) throw new NotConfiguredError(code, res.status);
     if (res.status === 404) throw new NotFoundOrDeniedError();
     if (!res.ok || !isTicket(body)) {
       const message = body && typeof body === 'object' && 'message' in body ? String((body as { message: unknown }).message) : `HTTP ${res.status}`;

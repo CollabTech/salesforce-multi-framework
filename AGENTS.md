@@ -89,6 +89,20 @@ Upstream skill names change between releases; only names present in `.agents/ski
 
 ## 4. Task lifecycle
 
+**Standing execution rule.** Agents implement the assigned story's defined test plan
+(its case IDs in `testing/test-plan-index.json`). They provision or reconcile that plan's
+specified test users, grants, and fixtures **through the owning prerequisite stories**
+(`testing/contract.json` → `fixture_provisioning_ownership`; e.g. SMF-3 owns baseline
+users/grants/cases/Files, SMF-7 provider rooms/tokens, SMF-12 collaboration service,
+SMF-11/12 markup artifacts, SMF-13/14 3D fixtures). They may delegate those exact tasks —
+naming the story/case IDs, personas, fixtures, expected outcomes, and evidence to return —
+but must verify the returned evidence themselves. They do not invent personas, omit
+negative/denial tests, weaken acceptance criteria or thresholds, or expand into unrelated
+stories. SMF-3's MF-ADMIN, MF-TECH, MF-SUPPORT, MF-RESTRICTED and MF-* fixtures are
+**specifications, not proof that accounts or data exist**: check for verified evidence
+from the owning story before relying on them; if absent, record the affected case ID as
+BLOCKED with the smallest unblocking action.
+
 Jira status flow: **To Discuss → In Progress → Testing → Done**. Use Jira's *Flagged*
 (blocked) marker with a comment giving reason and next action when blocked.
 

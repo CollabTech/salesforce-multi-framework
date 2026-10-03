@@ -14,6 +14,10 @@ action that closes it. Story text in Jira stays authoritative.
   personas or fixtures.
 - **Also:** the same shared paragraph appears in every story, including SMF-2, whose own scope
   leaves provisioning to SMF-3 (noticed by the GOV-02 dry run).
+- **Update (2026-10-03, second SMF-1 session):** the project owner's standing execution
+  rule — provision/reconcile "through the owning prerequisite stories" — is now encoded in
+  `AGENTS.md` §4 and `smf-story-workflow`. It reconciles the two texts: SMF-1/SMF-2 own no
+  fixtures, so they provision nothing. Remaining action is optional wording cleanup.
 - **To close:** owner confirms that story-specific scope wins over the shared paragraph (or
   edits the shared paragraph to say "where this story owns provisioning").
 

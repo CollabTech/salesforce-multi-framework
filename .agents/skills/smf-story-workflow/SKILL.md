@@ -12,6 +12,9 @@ metadata:
    fallback — say which you used), every story under its **Dependencies**, and SMF-3.
    Load the story's case IDs from `testing/test-plan-index.json` and the shared
    personas/fixtures/environments from `testing/contract.json`.
+   Apply the **standing execution rule** in `AGENTS.md` §4: personas/fixtures are
+   specifications until the owning story has verified evidence; provision them only
+   through that owning story; delegated work comes back with evidence you verify.
 2. **Resolve scope**: each dependency needs a supported result or a recorded
    fallback/scope decision. If not, record the gap (case ID, exact gap, smallest
    unblocking action), flag the Jira issue, and stop that case — do not start the dependency.

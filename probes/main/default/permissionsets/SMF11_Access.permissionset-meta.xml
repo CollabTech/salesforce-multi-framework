@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>SMF11_MarkupResource</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>SMF-11 probe: lets a user call the markup revision endpoint (read latest, save with conflict detection). Grants no record, object or File access; Case and File visibility still come from the SMF-3 baseline sharing. Assign to MF-TECH, MF-SUPPORT and MF-RESTRICTED alike so denials are decided by sharing, not by Apex class access.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>SMF-11 Markup Probe Access</label>
+</PermissionSet>

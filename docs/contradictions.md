@@ -73,6 +73,24 @@ action that closes it. Story text in Jira stays authoritative.
   official template's `sourceApiVersion` 67.0 and SMF-2 checks the org supports it. See
   `docs/smf-2/platform-requirements.md`.
 
+## C-SMF14-01 — Model delivery path: task brief vs data-access skill allowlist vs Apex heap
+- **Affects:** BUDGET-03 (and the BUDGET-01/04 size range)
+- **Gap:** the SMF-14 task brief suggested the standard `sobjects/ContentVersion/{id}/VersionData`
+  REST endpoint as a fallback; the official `experience-ui-bundle-salesforce-data-access` skill
+  lists that endpoint as not supported for UI bundles (allowlist: GraphQL, UI API REST, Apex
+  REST, Connect REST, Einstein). The SMF-10 read API that SMF-14 reuses is Apex REST, which holds
+  `VersionData` on the 6 MB synchronous Apex heap, so MF-MODEL-REP (8,647,528 B, within the
+  SMF-3 ≤ 10 MiB contract) is expected not to be deliverable over it.
+- **Meanwhile (vendor skill wins on mechanics):** VersionData REST is not used. SMF-14 offers two
+  user-context paths: the SMF-10 Apex REST read API (reused unchanged) and Connect REST file
+  content (`/connect/files/{documentId}/content`, platform-streamed, no Apex heap). Both are
+  measured; the expected Apex-path failure for REP is recorded as a finding when the host run
+  happens, not assumed.
+- **To close:** first host run of `scripts/cloud/stages/57-smf14-budget.sh` records which path
+  delivers each model; if Connect file content is refused in the UI-bundle host, record BUDGET-03
+  for REP as FAIL/PARTIAL and decide (owner) between a smaller REP fixture (contract change) or a
+  different server path.
+
 ## C-06 — Official test skill forbids org data; the SMF-3 access check must read the provisioned org
 - **Affects:** DATA-02 (org-level row)
 - **Gap:** `platform-apex-test-generate` says never rely on org data (`SeeAllData`).

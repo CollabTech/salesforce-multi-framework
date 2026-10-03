@@ -1,5 +1,10 @@
 # SMF-2 — repeatable setup path (ENV-03)
 
+**Primary path: cloud.** After the one-time `docs/cloud/HUMAN-SETUP.md` (H1 network, H2
+Dev Hub auth URL, H3 consent), run `bash scripts/cloud/session-setup.sh` then stages
+`10-readiness` and `20-orgs` of `scripts/cloud/pipeline.sh` in the cloud session. The manual
+steps below are the reference sequence.
+
 Three logical targets. Aliases are local names; the alias → org mapping lives only in
 `private/orgs.json` (`docs/private-mapping-format.md`).
 

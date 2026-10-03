@@ -1,0 +1,216 @@
+{
+  "config": {
+    "argv": [
+      "/opt/node22/bin/node",
+      "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/testing/cloud-e2e/node_modules/.bin/playwright",
+      "test",
+      "--list"
+    ],
+    "configFile": "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/testing/cloud-e2e/playwright.config.ts",
+    "rootDir": "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/testing/cloud-e2e/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/private/cloud-e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "ENV-DESKTOP-EDGE",
+        "name": "ENV-DESKTOP-EDGE",
+        "testDir": "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/testing/cloud-e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/private/cloud-e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "ENV-CLOUD-CHROMIUM",
+        "name": "ENV-CLOUD-CHROMIUM",
+        "testDir": "/tmp/claude-0/-home-user-salesforce-multi-framework/14e02b54-996e-5222-8fb5-575b318a0bf0/scratchpad/wt-smf2/testing/cloud-e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "results/last-run.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "host.spec.ts",
+      "file": "host.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "HOST-01 tech: launch, navigate, reload, same user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ENV-DESKTOP-EDGE",
+              "projectName": "ENV-DESKTOP-EDGE",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69cb82147222d773bdbe-9a7055df8cd06400cee4",
+          "file": "host.spec.ts",
+          "line": 15,
+          "column": 7
+        },
+        {
+          "title": "HOST-01 support: launch, navigate, reload, same user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ENV-DESKTOP-EDGE",
+              "projectName": "ENV-DESKTOP-EDGE",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69cb82147222d773bdbe-03a3efdf3865f88c6158",
+          "file": "host.spec.ts",
+          "line": 15,
+          "column": 7
+        },
+        {
+          "title": "HOST-02 restricted: app denied without FieldSupport_Access, baseline restored",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ENV-DESKTOP-EDGE",
+              "projectName": "ENV-DESKTOP-EDGE",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69cb82147222d773bdbe-c94e90bdbba0c39cfaff",
+          "file": "host.spec.ts",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "HOST-01 tech: launch, navigate, reload, same user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ENV-CLOUD-CHROMIUM",
+              "projectName": "ENV-CLOUD-CHROMIUM",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69cb82147222d773bdbe-d8a96b8e377f49eb878e",
+          "file": "host.spec.ts",
+          "line": 15,
+          "column": 7
+        },
+        {
+          "title": "HOST-01 support: launch, navigate, reload, same user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ENV-CLOUD-CHROMIUM",
+              "projectName": "ENV-CLOUD-CHROMIUM",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69cb82147222d773bdbe-1944d8c7b15e207d59b5",
+          "file": "host.spec.ts",
+          "line": 15,
+          "column": 7
+        },
+        {
+          "title": "HOST-02 restricted: app denied without FieldSupport_Access, baseline restored",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ENV-CLOUD-CHROMIUM",
+              "projectName": "ENV-CLOUD-CHROMIUM",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69cb82147222d773bdbe-be6f63f57499bf2e31cf",
+          "file": "host.spec.ts",
+          "line": 37,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-03T22:03:38.203Z",
+    "duration": 451.0430000000001,
+    "expected": 0,
+    "skipped": 6,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

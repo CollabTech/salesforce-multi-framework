@@ -1,12 +1,17 @@
 # SMF-2 — repeatable setup path (ENV-03)
 
+**Primary path: cloud.** After the one-time `docs/cloud/HUMAN-SETUP.md` (H1 network, H2
+Dev Hub auth URL, H3 consent), run `bash scripts/cloud/session-setup.sh` then stages
+`10-readiness` and `20-orgs` of `scripts/cloud/pipeline.sh` in the cloud session. The manual
+steps below are the reference sequence.
+
 Three logical targets. Aliases are local names; the alias → org mapping lives only in
 `private/orgs.json` (`docs/private-mapping-format.md`).
 
 | Alias | Role | Create or reuse | Used by |
 |---|---|---|---|
 | `smf-devhub` | Dev Hub + package owner. **Not** an application test org. | Reuse the existing Developer org (if ENV-01 confirms edition/Hyperforce/Dev Hub) | SMF-5 package create; scratch-org creation |
-| `smf-dev` | Development / application test org: SMF-3 personas and fixtures, SMF-4..14 probes | Scratch org from `smf-devhub` (`config/smf-dev-scratch-def.json`) — or the Developer org itself **only if** ENV-02 shows a scratch org cannot hold the personas; record that decision | SMF-3..14 |
+| `smf-dev` | Development / application test org: SMF-3 personas and fixtures, SMF-4..14 probes | Scratch org from `smf-devhub` (`config/smf-dev-scratch-def.json`). Never the Dev Hub org itself (SMF-2 AC4); if a scratch org cannot hold the personas, ENV-02 is BLOCKED with that shortage | SMF-3..14 |
 | `smf-install-test` | Separate subscriber org for package install/upgrade | Scratch org from `smf-devhub` (`config/smf-install-test-scratch-def.json`) | SMF-5 |
 
 A Developer-Edition Dev Hub allows **3 active / 6 per day** scratch orgs. Two are used here.

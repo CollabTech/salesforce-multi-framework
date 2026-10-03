@@ -290,7 +290,7 @@ def verify_state(before: str, after: str) -> None:
     sa = json.loads((PDIR / f"summary-{after}.json").read_text(encoding="utf-8"))
     result["access_assignments"] = {"before": sb["field_support_access_assignments"],
                                     "after": sa["field_support_access_assignments"]}
-    cid = state_snapshot.resolve_case_id(json.loads((PRIVATE / "fixtures.json").read_text(encoding="utf-8")), "install-test")
+    cid = state_snapshot.resolve_case_id(json.loads((PRIVATE / "fixtures.json").read_text(encoding="utf-8")), "smf-install-test")
     seen = {}
     for p in ("tech", "support"):  # each persona's own session, not the admin's
         c = sf("data", "query", "--query", state_snapshot.case_query(cid), "--target-org", persona_alias(p), check=False)

@@ -116,11 +116,14 @@ class StateSnapshot(unittest.TestCase):
         self.assertNotIn("abc", s)
 
     def test_case_id_validation(self):
+        k = "smf-install-test"
         with self.assertRaises(SystemExit):
-            SS.resolve_case_id({}, "install-test")
+            SS.resolve_case_id({}, k)
         with self.assertRaises(SystemExit):
-            SS.resolve_case_id({"MF-CASE-001": {"install-test": "x'; DELETE"}}, "install-test")
-        self.assertEqual(SS.resolve_case_id({"MF-CASE-001": {"install-test": "0XX000000000001"}}, "install-test"),
+            SS.resolve_case_id({k: {"records": {"MF-CASE-001": ["x'; DELETE"]}}}, k)
+        with self.assertRaises(SystemExit):  # never guess between duplicate fixtures
+            SS.resolve_case_id({k: {"records": {"MF-CASE-001": ["0XX000000000001", "0XX000000000002"]}}}, k)
+        self.assertEqual(SS.resolve_case_id({k: {"records": {"MF-CASE-001": ["0XX000000000001"]}}}, k),
                          "0XX000000000001")
 
 

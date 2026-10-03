@@ -7,7 +7,7 @@ install-test org, taken before and after the v1 -> v2 upgrade, and compared.
   python3 scripts/smf5/state_snapshot.py compare before-v2 after-v2
 
 Record IDs come from private/fixtures.json (written by SMF-3; format
-{"MF-CASE-001": {"install-test": "<Case Id>"}, ...}, see docs/private-mapping-format.md).
+{"smf-install-test": {"records": {"MF-CASE-001": ["<Case Id>"]}}, ...}, see docs/private-mapping-format.md).
 Raw query results are written to private/smf5/state-<label>.json (git-ignored). Standard
 output is publishable: record counts, field names and short SHA-256 fingerprints only —
 no record, user, org or package IDs. Only SELECT queries are issued.
@@ -51,9 +51,11 @@ def fingerprint(value) -> str:
 
 
 def resolve_case_id(fixtures: dict, org_key: str) -> str:
+    # SMF-3 shape: {"<org alias>": {"updated": ..., "records": {"MF-CASE-001": ["<Id>"], ...}}}
     try:
-        cid = fixtures["MF-CASE-001"][org_key]
-    except (KeyError, TypeError):
+        ids = fixtures[org_key]["records"]["MF-CASE-001"]
+        cid = ids[0] if len(ids) == 1 else None
+    except (KeyError, TypeError, IndexError):
         sys.exit(f"private/fixtures.json has no MF-CASE-001 entry for '{org_key}' (SMF-3 seed not run there?)")
     if not isinstance(cid, str) or not ID_RX.match(cid):
         sys.exit("MF-CASE-001 record ID in private/fixtures.json is not a Salesforce ID")
@@ -102,7 +104,7 @@ def main() -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("snapshot")
     s.add_argument("--target-org", required=True, help="explicit sf alias of the install-test org")
-    s.add_argument("--org-key", default="install-test", help="key in private/fixtures.json (default install-test)")
+    s.add_argument("--org-key", default="smf-install-test", help="org alias key in private/fixtures.json (default smf-install-test)")
     s.add_argument("--label", required=True)
     s.add_argument("--sf", help="path to the sf executable")
     c = sub.add_parser("compare")

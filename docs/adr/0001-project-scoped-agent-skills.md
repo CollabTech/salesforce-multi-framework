@@ -5,6 +5,10 @@
 - **Story / case IDs:** SMF-1 (GOV-01, GOV-02, GOV-03)
 - **Deciders:** Project owner (review); implementing agent (proposal)
 
+> **Superseded in part:** the Decision and Consequences sections below describe revision 1
+> (vendor copies committed, `install-official-skills.sh`, `--write-hashes`). Revision 2 at the
+> end of this ADR replaces them.
+
 ## Context
 SMF-1 AC2 requires the applicable official Salesforce skills at project scope via their
 supported mechanism, with upstream source and revision recorded, discoverable by the chosen
@@ -66,3 +70,13 @@ first step in `README.md` and `AGENTS.md`. Installed content is still reviewable
 it is pinned and verified against upstream blob IDs. Earlier commits on the SMF-1 branch
 still contain vendor copies; merge PR #1 with **squash** so `main` never carries them.
 `scripts/install-official-skills.sh` is removed.
+
+**History:** commits before revision 2 on the SMF-1 branch contain the vendor folders.
+Squash-merge PR #1 and delete the branch afterwards; GitHub still retains PR refs
+(`refs/pull/1/*`), which only GitHub support can purge. The upstream `LICENSE.txt`
+(Apache-2.0) permits that redistribution; the conflicting `package.json` metadata is the
+residual risk, recorded in C-02 for the owner.
+
+**Verification:** `.github/workflows/repo-checks.yml` runs bootstrap, all checks and two
+negative checks on Linux, macOS, Windows (symlink) and Windows with `SMF_FORCE_JUNCTION=1`
+(directory-junction fallback) on every push.

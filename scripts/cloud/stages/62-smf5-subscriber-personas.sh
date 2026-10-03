@@ -3,7 +3,7 @@
 # provisioning stages (30-39) with SMF_TARGET_ORG=smf-install-test. Contract expected from
 # SMF-3 (C-SMF5-6): persona users created there with CLI aliases
 # smf-install-test-{tech,support,restricted} (FederationIdentifier MF-*), fixtures seeded,
-# record IDs under the "install-test" key of private/fixtures.json, vault saved. Then
+# record IDs under the "smf-install-test" key of private/fixtures.json, vault saved. Then
 # assign FieldSupport_Access (installed by the package) to the three personas.
 # needs: 61
 set -uo pipefail

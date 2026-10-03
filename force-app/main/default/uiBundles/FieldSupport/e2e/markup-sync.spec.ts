@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -35,7 +36,7 @@ async function startServer(recheckMs = 1000): Promise<void> {
   await expect.poll(async () => (await fetch(`http://127.0.0.1:${PORT}/health`).then(r => r.ok).catch(() => false)), { timeout: 10_000 }).toBe(true);
 }
 
-async function stopServer(signal: NodeJS.Signals = 'SIGKILL'): Promise<void> {
+async function stopServer(signal: 'SIGKILL' | 'SIGTERM' = 'SIGKILL'): Promise<void> {
   const s = server;
   server = null;
   if (!s) return;

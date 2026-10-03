@@ -6,24 +6,38 @@
 | Publisher | Salesforce, Inc. (`forcedotcom` GitHub org; npm `@salesforce/afv-skills` by `salesforce-releases`) |
 | Pinned revision | `3c15867bdb9dacd515960174c661c706d041bb63` — "chore(release): 1.59.0", 2026-10-03T00:18:43Z |
 | Licence | `LICENSE.txt` in the repo: Apache-2.0. **Conflict:** `package.json` / npm metadata say CC-BY-NC-4.0 — see `docs/contradictions.md` C-02 |
-| Mechanism | Upstream-documented `npx skills add` (vercel-labs `skills` CLI, pinned `skills@1.7.0`), project scope, agents `claude-code` + `codex` |
-| Installed | 2026-10-03 by `scripts/install-official-skills.sh` |
-| Verification | `python3 scripts/verify-skills.py` — pinned ref per `skills-lock.json`, per-skill content hash in `official-skills.json`; at install time every folder was also byte-compared (`diff -r`) with a clone of the pinned revision: identical |
+| Mechanism | Upstream-documented `npx skills add` (vercel-labs `skills` CLI, pinned `skills@1.7.0`), project scope, agent `codex` (writes `.agents/skills/`), run on demand by `scripts/bootstrap-skills.py` |
+| Tracked in Git | **No** (ADR-0001 rev 2; resolves C-02). Only `skills-lock.json` and this provenance are tracked. |
+| Verification | `python3 scripts/verify-skills.py` — every installed file is checked against the upstream **Git blob ID** at the pinned revision recorded in `official-skills.json` (425 files; generated with `bootstrap-skills.py --record-manifest <clone>` from `git ls-tree`). LF/CRLF tolerant; any other change, extra or missing file fails. |
 
 ## How contributors load them
 
-Nothing to install for normal work — the skills are committed.
+Run once per clone (and after a revision bump):
 
-- **Claude Code**: discovers `.claude/skills/*/SKILL.md` (symlinks into `.agents/skills/`)
-  automatically when started in the repo root; `CLAUDE.md` imports `AGENTS.md`.
-  On Windows, enable git symlinks (`git config core.symlinks true`, Developer Mode) or
-  rerun the installer.
-- **Codex / other Agent Skills tools**: read `.agents/skills/` and `AGENTS.md`.
-- **Agentforce Vibes**: auto-installs its own copy of the same library; still follow
+```sh
+python3 scripts/bootstrap-skills.py      # Windows: py -3 scripts\bootstrap-skills.py
+```
+
+It installs any missing or failing official skill with the pinned CLI, restores
+`skills-lock.json` byte-for-byte, creates `.claude/skills/<name>` for every skill, and runs
+`verify-skills.py`. `--offline` only relinks and verifies.
+
+- **Claude Code** discovers `.claude/skills/*/SKILL.md` when started in the repo root;
+  `CLAUDE.md` imports `AGENTS.md`. Entries are relative symlinks; on Windows without
+  symlink privilege (no Developer Mode/admin) the bootstrap makes a **directory junction**
+  (`mklink /J`, no privilege needed), and only if that fails a **copy**. `verify-skills.py`
+  rejects text-file symlink placeholders, wrong or dangling targets, and stale copies.
+- **Windows bootstrap (documented, verified by unit tests only):** install Python 3.8+
+  and Node 18+; `git clone`; `py -3 scripts\bootstrap-skills.py`. Line endings do not
+  matter: `.gitattributes` keeps tracked text LF and the integrity check tolerates CRLF.
+  Not yet run on a real Windows host — see `evidence/SMF-1/GOV-01-portability.md`.
+- **Codex / other Agent Skills tools** read `.agents/skills/` and `AGENTS.md`.
+- **Agentforce Vibes** auto-installs its own copy of the same library; still follow
   `AGENTS.md` and the `smf-*` skills.
-- **Upgrade**: edit `REVISION` in `scripts/install-official-skills.sh`, run it, then
-  `python3 scripts/verify-skills.py --write-hashes`, update this file, and open a PR.
-  Never edit official skill files in place, and never install with `-g`.
+- **Upgrade:** change `revision` (and `installer_cli` if needed) in `official-skills.json`
+  and the refs in `skills-lock.json`, run `bootstrap-skills.py --record-manifest <clone of
+  upstream>` then `bootstrap-skills.py`, update this file, open a PR. Never edit official
+  skill files in place, never install with `-g`.
 
 ## Selected skills (28 of 241)
 

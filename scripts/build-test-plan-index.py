@@ -8,7 +8,7 @@ Usage: python3 scripts/build-test-plan-index.py [--snapshot docs/jira-snapshot/<
   --check  exit 1 if the committed index differs from what the snapshot produces.
 """
 import argparse, json, re, sys
-from pathlib import Path
+from pathlib import Path, PurePath
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "testing" / "test-plan-index.json"
@@ -32,13 +32,18 @@ def field(body: str, label: str) -> str:
     return m.group(1).strip() if m else ""
 
 
+def rel_posix(p, root=ROOT) -> str:
+    """Repository-relative path with "/" separators on every OS (index and Markdown links)."""
+    return PurePath(p).relative_to(root).as_posix()
+
+
 def latest_snapshot() -> Path:
     snaps = sorted(p for p in (ROOT / "docs" / "jira-snapshot").iterdir() if p.is_dir())
     return snaps[-1]
 
 
 def parse_story(path: Path) -> dict:
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
     front, body = text.split("\n---\n", 1)
     meta = {}
     for line in front.strip("-\n").splitlines():
@@ -63,7 +68,7 @@ def parse_story(path: Path) -> dict:
         "track": order.group(2) if order else None,
         "reference": order.group(3) if order else None,
         "dependencies": deps,
-        "snapshot": str(path.relative_to(ROOT)),
+        "snapshot": rel_posix(path),
         "test_users": test_users,
         "test_data": test_data,
         **story_refs,
@@ -84,7 +89,7 @@ def build(snapshot: Path) -> dict:
         "index_version": INDEX_VERSION,
         "source": "Jira project SMF (answersllc.atlassian.net); Jira descriptions are authoritative",
         "retrieved": snapshot.name,
-        "snapshot_dir": str(snapshot.relative_to(ROOT)),
+        "snapshot_dir": rel_posix(snapshot),
         "note": "Specifications only. No execution results are recorded here; see evidence/. "
                 "test_users, test_data, case spec (expected outcome) and required_evidence are quoted verbatim "
                 "from the snapshot; persona_refs/fixture_refs are extracted logical IDs defined in testing/contract.json. "
@@ -140,14 +145,14 @@ def main() -> int:
     out = json.dumps(idx, indent=2, ensure_ascii=False) + "\n"
     md = render_markdown(idx)
     if a.check:
-        stale = [p for p, want in ((INDEX, out), (TABLE, md)) if not p.exists() or p.read_text(encoding="utf-8") != want]
+        stale = [p for p, want in ((INDEX, out), (TABLE, md)) if not p.exists() or p.read_text(encoding="utf-8").replace("\r\n", "\n") != want]
         if stale:
             print(f"FAIL: {', '.join(str(p.relative_to(ROOT)) for p in stale)} out of date with {snapshot.relative_to(ROOT)}; rebuild.")
             return 1
         print(f"OK: index matches {snapshot.relative_to(ROOT)}")
         return 0
-    INDEX.write_text(out, encoding="utf-8")
-    TABLE.write_text(md, encoding="utf-8")
+    INDEX.write_text(out, encoding="utf-8", newline="\n")
+    TABLE.write_text(md, encoding="utf-8", newline="\n")
     print(f"wrote {INDEX.relative_to(ROOT)} and {TABLE.relative_to(ROOT)}")
     return 0
 

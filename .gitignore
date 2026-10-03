@@ -21,3 +21,9 @@ coverage/
 .DS_Store
 __pycache__/
 *.pyc
+
+# --- Official Salesforce skills: installed on demand, never tracked (ADR-0001 rev 2, C-02) ---
+# python3 scripts/bootstrap-skills.py installs the pinned copies and generates .claude/skills.
+/.agents/skills/*
+!/.agents/skills/smf-*/
+/.claude/skills/

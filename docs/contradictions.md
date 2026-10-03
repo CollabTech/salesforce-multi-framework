@@ -28,7 +28,12 @@ action that closes it. Story text in Jira stays authoritative.
   This public repo redistributes 28 skill folders.
 - **Meanwhile:** installed from the GitHub repository (Apache-2.0 `LICENSE.txt`), recorded both
   values in `docs/provenance/official-skills.md`.
-- **To close:** owner decides whether redistribution is acceptable or to switch to
+- **Resolved (2026-10-03, SMF-1 review):** the owner chose pinned, project-local
+  installation on demand. Vendor copies are no longer tracked (ADR-0001 rev 2); provenance,
+  per-file upstream integrity verification and a repeatable bootstrap remain. Merge PR #1
+  with squash so `main` history never contains them. Upstream licence ambiguity itself is
+  unchanged.
+- **Original options:** owner decides whether redistribution is acceptable or to switch to
   install-on-demand (ADR-0001 option 2: git-ignore `.agents/skills/<official>` and run the
   installer in each fresh session). Optionally ask Salesforce via an upstream issue.
 

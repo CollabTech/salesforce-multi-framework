@@ -26,8 +26,8 @@ def check(cond, msg):
 r = subprocess.run([sys.executable, str(ROOT / "scripts/build-test-plan-index.py"), "--check"], capture_output=True, text=True)
 check(r.returncode == 0, r.stdout.strip() or r.stderr.strip())
 
-index = json.loads((ROOT / "testing/test-plan-index.json").read_text())
-contract = json.loads((ROOT / "testing/contract.json").read_text())
+index = json.loads((ROOT / "testing/test-plan-index.json").read_text(encoding="utf-8"))
+contract = json.loads((ROOT / "testing/contract.json").read_text(encoding="utf-8"))
 stories = index["stories"]
 keys = [s["key"] for s in stories]
 check(keys == [f"SMF-{i}" for i in range(1, EXPECTED_STORIES + 1)], f"story keys not SMF-1..SMF-{EXPECTED_STORIES}: {keys}")
@@ -46,11 +46,16 @@ check(not dups, f"case IDs owned by more than one story: {dups}")
 check(len(all_ids) == EXPECTED_CASES, f"expected {EXPECTED_CASES} case IDs, found {len(all_ids)}")
 check(index["case_count"] == len(all_ids), "case_count field disagrees with case list")
 
+# Paths in the index must be POSIX-relative and resolve on this checkout.
+for p in [index["snapshot_dir"]] + [s["snapshot"] for s in stories]:
+    check("\\" not in p and not p.startswith("/") and ":" not in p, f"non-portable path in index: {p!r}")
+    check((ROOT / p).exists(), f"index path does not exist: {p}")
+
 # Independent raw scan: every "* XXX-NN:" checklist bullet in the snapshot must be indexed.
 snap = ROOT / index["snapshot_dir"]
 raw = Counter()
 for p in snap.glob("SMF-*.md"):
-    for cid in re.findall(r"^\* ([A-Z0-9]+-\d{2}):", p.read_text(), re.M):
+    for cid in re.findall(r"^\* ([A-Z0-9]+-\d{2}):", p.read_text(encoding="utf-8"), re.M):
         raw[cid] += 1
         check(p.stem in owners.get(cid, []), f"{cid} appears in {p.name} but is not indexed under {p.stem}")
 check(set(raw) == set(owners), f"raw scan/index mismatch: {sorted(set(raw) ^ set(owners))}")
@@ -78,14 +83,14 @@ outcomes = set(contract["outcomes"]["values"])
 for ev in (ROOT / "evidence").rglob("*.md"):
     if ev.name in ("README.md", "TEMPLATE.md"):
         continue
-    text = ev.read_text()
+    text = ev.read_text(encoding="utf-8")
     m = re.search(r"^\| Case ID \| (\S+) \|", text, re.M)
     if not m:
         continue
-    check(m.group(1) in owners, f"{ev.relative_to(ROOT)} names unknown case {m.group(1)}")
-    check(ev.parent.name in owners.get(m.group(1), []), f"{ev.relative_to(ROOT)} is filed under the wrong story")
+    check(m.group(1) in owners, f"{ev.relative_to(ROOT).as_posix()} names unknown case {m.group(1)}")
+    check(ev.parent.name in owners.get(m.group(1), []), f"{ev.relative_to(ROOT).as_posix()} is filed under the wrong story")
     o = re.search(r"^\| Outcome \| (.+?) \|", text, re.M)
-    check(o and o.group(1).strip() in outcomes, f"{ev.relative_to(ROOT)} has missing/invalid outcome")
+    check(o and o.group(1).strip() in outcomes, f"{ev.relative_to(ROOT).as_posix()} has missing/invalid outcome")
 
 if errors:
     print("FAIL")

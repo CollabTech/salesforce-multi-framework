@@ -1,6 +1,6 @@
 # ADR-0001: Project-scoped official and project skills, one instruction file
 
-- **Status:** Proposed (accept with SMF-1 review)
+- **Status:** Proposed — revision 2 (2026-10-03): decision changed from option 1 to option 2 after SMF-1 review
 - **Date:** 2026-10-03
 - **Story / case IDs:** SMF-1 (GOV-01, GOV-02, GOV-03)
 - **Deciders:** Project owner (review); implementing agent (proposal)
@@ -43,3 +43,26 @@ official ones and are never written into upstream skill folders.
 - Upstream warns skills may be renamed/removed between releases; AGENTS.md says only names
   present in `.agents/skills/` exist.
 - Licence metadata disagreement upstream is recorded in `docs/contradictions.md` (C-02).
+
+## Revision 2 (2026-10-03) — install on demand
+
+**Why:** the SMF-1 review resolved C-02 (upstream `LICENSE.txt` Apache-2.0 vs `package.json`
+CC-BY-NC-4.0) by not redistributing vendor copies, and found two portability defects in
+option 1: whole-tree byte hashes broke under CRLF checkouts, and tracked symlinks became
+text placeholders on Windows without `core.symlinks`.
+
+**Decision:** option 2. Official skill folders and all `.claude/skills` entries are
+git-ignored. `python3 scripts/bootstrap-skills.py` installs the 28 pinned skills with the
+upstream-documented `npx skills@1.7.0 add …/tree/<revision>/skills/<name> --agent codex`,
+then creates `.claude/skills/<name>` for every skill (relative symlink → Windows junction →
+copy). `docs/provenance/official-skills.json` records the upstream Git blob ID of every
+file at the pinned revision; `scripts/verify-skills.py` checks each installed file against
+it (CRLF/LF tolerant; any other change, extra or missing file fails) and checks each
+`.claude/skills` entry exposes the canonical, readable `SKILL.md`.
+
+**Consequences:** a fresh clone needs one bootstrap command (Python 3.8+, Node/npx,
+network to github.com and registry.npmjs.org) before skills are discoverable; this is the
+first step in `README.md` and `AGENTS.md`. Installed content is still reviewable because
+it is pinned and verified against upstream blob IDs. Earlier commits on the SMF-1 branch
+still contain vendor copies; merge PR #1 with **squash** so `main` never carries them.
+`scripts/install-official-skills.sh` is removed.

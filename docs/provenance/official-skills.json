@@ -5,36 +5,546 @@
   "revision": "3c15867bdb9dacd515960174c661c706d041bb63",
   "release": "1.59.0",
   "revision_date": "2026-10-03T00:18:43Z",
-  "installed": "2026-10-03",
-  "installer": "npx skills@1.7.0 add <upstream>/tree/<revision>/skills/<name> --agent claude-code codex -y",
+  "installer": "python3 scripts/bootstrap-skills.py -> npx skills@1.7.0 add <upstream>/tree/<revision>/skills/<name> --agent codex -y (project scope, on demand, not tracked)",
   "skills": {
-    "design-systems-slds-apply": "94deb5060fd9f25bc8ce5f1b8b96949591afdf41e8fe64614a28466422f977b7",
-    "dx-code-analyzer-run": "8bd2381b611a1eeae8fd21ede77025b6b37466f517bf76ef84399ef05704caed",
-    "dx-org-analyze": "f490626184fe9936c5af835b43cd02b7a65eb9e84e3a69ee36ae9bc47ebf5894",
-    "dx-org-devhub-configure": "0acb67c66f6ed5094653f2e5cdca55b5a6efaf4805e68363ed9d4678a9721f96",
-    "dx-org-manage": "2a9e47e00150209cc83715ada0ac5b8e8e948957548ab6919d307098a2d42caa",
-    "dx-org-permission-set-assign": "9b0e27d8d73832764fc9352fc051bf38fca8c440496c58ff98d83feeeeb53d7c",
-    "dx-org-switch": "d263daf133f6b06c34637be04d9c63679a98da39da30eb92e34e0934f3c6b940",
-    "dx-org-trial-expiration-check": "b23e5f679ec2d3be94d06dde58425fba88c468d20e2784196d18c021bf93ddd6",
-    "experience-ui-bundle-2gp-deploy": "92132da138ce3bb4607bd3d2972db9a774fac22a9070ffa14b8110355f2cf1b0",
-    "experience-ui-bundle-app-coordinate": "6334b930b0932a62dfda8e5e9134833985cc3e9b004c612911ae5670fb964516",
-    "experience-ui-bundle-custom-app-generate": "e5b6b08d6414cbea98926f9c65248b594f75810be5ad8f071632a5a96a5311ab",
-    "experience-ui-bundle-deploy": "323f839038afd6a1f68c724ab57c92ece758f036e1b5c7e79cb7aa2822f00919",
-    "experience-ui-bundle-file-upload-generate": "d83ac1fa68220d8839f1c17ac2c4eebf317004f92e9e882aed27bf14d76296e7",
-    "experience-ui-bundle-frontend-generate": "4775ee6382701f434857ee506646fabb456ef65b0de6f0890f19823642140be3",
-    "experience-ui-bundle-metadata-generate": "b56469e79abeadd52e306d48ceb6e992e3c16c5d875da5a247586f5af468f171",
-    "experience-ui-bundle-project-generate": "b44f7cb1528e4c302b69894a5476b3fb6c94ae8a0a7c2a3213d99d8e6308723d",
-    "experience-ui-bundle-salesforce-data-access": "a0d6cbaf44ea1ec2ddf9cffd2b30fffa43f6a6445e1b3768e8fe33e3cf396557",
-    "platform-apex-generate": "2ce5eaf19f91cfcb24c06b6f21e0b44cf51df0e9a3c82cdf7e1ea9b6d89280aa",
-    "platform-apex-test-generate": "429c46258e80776fac8539245d7e3cc6d343c740a99de8ea73235e4bf8427aa2",
-    "platform-apex-test-run": "fbe3062402ee414065e47937d53c5e0ec646af319ceb3320da1b39f7085bfdd1",
-    "platform-data-manage": "b104248636695e2ab2be3182770a61daccd32b0a23fb6d793a7bb0e4a7dd2a50",
-    "platform-docs-get": "b9c78c4fdd4d5c2de35c3f698e24de263fffcea30a6461ce46c68c15ea35fd7d",
-    "platform-metadata-deploy": "b0a038e036ee45d45e5736c7b922dd854376580f737bc4134e3e92e93a853382",
-    "platform-metadata-retrieve": "85d5e9b2607e0cb020ac73593b292e0e82795d7335277a20bb58a4cf54e733cc",
-    "platform-permission-set-generate": "ef39df7a6e75e4f0f3a4a45b599cb5b553f4d5f738e3f62a03a0192a0b53cb2b",
-    "platform-sharing-owd-configure": "cc9101085c1385f5f2681facc2c8253c7f192c0b4b84de3213f5c153ea8b9c53",
-    "platform-sharing-rules-generate": "a73576490ea6a24f84532a5ff7618bcd14c5090c8c60fecbb707cb0a94c474a6",
-    "platform-soql-query": "d2f3ffabf3320bbe66a4254b4f4c4a4b6e6277c1b8c68ab6bc5597ea40a5d404"
-  }
+    "design-systems-slds-apply": {
+      "files": {
+        "SKILL.md": "7dd75ee9b1791a7376e266e353c5fb4b37832565",
+        "assets/README.md": "28e146896c784f21c49fa01749a5d63602bab3ec",
+        "assets/blueprints/components/accordion.yaml": "5006365755a58ecb170a354ef4367caa5c5ab2c6",
+        "assets/blueprints/components/activity-timeline.yaml": "a90fcdbe47674d30277ad869e12a236a070944b2",
+        "assets/blueprints/components/alert.yaml": "61d7d09093ef14a1fea8cc9bbfe2e8cac6a7745b",
+        "assets/blueprints/components/app-launcher.yaml": "1b2f9372680017c6c784658d50243c19d5d61cf4",
+        "assets/blueprints/components/avatar-group.yaml": "3f78d8085f5638901e5fe3b608ebd532c0ff4345",
+        "assets/blueprints/components/avatar.yaml": "df55160ab5dc19768c2c60de2d0bfb9fb49f2153",
+        "assets/blueprints/components/badges.yaml": "926cebecdbf967e7dd730e8040b7a64b5ea9db5b",
+        "assets/blueprints/components/brand-band.yaml": "3714ea0ba9a38a53b3e561ee76dbfc836095b5e5",
+        "assets/blueprints/components/breadcrumbs.yaml": "fef141efdfdf2aa6c3e99f3a8e811e8f8439a0ee",
+        "assets/blueprints/components/builder-header.yaml": "e8756921b32b03a998bf05f679d901017acb39fe",
+        "assets/blueprints/components/button-groups.yaml": "82bb5d0a8d5d7b4a295777048d2895b1dc8f1d42",
+        "assets/blueprints/components/button-icons.yaml": "53ab4e13fb076b52c80a425e827c4d8ce95f7d23",
+        "assets/blueprints/components/buttons.yaml": "10e6d0402841d4d8d3f53cf1697c4b8db4d228f3",
+        "assets/blueprints/components/cards.yaml": "d2237636e1d0396e938ad6ebcf709417e525cc3b",
+        "assets/blueprints/components/carousel.yaml": "cb38ca4d236c6aaa57e5e79b15ac9fd7b35b83f9",
+        "assets/blueprints/components/chat.yaml": "8bb9ee93b812c6c4397b1ac07eef141e2afa1c81",
+        "assets/blueprints/components/checkbox-button-group.yaml": "cbac642b7799e2f05dba7354df5d38832046af20",
+        "assets/blueprints/components/checkbox-button.yaml": "c91db9ebdce6d2abdc976892e03e0d785a32b1f7",
+        "assets/blueprints/components/checkbox-toggle.yaml": "4039f527f4b9321d259207ec264b2d3794dfba2e",
+        "assets/blueprints/components/checkbox.yaml": "f5afe3929fa1e650d4f38dfdc3c7b75fcb424916",
+        "assets/blueprints/components/color-picker.yaml": "837f8ff931974d6e96b155187b0863d6545e29ae",
+        "assets/blueprints/components/combobox.yaml": "97e5e724e62d821ab0770b97fdc9040088dad686",
+        "assets/blueprints/components/counter.yaml": "5ebd4e04a6244f86accceb909777efaf02715b4c",
+        "assets/blueprints/components/data-tables.yaml": "38c307681ef1078fc068debb51d15b20bed22668",
+        "assets/blueprints/components/datepickers.yaml": "d90529e22ebeaa893637058cfe8b9478ce1a34c3",
+        "assets/blueprints/components/datetime-picker.yaml": "542e6661561104a3d9f171170411060178938f1b",
+        "assets/blueprints/components/docked-composer.yaml": "af51b4881581173bda6da7c9c8f550ee6a1669ef",
+        "assets/blueprints/components/docked-form-footer.yaml": "081eee4d78f175dc912318e58787ea199038085b",
+        "assets/blueprints/components/docked-utility-bar.yaml": "6622bab9e7ff33125a53db893648134cde7e2ab0",
+        "assets/blueprints/components/drop-zone.yaml": "88018537755ba2fdb7c5e19f6c6399303c4a7a12",
+        "assets/blueprints/components/dueling-picklist.yaml": "eff3b80efaaae832ab64f3d4345643368a59b6af",
+        "assets/blueprints/components/dynamic-icons.yaml": "f2bda84ed60ac39929608887673132ced77f0f3e",
+        "assets/blueprints/components/dynamic-menu.yaml": "e4957601fac92ced54e09a962b1a36035cb0fd95",
+        "assets/blueprints/components/expandable-section.yaml": "29817e87f326298e409c751398b87dbb290b1d9a",
+        "assets/blueprints/components/expression.yaml": "dd1dcaf779135e9b45598dac678517c4ffb87d1b",
+        "assets/blueprints/components/feeds.yaml": "bbff7cc0fa07e41c16cdd7df8a73b98519e2bcf6",
+        "assets/blueprints/components/file-selector.yaml": "19b4c74a348c8d0f5a9993c87a31e72ec0ae8c3f",
+        "assets/blueprints/components/files.yaml": "1a38b93f9090d2dfcd9a22b076d24d8d2cf07703",
+        "assets/blueprints/components/form-element.yaml": "0bab915495c20afc099099dbe5845ce2ebbed025",
+        "assets/blueprints/components/global-header.yaml": "88c997cb46c31724f649b16f92784a4319afce0a",
+        "assets/blueprints/components/global-navigation.yaml": "43cef34b49fe434635a879feff84b2e22856550c",
+        "assets/blueprints/components/icons.yaml": "66340b993b3ff443e99a44dc95addc30faa086ec",
+        "assets/blueprints/components/illustration.yaml": "6a90b7fe57e63a50fd096ca87779061b2b5dbb94",
+        "assets/blueprints/components/input.yaml": "bc8e8b7d8b66e3cb63bde438283fa90f8ca3147b",
+        "assets/blueprints/components/list-builder.yaml": "c72b2857dd807622fbb5bf73270e34249a32bd41",
+        "assets/blueprints/components/lookups.yaml": "f8d5188ec4fd427f39eb42a2d9cf7824d84b91a9",
+        "assets/blueprints/components/map.yaml": "9c33ced19588bf72f09c7dcd7e403623e0f60694",
+        "assets/blueprints/components/menus.yaml": "7876e96326f591fcbcea57494985837e3ab704bd",
+        "assets/blueprints/components/modals.yaml": "d3deaca2b7c40d9cf00482fa59b8dd492d45f9a4",
+        "assets/blueprints/components/notifications.yaml": "ba2c4a7b595f7ad44f56d20484967600c097a51b",
+        "assets/blueprints/components/page-headers.yaml": "b2de49c6b908d3ea19fe096c4c6841f3d95d526e",
+        "assets/blueprints/components/panels.yaml": "723371b40f058681c9437ea90b195f0f91eba703",
+        "assets/blueprints/components/path.yaml": "605852147892d85c3073f4a061295d61496cec83",
+        "assets/blueprints/components/picklist.yaml": "680b8e4c196b261640cf883e8dc9445a87c608ce",
+        "assets/blueprints/components/pills.yaml": "e82c3a09c20734faeab8bd3a61237ca63776b038",
+        "assets/blueprints/components/popovers.yaml": "45ea9f802abc561db196dc36560bbe46c67cf28a",
+        "assets/blueprints/components/progress-bar.yaml": "99e5eba3c47d5f23ce2d16d09f369c93ee0c5253",
+        "assets/blueprints/components/progress-indicator.yaml": "c0c99b20777deb1aca5bf004dbae4bec142a0a77",
+        "assets/blueprints/components/progress-ring.yaml": "59000998de15d224d63d6e53f884b2d72be77272",
+        "assets/blueprints/components/prompt.yaml": "8eacfa03827baaa3b2c4b798caeb103d4f04953a",
+        "assets/blueprints/components/publishers.yaml": "01786783f39e3588684e4729c150a1102d64e269",
+        "assets/blueprints/components/radio-button-group.yaml": "4e6f47a865459662a9554f2374885f0f478ffcd9",
+        "assets/blueprints/components/radio-group.yaml": "89158cee2e58fa7859d05d643ac04df9c3881be2",
+        "assets/blueprints/components/rich-text-editor.yaml": "69ef0f40fb43786baaf410da79589f8ea59fd610",
+        "assets/blueprints/components/scoped-notifications.yaml": "368a05c18278b99a7130bc35e3bbf800510a84de",
+        "assets/blueprints/components/scoped-tabs.yaml": "f20db2f97de4cf88c7d30cfbb92b78cd92dc0897",
+        "assets/blueprints/components/select.yaml": "15c1bbdd4d9c8f6c16564575723657dfa51f3b63",
+        "assets/blueprints/components/setup-assistant.yaml": "d73d6f725407411883e4a17cdb74608690846fe5",
+        "assets/blueprints/components/slider.yaml": "93a995ea5f6d670d61b0b1385830d9b5a3ae213e",
+        "assets/blueprints/components/spinners.yaml": "dcccc1ecf98e5891d5c2be606aa8220f890f528d",
+        "assets/blueprints/components/split-view.yaml": "4bfcb10736a1a01658196d4c40a006db5852b6f9",
+        "assets/blueprints/components/summary-detail.yaml": "bbde92cb05bc56abb995f95eb165a9a226041cb5",
+        "assets/blueprints/components/tabs.yaml": "250fe1ce2fb8ad92da7e5f4a85193b99c449e1b9",
+        "assets/blueprints/components/textarea.yaml": "4b1a536cc17513802097e6f88f1673a0ee7334f3",
+        "assets/blueprints/components/tiles.yaml": "d457e31a8701c0ee44e2acd4a0b35cffd54bf73d",
+        "assets/blueprints/components/timepicker.yaml": "1b43cfd978e90ddd9b1bc486215dbe9f85e7ac2d",
+        "assets/blueprints/components/toast.yaml": "77466c4053611d832933ca5ac94b62ae3ed01ff5",
+        "assets/blueprints/components/tooltips.yaml": "5be811dd44d641dbbee79451b795106ef568813f",
+        "assets/blueprints/components/tree-grid.yaml": "1057822c492733990ae2a0e57ff62dea4989cbcd",
+        "assets/blueprints/components/trees.yaml": "47a9d9372396733353f42d8185c96002c9f36201",
+        "assets/blueprints/components/trial-bar.yaml": "535355a56fa5230def4bc75b0604b5e752b2056e",
+        "assets/blueprints/components/vertical-navigation.yaml": "c13caf7e7694f2ce14f08f0db9964e917c2d6435",
+        "assets/blueprints/components/vertical-tabs.yaml": "4577953d15eb063848d71486e9e8eee3898d9088",
+        "assets/blueprints/components/visual-picker.yaml": "f0bd14087d52147424a1c2286ad124314cd4bc5e",
+        "assets/blueprints/components/welcome-mat.yaml": "df1763ba80163aec5aff34b561960ecc3c5faef1",
+        "assets/hooks-index.json": "95aa39ab9d643ac77096b0dbb371700daef7ac77",
+        "assets/icon-metadata.json": "88179bb3fc92d9d3732773aa09935cf4def0d8de",
+        "assets/utilities-index.json": "9e035655df784e976ee7174d9596865d13f3a38e",
+        "references/README.md": "00d7ccee08757a9e34110144d8678e6dacc1fef0",
+        "references/blueprints-index.md": "42d0a706331c6b0e0836c3023d55ba6b8972837d",
+        "references/checklists.md": "b0d2bbbed11ee8b919bcab99d59a552177075b5e",
+        "references/component-selection.md": "93b49a0f3f2f6a19aeca95331a96f7e5e778d309",
+        "references/examples.md": "8b4747d06cd34fcd201227640e0daa5044e501c9",
+        "references/icons-decision-guide.md": "06771de61842a7a01cdafa32d7d2e02868c76060",
+        "references/icons-guidance.md": "03e157c5404cace779f9179f6ee41b91d1934b25",
+        "references/overviews/borders.md": "791f73383183b8950071e2a97dd0644182cfb18e",
+        "references/overviews/color.md": "abe0a1a17bc37045543e2fd3fe14a3fa300315e2",
+        "references/overviews/display-density.md": "be79a74f6fa410999381d9f2f5a52ccf34a09a31",
+        "references/overviews/icons.md": "c7a1204e5264f1fca77d462c4e2d58f494c55aa5",
+        "references/overviews/illustrations.md": "f189a20f6a4099aae36954c1ccf6debbb8410eca",
+        "references/overviews/shadows.md": "cb2cda35dad4c831a0ccfbb8b9dd678c2c6311bb",
+        "references/overviews/spacing.md": "4b15975440d98e5af2c33f42a282cb8acfe73248",
+        "references/overviews/typography.md": "13bf94e48ba9e43961cf3fad39938d863fc3093d",
+        "references/overviews/utilities.md": "e564355bedeb505d9e65f0b36c5a5831943ce1c8",
+        "references/slds-development-guide.md": "c9194bf0999906c634ce2330b7d2bf90f7291fc4",
+        "references/styling-decision-guide.md": "3db81c5f8586e185d1fe54cec7abcda37867513a",
+        "references/styling-hooks/borders.md": "54feb2b1f150a61419c22b8c0bddecb9809e922e",
+        "references/styling-hooks/color/expressive-palette-hooks.md": "20eb8d1b39beb77e4e8769de0730d0c3393fde1e",
+        "references/styling-hooks/color/index.md": "6a46892b3c3f0e6460c1e683e61fbbf991ea1bb5",
+        "references/styling-hooks/color/semantic/accent-hooks.md": "65ee3d6015271479f849a42e7076b166deefcf26",
+        "references/styling-hooks/color/semantic/feedback-hooks.md": "89151fb75dd0bf2fb74f649fefc36bc27a8b197b",
+        "references/styling-hooks/color/semantic/surface-hooks.md": "b3eb49ba358214c08ef7446fee8c767feee4b03a",
+        "references/styling-hooks/color/system-hooks.md": "8808ac6bb0bd7e99a4d9d9f0e0990e83cc626b00",
+        "references/styling-hooks/index.md": "4795e341c0e5d5c723b5872d142cad19049f6ee3",
+        "references/styling-hooks/shadows.md": "a7642542d0154e2b0141ce9e4d081e48f51afdd1",
+        "references/styling-hooks/spacing.md": "2b62281bc502c03345dc69c55e679ef6ca9dce97",
+        "references/styling-hooks/typography.md": "06556cacb3fb239cec2351a7606b0241f99c6441",
+        "references/utilities-quick-ref.md": "3ffd29d2a9da42131d22901bff0f7eb8784f8069",
+        "references/utilities/alignment.md": "59f4140432bc5e07ac0433bde012b38797d1d858",
+        "references/utilities/borders.md": "89e4f67a29befb2c97579c736b13af9dccef9aaa",
+        "references/utilities/box.md": "bbfac4c8a1c6b3bbed6fab89fb4e5502f373eeb2",
+        "references/utilities/color.md": "38195fe7d42fc748c5eee273dba8d09333885c65",
+        "references/utilities/dark-mode.md": "bcb1655c1f0118f2bf007be960b8325aa853bb89",
+        "references/utilities/description-list.md": "09450f2f4ca93a084c01bd45d479226edb049e92",
+        "references/utilities/floats.md": "1883d9da9af611c9d73d46a7bffa2b34e2b18673",
+        "references/utilities/grid.md": "7620316aa92b299ecbab72246f6dbfac6e4e9bde",
+        "references/utilities/horizontal-list.md": "da89327ab2d7b699ba1695edc661eeaddb6afca6",
+        "references/utilities/hyphenation.md": "2db5e50c93b0e7bf2acfd64350ab8b148595f7f9",
+        "references/utilities/index.md": "c6f0ac1ce22aa1f4437cd4d355fb09f1ac1e1075",
+        "references/utilities/interactions.md": "9bb2457e546f522e27a8181095111ab0c4070780",
+        "references/utilities/layout.md": "5e8eb312cb865c310b97925cd00d026cbcd42469",
+        "references/utilities/line-clamp.md": "15d93344532c213aa70a89d2953b46ecf9cc5b90",
+        "references/utilities/margin.md": "f352f0ce89efaadd77281d91a232a3c032a64517",
+        "references/utilities/media-object.md": "7cea26e1f7a0b4f94cc144a8742116425ccbd479",
+        "references/utilities/name-value-list.md": "b07ae54faa8ea125e803681d120100e9802f35c3",
+        "references/utilities/padding.md": "7656cd42ecd3ff43bbde4106c2cd128a565c31be",
+        "references/utilities/position.md": "e5934865ed1373c5ede585689feaf2f40c6e5624",
+        "references/utilities/print.md": "4eda6c61c7fdc70ba3365a5b0b6fcb9d9a8dc818",
+        "references/utilities/scrollable.md": "7a0ab07865cc4f4b1da50481d349a1f67e309dad",
+        "references/utilities/sizing.md": "ee1dc8196ced86854168c13c05120a7899aee49f",
+        "references/utilities/themes.md": "de7520146359f546f38ca20f02dd9b808bdf399d",
+        "references/utilities/truncate.md": "db52a769c96a95cc15742546e4dfe9b5157f5d19",
+        "references/utilities/typography.md": "c4461e0cf639ca849be23e85924397a6f7193c5a",
+        "references/utilities/vertical-list.md": "cb73de828ef8fb0cd2535a87fa77fafb4ff2aa72",
+        "references/utilities/visibility.md": "5521e5fe932091543feca7e30a557ba0132f86c5",
+        "scripts/search-blueprints.cjs": "c6eb7ae43239eebd3c74da0dc2c25ddf24c7cdbd",
+        "scripts/search-hooks.cjs": "0c42857fc69f4af2a9deb23da9062e8f2069719e",
+        "scripts/search-icons.cjs": "18d8c2eaa7efc9384357801c1b929234e15d7581",
+        "scripts/search-utilities.cjs": "87790847a1cc9567234ff8e0eb5003afc69ab0b0"
+      }
+    },
+    "dx-code-analyzer-run": {
+      "files": {
+        "SKILL.md": "e94b204f82e88f7e1da1d84b922d613b3697e372",
+        "examples/README.md": "ccfd54aee3a5b57155e7bca435ae86c020728242",
+        "examples/basic-scan-output.json": "95b35c1ed0e49965143937198ee66894fcfaf1a9",
+        "examples/command-variations.md": "348f3af91b9aba239883bd3e56852d5f0d82a7dc",
+        "examples/fix-application-before-after.md": "591b6153d87a851e34ae260fbba6cbcf439d1460",
+        "examples/large-scan-output.json": "3f8b2628b5a496b945a089bd4f51f97b40b471a1",
+        "examples/security-focused-output.json": "f7c1aa971d778d46e765f48778961762248c45b7",
+        "references/command-examples.md": "26fd9e95ae5493b1c04c800294cb7a5ba21bb532",
+        "references/engine-reference.md": "1752e61128a8ef2c97d8f0432d3764302a4710aa",
+        "references/error-handling.md": "3b9225c373fa4d842fb406b5c45295ec458c519a",
+        "references/flag-reference.md": "67dd1ced8d89011c5fc56464df87ec691ba9f892",
+        "references/post-scan-workflows.md": "d137dcd9b93763d88072b713028f41ba36c967ed",
+        "references/quick-start.md": "1916a75db977c010284c64618125c3d5d4fed716",
+        "references/special-behaviors.md": "1042e85c433aaa7c11f9ec82b5728e29f0394d13",
+        "references/vendor-file-handling.md": "6425ba052bf2ba64140f8644f589b1e4311f1d57",
+        "scripts/apply-fixes.js": "1f7fb079afb2f6442ca3eb6a6f4f6aa5c8a01e59",
+        "scripts/describe-rule.js": "77895b67d216c5f8e3c50b76c7c7a5f07599faf9",
+        "scripts/discover-fixes.js": "7200a6d3b362ab0d7e22d6a094be2082ad8553fd",
+        "scripts/filter-violations.js": "0372b09398763262c02d667184de80ba76bad8aa",
+        "scripts/list-rules.js": "46a0ad4df4ee149fa9e2c6a208ae066482de55a6",
+        "scripts/parse-results.js": "79c9d6e92079ff6f02f52b6ebd61404d76b435cb",
+        "scripts/query-results.js": "63dbf6627078f437ec0f437c40fe0a237e280729",
+        "scripts/summarize-fixes.js": "d9cc2cf9c8514131a60088e8bfb4342e969cc93b",
+        "scripts/verify-execution.sh": "bb05860f8c3791334127925531275f44afb90dfd"
+      }
+    },
+    "dx-org-analyze": {
+      "files": {
+        "README.md": "6f4dd9443eaeb7a77af9c8194727f0a2173de3bd",
+        "SKILL.md": "5b75693519c8133acda1bd1242d0de8fd7c77bc5",
+        "references/collection-details.md": "65fab55970845e1c968f90a8cc2ede1de592bf00",
+        "references/report-format.md": "ba66e3b0efedc80ae6e60288a6f5150621eb9648",
+        "scripts/collect_org_data.py": "a32cb96b03c22a0deb28425766ee657f35fb2894",
+        "scripts/compute_diff.py": "c3b7c472261262699ac9dce33b3cf5f9af6a2be7",
+        "scripts/introspect_org.py": "3a9253b52e7bff6776f0b687a65f3b40a66b0dd8",
+        "tests/README.md": "4e705a24066bf53709199e9e4f2f4bb3bce8a44d",
+        "tests/fixtures/org_a.json": "2aa9b719550b1a5dce05217d37228f1ce437b55a",
+        "tests/fixtures/org_b.json": "ca51b2db9a8f394a1d3c95c83cd227dffbb89084",
+        "tests/test_compute_diff.sh": "1754b581e63486968aa1ba45a94d101a6c78bb2f",
+        "tests/test_consistency.sh": "7fcee65b0fb08748918d292d78bc6e09ff0ac3d0"
+      }
+    },
+    "dx-org-devhub-configure": {
+      "files": {
+        "SKILL.md": "cb35cbc5d89dcac24dcc5334ce4bf821f35c1257",
+        "examples/status-output.md": "8e1066d414370baa46659e45d8d0f6aacd0821da",
+        "scripts/devhub.sh": "d239a10a338b84c42dbc3105bcf552b102e1c942",
+        "scripts/test-devhub.sh": "75a87f775b6536dd23efc79b13a9dbaaa85a515d"
+      }
+    },
+    "dx-org-manage": {
+      "files": {
+        "SKILL.md": "40aaf56e88a1265924ef9c227645e400eda50da6",
+        "assets/derive-alias.sh": "add1344d492a525dd7864a735d859d1be3d9e494",
+        "assets/scratch-def.seed.json": "30cde9f0bf8e66f8e08c9fabfcc50f94dbcf287d",
+        "examples/README.md": "8565126ed75f781671c219a00313890d75172243",
+        "examples/scratch-orgs/delete_output.json": "cbabd594b53dffc91e966be563aa7a79632bfc09",
+        "examples/scratch-orgs/display_output.json": "2c093e3ec945ee6871763391594fd580521345af",
+        "examples/scratch-orgs/error_no_devhub.json": "6108b810b76b121d45e8deee407975a36b212024",
+        "examples/scratch-orgs/error_timeout.json": "df38baf699f5470c68a44b7292bd52389b4afc27",
+        "examples/scratch-orgs/list_output.json": "a965d0c13c34e787858f1ca12221f50e68be68b5",
+        "examples/scratch-orgs/resume_output.json": "8e783878afbcd0986724154bec1e39f672a066dc",
+        "examples/scratch-orgs/success_definition_file.json": "a160f805cc69354e92592b3d0fa91c29cfa7ba85",
+        "examples/scratch-orgs/success_edition.json": "f438fcad096c60fdddceb1f7bca934446a1ca6dd",
+        "examples/scratch-orgs/success_shape.json": "1ea69d082152a77926d7303cef1a43556a1dab5c",
+        "examples/scratch-orgs/success_snapshot.json": "915a3b81f0904d064b403a78ec9f1fc312e7d82b",
+        "references/creating-scratch-org.md": "67b94244e0abe2a35bafe421ad9992ffefe1d5d6",
+        "references/definition_file_options.md": "60fb59af5cdb58e12c760280c89d5ea047328381",
+        "references/edition_types.md": "e3d448bd035a1aecbeeea3d1520dd52cbbaa27a9",
+        "references/opening-org.md": "16e4cba3ae091dd2908fe4ce2c38d7f7bf9ae27b",
+        "references/scratch-org-create.md": "90b65c573d625b82f29162e7008ad1db39149999",
+        "references/scratch-org-operations.md": "0b2d8d43ea7da573ed9342930767aedb4777f58d"
+      }
+    },
+    "dx-org-permission-set-assign": {
+      "files": {
+        "SKILL.md": "94bd291ec59ddb7f13d36491d41de98130963e2c",
+        "examples/error_output.json": "c7b275d49e18f4731bf74221c543ba5b35bfdb83",
+        "examples/success_output.json": "cc738a041a5789ecb320b43a0ebff591f505cd5a",
+        "references/cli_flags.md": "4a7dc9d685b65217225ff6356ad4ec6da1a60d65"
+      }
+    },
+    "dx-org-switch": {
+      "files": {
+        "SKILL.md": "0daba2f85f978909628cff2ed424e89153592c6f"
+      }
+    },
+    "dx-org-trial-expiration-check": {
+      "files": {
+        "SKILL.md": "634be99ec2dcf69eec718382381086a61d52e0cd",
+        "scripts/check_expiration.sh": "fe85739c8adf62c7b659694c1413169b1e9c6f0a"
+      }
+    },
+    "experience-ui-bundle-2gp-deploy": {
+      "files": {
+        "SKILL.md": "41116edfa4e8b258df62ce5495caa39e6e5c1de3",
+        "assets/CustomApplication.app-meta.xml": "29d7f8e1c05fea387de9b7fc696e5cb5f24fbe8b",
+        "assets/PermissionSet.permissionset-meta.xml": "27d207f145b15bad9da75c41a2d366f92b3daa31",
+        "scripts/find-bundle-package-dir.sh": "6551c867a03624778662706f6d53e831a5b4b0aa"
+      }
+    },
+    "experience-ui-bundle-app-coordinate": {
+      "files": {
+        "SKILL.md": "9c71237798170eb600a349f6d17d092806dbba27",
+        "references/phase-completion-validation.md": "c93060770fb03077472b73317519cc7ca5ceddfb",
+        "references/phase-custom-objects.md": "7cd5dfd71eee326d381f0c27974c35c22ee1b793",
+        "references/phase-execution-pattern.md": "551b6017b79a607149710db08a87f4afe888c129",
+        "scripts/check-dangling-refs.mjs": "2ce58eee8f62edca8a8a82a6a0c04aec13655b46",
+        "scripts/check-hosting-target.mjs": "a3ca4834e258931a8176685b8967229a58d49d8f",
+        "scripts/check-phase-1-complete.mjs": "735bc9f5b60f431b488a3510195c191c236cb9fd",
+        "scripts/check-phase-4-complete.mjs": "2873b6012ac602bc270debe2f92f94155a3e864b",
+        "scripts/check-phase-6-ready.mjs": "a66fc23bc345a02d74c0930ee054d00e9504a653",
+        "scripts/check-prerequisites.mjs": "e623a32404176285556a6ec8b0b726b579a932c7",
+        "scripts/check-sfdx-project.mjs": "a6a79be72d6520e45ce804ac401a40e1261aa322"
+      }
+    },
+    "experience-ui-bundle-custom-app-generate": {
+      "files": {
+        "SKILL.md": "2745c747ad966b06e13c752914cba058255cda66",
+        "references/configure-metadata-custom-application.md": "7eeade057c754b3ce8eec62ace78d49f0c7786ae",
+        "scripts/resolve-uibundle-path.mjs": "9afef4f6e89c65dfb1e8246e337fc8bc9a7e3468"
+      }
+    },
+    "experience-ui-bundle-deploy": {
+      "files": {
+        "SKILL.md": "c85bc00158a3e55ec89bcbe25ad3eebc2f2e6678",
+        "assets/Communities.settings-meta.xml": "1b0d7b77f86ffa951657e54e57cd4e3cdcc93795",
+        "assets/data-delete.apex": "a5dd5c89a515df9930346803636c978e07661669",
+        "assets/data-import.apex": "35e9c8c5f92694766ddfc71786a2209b8c677180",
+        "assets/network-selfreg-xml-recipe.md": "eeb982137d514b10842e915ea34b1ab38bcf0f92",
+        "assets/network-selfreg.apex": "eb0571c2e3e6c94a7bd2658f41f6652f290909b3",
+        "assets/org-setup.config.template.json": "21c8363339d6e3efe7dd670d92ed6122cc7e0def",
+        "assets/prepare-import-unique-fields.js": "88a253c63888f50658342ec4b5a43a80a8747ae9",
+        "assets/social-login-auth-providers.apex": "2503395ef470be2cd8c71b10df91653b972e1162",
+        "references/config-scaffold.md": "86f8070d2b72d822ffc28543adc76f35301f1ad7",
+        "references/data-import.md": "181175334685c0de88d6dd06773220a8e8deeac9",
+        "references/dev-preview.md": "9c64bfaa1fb3d0b2fe61ebf59658efdddf593312",
+        "references/graphql.md": "e764c4bf7dd2c5635ba8b44412c7a1e896403988",
+        "references/license-checks.md": "4976a13044f0834f842ae71f29920f4bb9e8b147",
+        "references/logout-url.md": "a1adc80441ecb5c5ebeeb31a9c3a8171089cd79e",
+        "references/role-assignment.md": "d9547ad0f61ed47d9f7cfbe427a7769b181a98d5",
+        "references/self-registration.md": "c17d64e121444264131131b13377ed638a0d71e0",
+        "references/social-login.md": "84f85baf70fecdb93d18cbae9ecd9e73160e251b",
+        "scripts/derive-site-name.sh": "7e1c9aa0818aee32cf3881d1bde6c09ff42ed7b8",
+        "scripts/find-data-plan.sh": "42603124ae1fdcbc428525b137bdd7a0af845399",
+        "scripts/find-prep-script.sh": "7e322cae0319d20fc03354abf6ce0e0e953c29b9",
+        "scripts/get-source-root.sh": "8b5a766fa5ef447aae32b3a9efef0a454f5aa330",
+        "scripts/set-logout-url.mjs": "8e1134c5c468bbbbea1559e69e3b26945cb839e5"
+      }
+    },
+    "experience-ui-bundle-file-upload-generate": {
+      "files": {
+        "SKILL.md": "e2bf0654564354c4945ae4177a6e33e8070a904d"
+      }
+    },
+    "experience-ui-bundle-frontend-generate": {
+      "files": {
+        "SKILL.md": "f4ba2a66fed754b118a2b37bc7a3bf6f137afc86",
+        "references/component.md": "2d135d86bffd0cc6f424f0d009249dcf17418944",
+        "references/header-footer.md": "f41a4c7b4e0071574ec8c546c7ba8b4b883308df",
+        "references/page.md": "a6c9b6d9628df9100e37c25af13d63dbd77bfd67",
+        "scripts/check-preconditions.mjs": "82a3ac64bc98eedeafe887688e92f044d25b95a3",
+        "scripts/resolve-ui-bundle.mjs": "de211a7bd5b4203987afa9349fd074ff265acb5c",
+        "scripts/verify-rules.mjs": "b43a53375afd65428420d6f2da2455028b37891e"
+      }
+    },
+    "experience-ui-bundle-metadata-generate": {
+      "files": {
+        "SKILL.md": "e66b7d6ffc7cb5ece42886e084d2f93124a064e7",
+        "references/angular-metadata-generate.md": "5aa7bb01acc26cf294df97a56c8bf2f11484c3a9",
+        "references/csp-metadata-format.md": "ad971bad1df8926024ff102ff329eb6fc94f486b",
+        "references/react-metadata-generate.md": "3d9e085be3f287a04f88c8aeed4f2a373c5cef30",
+        "scripts/check-api-version.mjs": "bb80f4bc87e052f7268b03958fb9c7fec3ae5a9e",
+        "scripts/detect-framework.mjs": "131a4319cfc8025bb0205516b465005822d68212",
+        "scripts/verify-bundle-location.mjs": "2c5e7f21547c512fd504c5593adeff7a53839c01"
+      }
+    },
+    "experience-ui-bundle-project-generate": {
+      "files": {
+        "SKILL.md": "5c7e94f1b38f42459abce54afd75203374fa25ed",
+        "references/angular-project-generate.md": "1f782e1ec0cc1765b8dd4d8c991bed226c2b4957",
+        "references/react-project-generate.md": "8f18b7417f681dab4461fdf553a3a9a34a59496d",
+        "scripts/flatten-project.mjs": "c403a25f801b6614c17139b7b6e25bd76a125e31",
+        "scripts/generate-project.mjs": "920d4c470a07a7d61ef30b21e382f50d061f4c45",
+        "scripts/install-deps.mjs": "d9b09bfcab1b063b9be9cbf509f6e31934a40ed5"
+      }
+    },
+    "experience-ui-bundle-salesforce-data-access": {
+      "files": {
+        "SKILL.md": "fe4fee6eca5e1e8f9d3f1ff79707971c6970c9b5",
+        "references/caching.md": "ba529d090e316cc67a9212e1443e53663408dc3d",
+        "references/graphiti-cli.md": "2cbedb2223a9e8a89d71c208689f520fb28946ac",
+        "references/graphql-hand-authoring.md": "52a38d97929a4e697c9465e7c572119388239d03",
+        "references/migration.md": "e2bf76298d4a57c12ff613d79651ed06794e42d4",
+        "references/rest-and-integration.md": "9b13352f03f93431055cbebdf7212252020c8c77",
+        "references/sdk-api.md": "c845fefd4a95f942c9e25c096e3c1e40c6fb8c7a",
+        "scripts/graphql-search.sh": "676fdc9232c37da3e2f8fc58d87b71faf1381c90"
+      }
+    },
+    "platform-apex-generate": {
+      "files": {
+        "SKILL.md": "c7ff68c6a1d15764d8d3596d3fcd0f64c6fdd2cc",
+        "assets/abstract.cls": "1aa43fdfe72191c9f88bf4181c81d2535d8ddeac",
+        "assets/batch.cls": "99165ba0b302389ba1a4c3f2a58dfe2a9184a29a",
+        "assets/domain.cls": "f4bfd26192bcc5bd3f7c12fd1b243d3db7d5fd3b",
+        "assets/dto.cls": "e5cb2315322566d4dfd042bba0e1de52c6011565",
+        "assets/exception.cls": "323281a57df722fbf7b0b00283d77dbf6399e658",
+        "assets/interface.cls": "b35b3569f403eab948d6cfe523394cd1c70ec502",
+        "assets/invocable.cls": "d02fa116cbd54faeb82c795c7f1ed1dfcfc60d2b",
+        "assets/queueable.cls": "911b56b8d06a8696c78aff2b291175f18faebc90",
+        "assets/rest-resource.cls": "12d7a1698eb84b8dc19b6c42b1b352b8b0a1c527",
+        "assets/schedulable.cls": "1eb01f03ddcfe2c521397b974d99246504bacf99",
+        "assets/selector.cls": "29fd609585a6dde8b1cc2972d21ae7f22274bc28",
+        "assets/service.cls": "d1ae58d2c08d32da51888613b7e63c7e35bb39ad",
+        "assets/trigger.cls": "5f849add1ee702063dac08b9e7429a9f70713c1e",
+        "assets/utility.cls": "36ef88502f4c9714a9c82a6b523c8e4bfeb0d8c0",
+        "references/AccountDeduplicationBatch.cls": "6671839297dbbe9cc1570c27f68566e45162bd3a",
+        "references/AccountSelector.cls": "57282dd3322a7c635e02a859af054598c55b706c",
+        "references/AccountService.cls": "242f5ae5cfbb75d88386c3928aa26c57021461e1"
+      }
+    },
+    "platform-apex-test-generate": {
+      "files": {
+        "SKILL.md": "c3a97b873de63f498844270cc021f6193c108e04",
+        "assets/test-class-template.cls": "f02ae8ed71893ee0ae80d93494b978b4bcdcac07",
+        "assets/test-data-factory-template.cls": "29db7fbfa96b0550bcec379bcc2cc16f31b729d4",
+        "references/assertion-patterns.md": "229642adcc3830bfb657aa4874c447598f1a0829",
+        "references/async-testing.md": "70c60218bf533740eaca2e4e550fc498c4c13af7",
+        "references/mocking-patterns.md": "4d27a0ab8afb6a3e2108f4a9fee56b46299ea2b5",
+        "references/test-data-factory.md": "1414ac35f5923e14d1774869d3b0d716bade3568"
+      }
+    },
+    "platform-apex-test-run": {
+      "files": {
+        "README.md": "4166b51ba0e12f11223152d5bbf96b759a2cdbe9",
+        "SKILL.md": "9937dab6f5a883b270ce20114a0cf619dfd1ed8b",
+        "assets/basic-test.cls": "9f856a6b25c5b6a853c6f776b1bae0cd96b4fa80",
+        "assets/bulk-test.cls": "4df4a24e8a0cad48704aa148eee28dca1267dbe3",
+        "assets/dml-mock.cls": "1c860f69c9753b25652522aedebae0c30fcdc12c",
+        "assets/mock-callout-test.cls": "c4384cb1ba39193ec922ddd50f107aac2ece386f",
+        "assets/stub-provider-example.cls": "eb21b40fff364f73ca805cc9b57f803c03988940",
+        "assets/test-data-factory.cls": "53326d3dfc2de37a54a4104a2706ce5b0a9f8a29",
+        "references/cli-commands.md": "46b0586907cf048db27c9929651c7c425a3aa852",
+        "references/mocking-patterns.md": "e4cc7c22627c7bd8a8442239a7b7eaf40967a5d9",
+        "references/performance-optimization.md": "621404d1ba99aaaa9340585af4a6402cfb9ccd23",
+        "references/test-fix-loop.md": "abbe556f8b03830b103b41c128c3f3ef453dbb83",
+        "references/test-patterns.md": "a030a72c011c257196dd7710215ae909468fc705",
+        "references/testing-best-practices.md": "56065bfeb6e492ccc17e0e9149f7c39d6b057959",
+        "scripts/parse-test-results.py": "47d6fad12326a806f19502261b9a74a394e8266c"
+      }
+    },
+    "platform-data-manage": {
+      "files": {
+        "README.md": "20ab04022bbd720782d480be02f9b49cb4eb83de",
+        "SKILL.md": "665b185a915442bad3cee564e4c00312428a4044",
+        "assets/bulk/bulk-insert-10000.apex": "9dcae9178fcc6491b58b8747aec5d4b2e2c10859",
+        "assets/bulk/bulk-insert-200.apex": "d57bd4f7981eb57f48dae7aaaadc68e442694d25",
+        "assets/bulk/bulk-insert-500.apex": "2133d7045b4fa11f54b7ec31854a5d3defde3d25",
+        "assets/bulk/bulk-upsert-external-id.apex": "77e1d31dc410c337643e244818923ee3ac1519e6",
+        "assets/cleanup/delete-by-created-date.apex": "2eb752d6e636685c54936aad7ee107c6fc37a44d",
+        "assets/cleanup/delete-by-name.apex": "5a1f5b05c334eb35c905b96d15aa4e1bf1607fff",
+        "assets/cleanup/delete-test-data.apex": "358769206bc752113c51d32fa644cfebd79e8fa9",
+        "assets/cleanup/rollback-transaction.apex": "8ca80789a0d2ab0ac68ebcadc8bce02ebc6816bd",
+        "assets/csv/account-import.csv": "4d7a6f71102dfeb7b07d8fb10bc7ef793e57e874",
+        "assets/csv/contact-import.csv": "00b86bf49df37cede0408dd2be5dae0a5b3ed974",
+        "assets/csv/custom-object-import.csv": "e000f091ca6d4780dc804d7a12395ae4bf6c10d8",
+        "assets/csv/opportunity-import.csv": "cb97ee69aff870aa1559350663ea631ff687fcc0",
+        "assets/factories/account-factory.apex": "5901370abba23bf04f1cbe1464f9a3ad71ed9a19",
+        "assets/factories/case-factory.apex": "e5ab1500ec804f62af2cb49958d97899af682a19",
+        "assets/factories/contact-factory.apex": "059fe8ed3fd78d2f2215c43c754b6df468708671",
+        "assets/factories/custom-object-factory.apex": "d8ef54f341dec08a60dd68aaf5e7f3b08b521358",
+        "assets/factories/event-factory.apex": "069b76e61054e981752889d71b2d77366269b8c1",
+        "assets/factories/hierarchy-factory.apex": "b749c3ceff62d87e92a335e87dac53782bf5c65c",
+        "assets/factories/lead-factory.apex": "8fd3e9b7dec04fe1fff40b1dffaf960a0ddb2551",
+        "assets/factories/opportunity-factory.apex": "70496a130006382db0c9bab6585f5ad05ee91369",
+        "assets/factories/task-factory.apex": "780a57a24dbdc12382e0ea1e68fc776887429096",
+        "assets/factories/user-factory.apex": "435c30cb31bae52ca299966182d10f60a9f8b892",
+        "assets/json/account-contact-tree.json": "07177220874361efd500fef43afc7cbd5dc49d43",
+        "assets/json/account-opportunity-tree.json": "40c94a579a28cf9445f17c836e767c0e567e255c",
+        "assets/json/full-hierarchy-tree.json": "ab768782bf8b2a8a947042ed5159b76a98063374",
+        "assets/soql/aggregate.soql": "d29e6f8514a57aa4909c96a0c6d710d8cb634490",
+        "assets/soql/child-to-parent.soql": "7f6f6d1ede10cfcdd51474bb222b3bcd3056d2d2",
+        "assets/soql/parent-to-child.soql": "f5b5ccee9810369e68300ae68c87426a841d7fc8",
+        "assets/soql/polymorphic.soql": "3717ee386f5b9c1da2869b7a1294e7c650031760",
+        "assets/soql/subquery.soql": "984453ceb5181a14d7a37c4c690a0e9c57e66a59",
+        "references/anonymous-apex-guide.md": "c451cc34e168cbdfc3359a97b3dd484ed7cdbbbc",
+        "references/bulk-operations-guide.md": "462e6dd37743862c9a04645df2ffd53189d01553",
+        "references/bulk-testing-example.md": "ddc05da287bff11ed8028b5584ade928915edb0c",
+        "references/cleanup-rollback-example.md": "d17a701254baba8f897e7fd7ce40b5eaa1d9d8a9",
+        "references/cleanup-rollback-guide.md": "7f1202674b4674cfe3eb52671ee810848bac306d",
+        "references/crud-workflow-example.md": "83a8b9588347952bb4d55dc9ad9e27e54c19f286",
+        "references/governor-limits-reference.md": "8dea8ec9b70a9826eb2c0a1ae0eb6de56fa911ac",
+        "references/orchestration.md": "7cc885296d1d74531049b11334916a1679a7d45b",
+        "references/relationship-query-examples.md": "0c083541f48eecc16ef49cecd8b1ba6f9332bc08",
+        "references/sf-cli-data-commands.md": "91a6e7ed85183d4a98f21b76110f3279b9b146bd",
+        "references/soql-relationship-guide.md": "f07db2357d9ff5bd8315e9af6b407c4bcd91f952",
+        "references/test-data-best-practices.md": "5703202eb003414f44432c0da892fe4b48e3fd9e",
+        "references/test-data-factory-usage.md": "feb1ac701d7d9c445e1e543eabda9f95ce0bf3bd",
+        "references/test-data-patterns.md": "178af9329d35b39eb0e3a5601e06ef2b1347f5fa",
+        "scripts/soql_validator.py": "eda4d0a6380e48a2e5d31e1874e5a0e6b6959786",
+        "scripts/validate_data_operation.py": "e959e920b334075023cf75865c4ba49e27ed13d0"
+      }
+    },
+    "platform-docs-get": {
+      "files": {
+        "README.md": "42b2862719a0ca289ec2633427c8b5fee3a13407",
+        "SKILL.md": "e0c2aff3cdceecf3d1d9523f19a2264374ace84a",
+        "scripts/extract_help_salesforce.py": "86fbb7b3e237a7054aa61edbddd407690c5c0b97",
+        "scripts/extract_salesforce_doc.py": "3c1a50288dda6177a791605fba6816ce9252512f",
+        "scripts/requirements.txt": "a774a66ff0beaef3b0d062323737ce3f0a0cfa78",
+        "scripts/runtime_bootstrap.py": "19e3c4adb26644d19fd97e69b1f1fe39b523b9c1"
+      }
+    },
+    "platform-metadata-deploy": {
+      "files": {
+        "README.md": "d0f4a5919830ff8e2bfb8168460f858a0863c020",
+        "SKILL.md": "4270ae45d2192302340f14f12ce5e4d8a873cb75",
+        "assets/destructiveChanges.xml": "8295a1245970ff102a1d94f169189df1e10b7196",
+        "assets/package.xml": "d5a2ca7ec5a878d687ecc3e5961c36c6f267e6dc",
+        "references/agent-deployment-guide.md": "f8c249ea8cad8c9e1e33f2a1f989ddd01430c4ce",
+        "references/deploy.sh": "a92b0d384bf087f5e111dd362b7fc16132413a08",
+        "references/deployment-report-template.md": "37f646962b237f07b0a219cb11f0bed0dc83161d",
+        "references/deployment-workflows.md": "52fbf98eda4ff024a27d847a0062e68f1f04e1ca",
+        "references/orchestration.md": "6a1ef7d6d38df69b32b11b80e514ce952dc8e615",
+        "references/trigger-deployment-safety.md": "1a33de887399abd0467ebd847b0f48197987cd6a"
+      }
+    },
+    "platform-metadata-retrieve": {
+      "files": {
+        "SKILL.md": "7b82290946301932f344ce21e959de7964400427",
+        "examples/error_output.json": "45749606222f056eab9102e37a68589b2b073bf1",
+        "examples/success_output.json": "d996b3a1a5cae5683e174366ef3dc5cae1c88e2e",
+        "references/cli_flags.md": "4454fa5f995062fbd9488e5103d4f42cbcd308a8",
+        "references/retrieval_modes.md": "81d562b914bed808504a977a02becd3a5c292e1e"
+      }
+    },
+    "platform-permission-set-generate": {
+      "files": {
+        "SKILL.md": "424d4b5d904697dd4f5a01b688505adeb35b157c"
+      }
+    },
+    "platform-sharing-owd-configure": {
+      "files": {
+        "SKILL.md": "2d17690d4c956dd451c6738cca11041de80bb13f",
+        "examples/get_owd_output.md": "12cfa66f1391828d8c82b8855716438ab8a1540f",
+        "examples/update_owd_output.md": "4e17937fca2d72a252e74cdefadf47369158b757",
+        "references/access_levels.md": "8ad947e993736bfa708106f8035c761b377e22d9",
+        "references/metadata_api_approach.md": "d0783931db28070bac580627d11374304407e8d5"
+      }
+    },
+    "platform-sharing-rules-generate": {
+      "files": {
+        "SKILL.md": "17cc2a42990014eda0fab9bf15c4f866b8004bdc",
+        "examples/create-cases.md": "1bb5d48cbf3c2ac69f8976382ca90fa71328d5f8",
+        "examples/delete-cases.md": "c297d98954784c029d8bc3bdf5c36d097da0a128",
+        "examples/edit-cases.md": "10dc75813ac71bf9eea86f1e32f8de2b9f41812f",
+        "references/rule-types.md": "62a966db8ebde78241ec33dfa50e67bcd9af9e2e",
+        "scripts/count-remaining-rules.sh": "d22a5dc289919caa6828b290d4bbe6325c844b55"
+      }
+    },
+    "platform-soql-query": {
+      "files": {
+        "README.md": "627a840ac1630344bea30657aa2c0fa2051b9641",
+        "SKILL.md": "5cdb9c29808ac8efef6a25be21fa575f61da3f88",
+        "assets/aggregate-queries.soql": "58d95adff4a3bb0013f0ce2d88b8982c0563b130",
+        "assets/basic-queries.soql": "1d50a0bc8afb71c563f6b90c744cbbecbc58ddbe",
+        "assets/bulkified-query-pattern.cls": "a3468f20300703db2654c48d27bcebb41375afc3",
+        "assets/optimization-patterns.soql": "c858848170d9e76ca2018af7b0f2e26c5fc55222",
+        "assets/relationship-queries.soql": "8d32c4bee8675115ff3172e1f4977d608e8ce82e",
+        "assets/selector-class.cls": "8f88fd00257f9484c05cecffad9a7b94372a9139",
+        "references/anti-patterns.md": "8bc883ea8563fb642b5bab1611d1f8c377d0c875",
+        "references/cli-commands.md": "7a8ee0bc9c1a48a55bed09392c828c6d6f703f96",
+        "references/field-coverage-rules.md": "7404f14d419121de0fd5b15b0e974061490ab75c",
+        "references/query-optimization.md": "7a41e74fcdf5c9f3aae6e597baa57565c416ec71",
+        "references/selector-patterns.md": "e485949278c3fdde50e1b1a15a4502e90f28ac74",
+        "references/soql-reference.md": "b19dd8caa6256f55854b52c5a1ec25d6ef8b9b6c",
+        "references/soql-syntax-reference.md": "4380f32a622655298faa3a0dacf762d417da53c5",
+        "scripts/post-tool-validate.py": "a455a2e53589fde776aa7476283f5ab6c53df372"
+      }
+    }
+  },
+  "installer_cli": "skills@1.7.0",
+  "integrity": "per-file upstream Git blob IDs at the pinned revision; CRLF/LF tolerant; extra/missing/changed files fail"
 }

@@ -30,7 +30,7 @@ EMAIL_OK = re.compile(r"@(?:example\.(?:com|org|net)|anthropic\.com|users\.norep
 
 
 def files():
-    official = tuple(f".agents/skills/{n}/" for n in json.loads((ROOT / "skills-lock.json").read_text())["skills"])
+    official = tuple(f".agents/skills/{n}/" for n in json.loads((ROOT / "skills-lock.json").read_text(encoding="utf-8"))["skills"])
     out = subprocess.run(["git", "ls-files", "-co", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True)
     for rel in out.stdout.splitlines():
         p = ROOT / rel
@@ -44,7 +44,7 @@ def allowlist():
     f = ROOT / "scripts" / "scan-allowlist.txt"
     rules = []
     if f.exists():
-        for line in f.read_text().splitlines():
+        for line in f.read_text(encoding="utf-8").splitlines():
             line = line.split("  #", 1)[0].strip()
             if line and not line.startswith("#"):
                 path, rx = line.split(":", 1)

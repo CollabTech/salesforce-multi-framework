@@ -1,5 +1,7 @@
 # GOV-02 — fresh agent session — SMF-2 planning dry run
 
+> Historical record (before the PR #1 review). Current result: `GOV-02-run3.md`.
+
 | Field | Value |
 |---|---|
 | Case ID | GOV-02 |

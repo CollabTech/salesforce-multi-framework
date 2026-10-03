@@ -18,6 +18,7 @@ PATTERNS = {
     "Salesforce session/access token": r"\b00D[A-Za-z0-9]{12,15}![A-Za-z0-9._-]{20,}",
     "Salesforce org ID": r"\b00D[A-Za-z0-9]{12}(?:[A-Za-z0-9]{3})?\b",
     "Salesforce user/record ID": r"\b(?:005|500|02i|001|069|068|0PS)[A-Za-z0-9]{12}(?:[A-Za-z0-9]{3})?\b",
+    "Salesforce package/operation ID (SMF-5: keep in private/packages.json)": r"\b(?:0Ho|04t|05i|08c|0Hf|06y)[A-Za-z0-9]{12}(?:[A-Za-z0-9]{3})?\b",
     "private key": r"-----BEGIN (?:RSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY-----",
     "JWT": r"\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}",
     "AWS access key": r"\bAKIA[0-9A-Z]{16}\b",

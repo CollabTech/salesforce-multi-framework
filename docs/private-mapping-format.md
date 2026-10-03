@@ -28,3 +28,8 @@ IDs and, for `sf org create user`, the generated password) — never copy it int
 
 Credentials (passwords, passkeys, tokens, auth URLs) go in the `sf` CLI's credential store
 only — not in these files. Evidence refers to `dev`, `install-test`, and persona IDs.
+
+`private/packages.json` — written by SMF-5 (`docs/smf-5/subscriber-runbook.md`): the package
+`0Ho…` ID, per version the `08c…` create request, `04t…` version ID, version number and
+commit, and the `0Hf…` install requests. Raw `sf package … --json` output goes in
+`private/smf5/`; only `scripts/smf5/sanitize_report.py` output is published.

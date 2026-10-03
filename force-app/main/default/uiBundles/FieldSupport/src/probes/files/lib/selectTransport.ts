@@ -2,7 +2,7 @@
  * Chooses the Files transport. The mock is available only on a localhost origin with
  * ?transport=mock, so a deployed Salesforce build can never silently run against it.
  */
-import { createMockTransport, type MockFault, type MockTransport } from './mockTransport';
+import { createMockTransport, type MockFault, type MockSeedEntry, type MockTransport } from './mockTransport';
 import { salesforceTransport } from './salesforceTransport';
 import type { FilesTransport } from './transport';
 
@@ -17,6 +17,8 @@ let mockSingleton: MockTransport | null = null;
 declare global {
   interface Window {
     __SMF_MOCK_FILES__?: MockTransport;
+    /** Localhost tests only: state exported from another page's mock (fresh-session reopen). */
+    __SMF_MOCK_SEED__?: MockSeedEntry[];
   }
 }
 
@@ -32,7 +34,7 @@ export function selectFilesTransport(win: Window = window): FilesTransport {
   const params = new URLSearchParams(win.location.search);
   if (params.get('transport') === 'mock' && isLocalhostOrigin(win.location.hostname)) {
     if (!mockSingleton) {
-      mockSingleton = createMockTransport({ faults: parseFaults(params.get('faults')) });
+      mockSingleton = createMockTransport({ faults: parseFaults(params.get('faults')), seed: win.__SMF_MOCK_SEED__ });
       win.__SMF_MOCK_FILES__ = mockSingleton;
     }
     return mockSingleton;

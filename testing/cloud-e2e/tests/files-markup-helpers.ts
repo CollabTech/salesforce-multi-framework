@@ -54,6 +54,14 @@ export function latestVersionIds(recordId: string): string[] {
   ).map(r => String(r.Id));
 }
 
+/** Latest ContentVersion Ids of SMF-11 markup Files on a record ('snapshot' | 'export'), newest first (MF-ADMIN). */
+export function markupVersionIds(recordId: string, kind: 'snapshot' | 'export'): string[] {
+  return adminQuery(
+    `SELECT Id FROM ContentVersion WHERE IsLatest = true AND Title LIKE 'MF-MARKUP-001 ${kind} r%' AND ContentDocumentId IN ` +
+      `(SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = '${recordId}') ORDER BY CreatedDate DESC LIMIT 200`
+  ).map(r => String(r.Id));
+}
+
 /** Count of public links (ContentDistribution) on Files linked to a record (MF-ADMIN). */
 export function publicLinkCount(recordId: string): number {
   const rows = adminQuery(

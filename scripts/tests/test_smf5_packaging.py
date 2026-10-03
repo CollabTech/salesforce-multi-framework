@@ -145,5 +145,38 @@ class SanitizeReport(unittest.TestCase):
         self.assertEqual(r["SubscriberPackageVersionId"], "<04t-id>")
 
 
+class PkgFlow(unittest.TestCase):
+    PF = load("pkgflow")
+
+    def test_pick_version_matches_label_tag_and_validation(self):
+        tag = self.PF.version_tag("v1", "a" * 40)
+        vs = [{"Version": "1.0.0.1", "Tag": tag, "ValidationSkipped": False, "SubscriberPackageVersionId": "A"},
+              {"Version": "1.0.0.3", "Tag": tag, "ValidationSkipped": False, "SubscriberPackageVersionId": "C"},
+              {"Version": "1.0.0.4", "Tag": tag, "ValidationSkipped": True, "SubscriberPackageVersionId": "D"},
+              {"Version": "1.0.0.5", "Tag": "other", "ValidationSkipped": False, "SubscriberPackageVersionId": "E"},
+              {"Version": "1.1.0.1", "Tag": tag, "ValidationSkipped": False, "SubscriberPackageVersionId": "F"}]
+        self.assertEqual(self.PF.pick_version(vs, "v1", tag)["SubscriberPackageVersionId"], "C")
+        self.assertEqual(self.PF.pick_version(vs, "v2", tag)["SubscriberPackageVersionId"], "F")
+        self.assertIsNone(self.PF.pick_version(vs, "v1", "nope"))
+
+    def test_installed_and_ids(self):
+        inst = [{"SubscriberPackageName": "Other"}, {"SubscriberPackageName": "FieldSupportPoC", "SubscriberPackageVersionId": "x" * 18}]
+        self.assertEqual(self.PF.installed_version(inst)["SubscriberPackageName"], "FieldSupportPoC")
+        self.assertTrue(self.PF.same_id("x" * 18, "x" * 15))
+        self.assertFalse(self.PF.same_id("", ""))
+
+    def test_beta_refusal_detection(self):
+        self.assertTrue(self.PF.is_beta_upgrade_refusal("Cannot upgrade beta package"))
+        self.assertFalse(self.PF.is_beta_upgrade_refusal("Installation key required"))
+
+    def test_stage_files_target_explicit_orgs(self):
+        stages = sorted((ROOT / "scripts/cloud/stages").glob("6[0-4]-smf5-*.sh"))
+        self.assertEqual([p.name[:2] for p in stages], ["60", "61", "62", "63", "64"])
+        for p in stages:
+            text = p.read_text(encoding="utf-8")
+            self.assertRegex(text, r"(?m)^# needs: [0-9 ]+$")
+            self.assertNotRegex(text, r"--target-org[ =]smf-dev\b(?!-)")  # never the dev org
+
+
 if __name__ == "__main__":
     unittest.main()

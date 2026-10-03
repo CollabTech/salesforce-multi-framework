@@ -140,8 +140,12 @@ def build_tree(label: str):
     b = wt / "force-app/main/default/uiBundles/FieldSupport"
     build_id = sha[:7] + ("" if label == "v1" else "+v2")
     for cmd in (["npm", "ci", "--no-audit", "--no-fund"], ["npm", "run", "lint"], ["npx", "vitest", "run"], ["npm", "run", "build"]):
-        subprocess.run(cmd, cwd=b, check=True, env={**os.environ, "VITE_BUILD_COMMIT": build_id},
-                       stdout=subprocess.DEVNULL)
+        env = {k: v for k, v in os.environ.items() if k != "VITE_BUILD_COMMIT"}
+        if cmd[-1] == "build":  # unit tests expect the variable unset (SMF-4 hostContext test)
+            env["VITE_BUILD_COMMIT"] = build_id
+        r = subprocess.run(cmd, cwd=b, env=env, capture_output=True, text=True)
+        if r.returncode != 0:
+            raise RuntimeError(f"{label} bundle: `{' '.join(cmd)}` failed:\n{(r.stdout + r.stderr)[-1500:]}")
     subprocess.run([sys.executable, "scripts/smf5/check_package.py", "--built"], cwd=wt, check=True)
     return wt, sha, version_tag(label, sha)
 

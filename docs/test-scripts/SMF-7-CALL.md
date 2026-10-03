@@ -13,7 +13,7 @@ passed in those rows.
 
 **Cloud-first split.** Desktop CALL-03 (all controls) and the *functional* part of CALL-01/02
 (join, media flowing both ways, marker decoded remotely, mute/camera/leave propagation) run
-automatically in stage 52 with fake devices. People do only what automation cannot attest:
+automatically in stage 53 with fake devices. People do only what automation cannot attest:
 **audio heard, video seen, real devices, and every mobile row**. Results go in
 `testing/device-results/` (template there); the agent writes the evidence.
 

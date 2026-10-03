@@ -14,7 +14,7 @@ MF-TECH provisioned with `FieldSupport_Access`; SMF-4 app deployed and HOST-01 p
 same env row (the app must launch before capture can be tested there).
 
 **Cloud-first split.** On desktop rows the agent runs the functional part automatically
-(`scripts/cloud/stages/51-smf6-capture-e2e.sh` → `testing/cloud-e2e/tests/smf-6-capture.spec.ts`,
+(`scripts/cloud/stages/52-smf6-capture-e2e.sh` → `testing/cloud-e2e/tests/smf-6-capture.spec.ts`,
 Microsoft Edge on Linux and Playwright Chromium with **fake** camera/mic, as MF-TECH in the
 real Salesforce host). That run never attests a real device. A person still does, per desktop
 row: CAP-01 steps 2–4 "Human attests" observations with a real webcam/mic, CAP-02 steps 1–2

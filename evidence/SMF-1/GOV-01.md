@@ -1,5 +1,9 @@
 # GOV-01 — fresh agent session — official and project skills discoverable without machine-global dependencies
 
+> Historical record (runs 1–2, design before the PR #1 review). It describes committed vendor
+> skills and whole-tree hashes, which ADR-0001 rev 2 replaced. Current result:
+> `GOV-01-portability.md`.
+
 | Field | Value |
 |---|---|
 | Case ID | GOV-01 |

@@ -1,0 +1,144 @@
+started 2026-10-03T21:27:12Z
+commit b79111a
+Python 3.11.15
+v22.22.0
+
+### A. fresh clone, empty HOME, before bootstrap
+    FAIL
+     - design-systems-slds-apply: not installed (.agents/skills/design-systems-slds-apply missing) - run python3 scripts/bootstrap-skills.py
+     - dx-code-analyzer-run: not installed (.agents/skills/dx-code-analyzer-run missing) - run python3 scripts/bootstrap-skills.py
+     - dx-org-analyze: not installed (.agents/skills/dx-org-analyze missing) - run python3 scripts/bootstrap-skills.py
+     - dx-org-devhub-configure: not installed (.agents/skills/dx-org-devhub-configure missing) - run python3 scripts/bootstrap-skills.py
+     - dx-org-manage: not installed (.agents/skills/dx-org-manage missing) - run python3 scripts/bootstrap-skills.py
+     - dx-org-permission-set-assign: not installed (.agents/skills/dx-org-permission-set-assign missing) - run python3 scripts/bootstrap-skills.py
+     - dx-org-switch: not installed (.agents/skills/dx-org-switch missing) - run python3 scripts/bootstrap-skills.py
+     - dx-org-trial-expiration-check: not installed (.agents/skills/dx-org-trial-expiration-check missing) - run python3 scripts/bootstrap-skills.py
+     - experience-ui-bundle-2gp-deploy: not installed (.agents/skills/experience-ui-bundle-2gp-deploy missing) - run python3 scripts/bootstrap-skills.py
+     - experience-ui-bundle-app-coordinate: not installed (.agents/skills/experience-ui-bundle-app-coordinate missing) - run python3 scripts/bootstrap-skills.py
+     - experience-ui-bundle-custom-app-generate: not installed (.agents/skills/experience-ui-bundle-custom-app-generate missing) - run python3 scripts/bootstrap-skills.py
+  => expected FAIL: yes
+
+### A. bootstrap (network: github.com + registry.npmjs.org)
+    ==> install design-systems-slds-apply @ 3c15867bdb9d
+    ==> install dx-code-analyzer-run @ 3c15867bdb9d
+    ==> install dx-org-analyze @ 3c15867bdb9d
+    ==> install dx-org-devhub-configure @ 3c15867bdb9d
+    ==> install dx-org-permission-set-assign @ 3c15867bdb9d
+    ==> install dx-org-switch @ 3c15867bdb9d
+    ==> install dx-org-trial-expiration-check @ 3c15867bdb9d
+    ==> install experience-ui-bundle-2gp-deploy @ 3c15867bdb9d
+    ==> install experience-ui-bundle-app-coordinate @ 3c15867bdb9d
+    ==> install experience-ui-bundle-custom-app-generate @ 3c15867bdb9d
+    ==> install experience-ui-bundle-deploy @ 3c15867bdb9d
+    ==> install experience-ui-bundle-file-upload-generate @ 3c15867bdb9d
+  => expected OK: yes
+  tracked changes after bootstrap: 0
+    OK: 16 stories, 54 case IDs, each owned by exactly one story; raw snapshot scan agrees; persona/fixture references resolve.
+  => expected OK: yes
+    OK: no credential or private-identifier patterns found
+  => expected OK: yes
+    ...........
+    ----------------------------------------------------------------------
+    Ran 11 tests in 0.030s
+    
+    OK
+  => expected OK: yes
+
+### B. negatives: official skill integrity
+    FAIL
+     - dx-org-manage: SKILL.md differs from upstream blob 40aaf56e88a1 (modified?)
+  => expected FAIL: yes
+    FAIL
+     - dx-org-switch: unexpected file extra.md (not in upstream revision)
+  => expected FAIL: yes
+    FAIL
+     - platform-soql-query: missing upstream file README.md
+  => expected FAIL: yes
+  converted every text file under .agents/skills to CRLF
+    OK: 28 official skills (pinned 3c15867bdb9d, every file matches upstream) + 7 project skills; all 35 exposed via .claude/skills
+  => expected OK: yes
+  CRLF copy plus one changed byte
+    FAIL
+     - dx-org-manage: SKILL.md differs from upstream blob 40aaf56e88a1 (modified?)
+  => expected FAIL: yes
+    OK: 28 official skills (pinned 3c15867bdb9d, every file matches upstream) + 7 project skills; all 35 exposed via .claude/skills
+  => expected OK: yes
+
+### C. negatives: .claude/skills entries
+  text placeholder
+    FAIL
+     - smf-evidence: .claude/skills/smf-evidence is a regular file, not a skill directory (looks like a symlink checked out as a text placeholder; core.symlinks=false)
+  => expected FAIL: yes
+    linked: smf-evidence (symlink)
+    OK: 28 official skills (pinned 3c15867bdb9d, every file matches upstream) + 7 project skills; all 35 exposed via .claude/skills
+  => expected OK: yes
+  wrong target
+    FAIL
+     - smf-review: .claude/skills/smf-review/SKILL.md declares name 'smf-evidence' (wrong target)
+  => expected FAIL: yes
+  dangling target
+    FAIL
+     - smf-review: .claude/skills/smf-review/SKILL.md not readable (FileNotFoundError)
+  => expected FAIL: yes
+  stale copy
+    FAIL
+     - smf-review: .claude/skills/smf-review is a copy that differs from .agents/skills/smf-review
+  => expected FAIL: yes
+  identical copy (Windows fallback shape)
+    OK: 28 official skills (pinned 3c15867bdb9d, every file matches upstream) + 7 project skills; all 35 exposed via .claude/skills
+  => expected OK: yes
+  stray entry
+    FAIL
+     - .claude/skills/stray has no canonical copy in .agents/skills
+  => expected FAIL: yes
+
+### D. negatives: test-plan integrity and public content
+  duplicated case ID
+    FAIL
+     - FAIL: testing/test-plan-index.json out of date with docs/jira-snapshot/2026-10-03; rebuild.
+     - case IDs owned by more than one story: {'GOV-01': ['SMF-1', 'SMF-2']}
+     - expected 54 case IDs, found 55
+     - case_count field disagrees with case list
+  => expected FAIL: yes
+  dropped case ID
+    FAIL
+     - FAIL: testing/test-plan-index.json out of date with docs/jira-snapshot/2026-10-03; rebuild.
+     - expected 54 case IDs, found 53
+     - case_count field disagrees with case list
+     - DATA-04 appears in SMF-3.md but is not indexed under SMF-3
+     - raw scan/index mismatch: ['DATA-04']
+  => expected FAIL: yes
+  Windows-style backslash path in index
+    FAIL
+     - FAIL: testing/test-plan-index.json out of date with docs/jira-snapshot/2026-10-03; rebuild.
+     - non-portable path in index: 'docs\\jira-snapshot\\2026-10-03\\SMF-1.md'
+     - index path does not exist: docs\jira-snapshot\2026-10-03\SMF-1.md
+  => expected FAIL: yes
+  planted auth URL + org ID
+    FAIL: review each hit; remove it or allowlist it with a reason
+    docs/leak.md: <planted fake credential — scanner hit shown here in redacted form>
+    docs/leak.md: <planted fake credential — scanner hit shown here in redacted form>
+    docs/leak.md: <planted fake credential — scanner hit shown here in redacted form>
+  => expected FAIL: yes
+
+### E. clone with core.autocrlf=true (Windows default checkout behaviour)
+  CRLF files among tracked text: 0
+  forced CRLF on 28 index/snapshot/evidence files (simulates .gitattributes absent)
+    OK: 16 stories, 54 case IDs, each owned by exactly one story; raw snapshot scan agrees; persona/fixture references resolve.
+  => expected OK: yes
+    ==> install design-systems-slds-apply @ 3c15867bdb9d
+    ==> install dx-code-analyzer-run @ 3c15867bdb9d
+    ==> install dx-org-analyze @ 3c15867bdb9d
+    ==> install dx-org-devhub-configure @ 3c15867bdb9d
+    ==> install dx-org-manage @ 3c15867bdb9d
+    ==> install dx-org-permission-set-assign @ 3c15867bdb9d
+    ==> install dx-org-switch @ 3c15867bdb9d
+    ==> install dx-org-trial-expiration-check @ 3c15867bdb9d
+    ==> install experience-ui-bundle-2gp-deploy @ 3c15867bdb9d
+    ==> install experience-ui-bundle-app-coordinate @ 3c15867bdb9d
+    ==> install experience-ui-bundle-custom-app-generate @ 3c15867bdb9d
+    ==> install experience-ui-bundle-deploy @ 3c15867bdb9d
+  => expected OK: yes
+
+RESULT: all expectations met
+finished 2026-10-03T21:42:06Z

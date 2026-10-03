@@ -1,0 +1,143 @@
+{
+  "source": "testing/fixtures/models/manifest.json (generated; do not edit)",
+  "licence": "CC0-1.0",
+  "models": [
+    {
+      "id": "MF-MODEL-SMALL",
+      "bytes": 317796,
+      "sha256": "b57acb02d969499687f238a866af84b16753fec7a4651854504670b6b1d84d85",
+      "triangles": 8676,
+      "vertices": 7974,
+      "meshes": 10,
+      "materials": 10,
+      "textureCount": 0,
+      "textureResolutions": [],
+      "parts": [
+        {
+          "name": "Base",
+          "partId": "MF-PART-BASE",
+          "label": "Base skid"
+        },
+        {
+          "name": "Casing",
+          "partId": "MF-PART-CASING",
+          "label": "Pump casing (volute)"
+        },
+        {
+          "name": "Inlet",
+          "partId": "MF-PART-INLET",
+          "label": "Suction inlet"
+        },
+        {
+          "name": "Outlet",
+          "partId": "MF-PART-OUTLET",
+          "label": "Discharge outlet"
+        },
+        {
+          "name": "Impeller",
+          "partId": "MF-PART-IMPELLER",
+          "label": "Impeller"
+        },
+        {
+          "name": "BearingHousing",
+          "partId": "MF-PART-BEARING",
+          "label": "Bearing housing"
+        },
+        {
+          "name": "Coupling",
+          "partId": "MF-PART-COUPLING",
+          "label": "Shaft coupling"
+        },
+        {
+          "name": "Motor",
+          "partId": "MF-PART-MOTOR",
+          "label": "Electric motor"
+        },
+        {
+          "name": "TerminalBox",
+          "partId": "MF-PART-TERMINAL",
+          "label": "Motor terminal box"
+        },
+        {
+          "name": "Fasteners",
+          "partId": "MF-PART-FASTENERS",
+          "label": "Flange bolts"
+        }
+      ]
+    },
+    {
+      "id": "MF-MODEL-REP",
+      "bytes": 8647528,
+      "sha256": "52eb2bab7af338afa088420ecd9e5e8523c29d8d0c1b29146ec51207557d49a5",
+      "triangles": 240692,
+      "vertices": 141722,
+      "meshes": 10,
+      "materials": 10,
+      "textureCount": 4,
+      "textureResolutions": [
+        "1024x1024",
+        "1024x1024",
+        "512x512",
+        "1024x1024"
+      ],
+      "parts": [
+        {
+          "name": "Base",
+          "partId": "MF-PART-BASE",
+          "label": "Base skid"
+        },
+        {
+          "name": "Casing",
+          "partId": "MF-PART-CASING",
+          "label": "Pump casing (volute)"
+        },
+        {
+          "name": "Inlet",
+          "partId": "MF-PART-INLET",
+          "label": "Suction inlet"
+        },
+        {
+          "name": "Outlet",
+          "partId": "MF-PART-OUTLET",
+          "label": "Discharge outlet"
+        },
+        {
+          "name": "Impeller",
+          "partId": "MF-PART-IMPELLER",
+          "label": "Impeller"
+        },
+        {
+          "name": "BearingHousing",
+          "partId": "MF-PART-BEARING",
+          "label": "Bearing housing"
+        },
+        {
+          "name": "Coupling",
+          "partId": "MF-PART-COUPLING",
+          "label": "Shaft coupling"
+        },
+        {
+          "name": "Motor",
+          "partId": "MF-PART-MOTOR",
+          "label": "Electric motor"
+        },
+        {
+          "name": "TerminalBox",
+          "partId": "MF-PART-TERMINAL",
+          "label": "Motor terminal box"
+        },
+        {
+          "name": "Fasteners",
+          "partId": "MF-PART-FASTENERS",
+          "label": "Flange bolts"
+        }
+      ]
+    }
+  ],
+  "fallback": {
+    "sha256": "78cf0417bc6f9b24567e19ae5630a5670bb5746064a767ad459cea2473c5eb50",
+    "alt": "Static rendering of synthetic pump MF-PUMP-001: blue pump casing with the suction inlet facing forward and the discharge outlet on top, a yellow shaft coupling, and a grey finned electric motor with a terminal box, all on a dark base skid.",
+    "width": 960,
+    "height": 640
+  }
+}

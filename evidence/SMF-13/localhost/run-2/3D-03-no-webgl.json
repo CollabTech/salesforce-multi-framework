@@ -1,0 +1,57 @@
+{
+  "probe": "SMF-13 3D",
+  "cases": [
+    "3D-01",
+    "3D-02",
+    "3D-03"
+  ],
+  "host": {
+    "origin": "http://localhost:5313",
+    "path": "/probes/3d",
+    "inIframe": false,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Safari/537.36",
+    "viewport": "1280x720",
+    "devicePixelRatio": 1,
+    "online": true,
+    "secureContext": true,
+    "mediaDevicesApi": true,
+    "build": "smf13-local",
+    "capturedAt": "2026-10-03T22:13:21.760Z"
+  },
+  "device": {
+    "hardwareConcurrency": 4,
+    "deviceMemoryGiB": 8,
+    "jsHeapUsedMiB": 5.5,
+    "jsHeapLimitMiB": 4095.8,
+    "effectiveType": "4g",
+    "downlinkMbps": 1.35,
+    "rttMs": 100,
+    "devicePixelRatio": 1,
+    "viewport": "1280x720",
+    "orientation": "landscape-primary"
+  },
+  "webgl": {
+    "available": false,
+    "webgl2": false,
+    "webgl1": false,
+    "vendor": null,
+    "renderer": null,
+    "maxTextureSize": null,
+    "reason": "getContext(\"webgl2\"/\"webgl\") returned null"
+  },
+  "simulatedNoWebGL": false,
+  "library": "three 0.186.1 (GLTFLoader, OrbitControls)",
+  "model": null,
+  "load": null,
+  "protocol": null,
+  "targets": {
+    "usableWithinMs": 10000,
+    "medianFpsAtLeast": 30
+  },
+  "judgement": null,
+  "disposals": [],
+  "status": "no-webgl",
+  "error": null,
+  "mounts": 1,
+  "log": []
+}

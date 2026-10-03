@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>SMF-7: may request a call-room token for cases the user can read (checked by SMF7_CallAuthService and SMF7_CallRoomStore).</description>
+    <isLicensed>false</isLicensed>
+    <label>SMF7 Join Case Call</label>
+</CustomPermission>

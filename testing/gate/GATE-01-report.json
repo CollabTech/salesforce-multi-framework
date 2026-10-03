@@ -1,0 +1,891 @@
+[
+ {
+  "story": "SMF-1",
+  "verdict": "VALIDATED",
+  "required": {
+   "PASS": 3
+  },
+  "supplementary": {},
+  "open_required_rows": [],
+  "rejected": []
+ },
+ {
+  "story": "SMF-2",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 3
+  },
+  "supplementary": {},
+  "open_required_rows": [
+   {
+    "row": "ENV-01@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "ENV-02@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "ENV-03@n/a",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-3",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 4,
+   "NOT TESTED": 4
+  },
+  "supplementary": {
+   "NOT TESTED": 3
+  },
+  "open_required_rows": [
+   {
+    "row": "DATA-01@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "DATA-02@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "DATA-02@ENV-DESKTOP-CHROME",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "DATA-02@ENV-DESKTOP-EDGE",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "DATA-02@ENV-SFMOBILE-IOS",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "DATA-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "DATA-03@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "DATA-04@n/a",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-4",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 12
+  },
+  "supplementary": {
+   "NOT TESTED": 11,
+   "PASS": 1
+  },
+  "open_required_rows": [
+   {
+    "row": "HOST-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "HOST-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-5",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 3
+  },
+  "supplementary": {},
+  "open_required_rows": [
+   {
+    "row": "PKG-01@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "PKG-02@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "PKG-03@n/a",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-6",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 24
+  },
+  "supplementary": {
+   "NOT TESTED": 18,
+   "PASS": 6
+  },
+  "open_required_rows": [
+   {
+    "row": "CAP-01@ENV-DESKTOP-CHROME#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-DESKTOP-CHROME#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-DESKTOP-EDGE#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-DESKTOP-EDGE#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-SFMOBILE-IOS#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-SFMOBILE-IOS#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-SFMOBILE-ANDROID#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-01@ENV-SFMOBILE-ANDROID#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-DESKTOP-CHROME#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-DESKTOP-CHROME#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-DESKTOP-EDGE#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-DESKTOP-EDGE#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-SFMOBILE-IOS#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-SFMOBILE-IOS#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-SFMOBILE-ANDROID#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-02@ENV-SFMOBILE-ANDROID#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-DESKTOP-CHROME#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-DESKTOP-CHROME#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-DESKTOP-EDGE#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-DESKTOP-EDGE#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-SFMOBILE-IOS#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-SFMOBILE-IOS#mic",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-SFMOBILE-ANDROID#camera",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CAP-03@ENV-SFMOBILE-ANDROID#mic",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-7",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 12
+  },
+  "supplementary": {
+   "NOT TESTED": 11,
+   "PASS": 1
+  },
+  "open_required_rows": [
+   {
+    "row": "CALL-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "CALL-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-8",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 12
+  },
+  "supplementary": {
+   "NOT TESTED": 9,
+   "PASS": 2,
+   "PARTIAL": 1
+  },
+  "open_required_rows": [
+   {
+    "row": "SHARE-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SHARE-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-9",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 6
+  },
+  "supplementary": {
+   "NOT TESTED": 6,
+   "PASS": 3
+  },
+  "open_required_rows": [
+   {
+    "row": "REC-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "REC-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "REC-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "REC-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "REC-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "REC-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-10",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 16
+  },
+  "supplementary": {
+   "NOT TESTED": 13,
+   "PASS": 3
+  },
+  "open_required_rows": [
+   {
+    "row": "FILE-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-04@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-04@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-04@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "FILE-04@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-11",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 16
+  },
+  "supplementary": {
+   "NOT TESTED": 13,
+   "PASS": 3
+  },
+  "open_required_rows": [
+   {
+    "row": "MARK-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-04@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-04@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-04@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "MARK-04@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-12",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 16
+  },
+  "supplementary": {
+   "NOT TESTED": 13,
+   "PASS": 3
+  },
+  "open_required_rows": [
+   {
+    "row": "SYNC-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-04@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-04@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-04@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "SYNC-04@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-13",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 12
+  },
+  "supplementary": {
+   "NOT TESTED": 9,
+   "PASS": 2,
+   "FAIL": 1
+  },
+  "open_required_rows": [
+   {
+    "row": "3D-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "3D-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-14",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 13
+  },
+  "supplementary": {
+   "NOT TESTED": 9,
+   "PASS": 2,
+   "PARTIAL": 1
+  },
+  "open_required_rows": [
+   {
+    "row": "BUDGET-01@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-01@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-01@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-02@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-02@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-02@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-03@ENV-DESKTOP-CHROME",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-03@ENV-DESKTOP-EDGE",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-03@ENV-SFMOBILE-IOS",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "BUDGET-04@n/a",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-15",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "BLOCKED": 3
+  },
+  "supplementary": {},
+  "open_required_rows": [
+   {
+    "row": "GATE-01@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "GATE-02@n/a",
+    "outcome": "BLOCKED"
+   },
+   {
+    "row": "GATE-03@n/a",
+    "outcome": "BLOCKED"
+   }
+  ],
+  "rejected": []
+ },
+ {
+  "story": "SMF-16",
+  "verdict": "INCOMPLETE",
+  "required": {
+   "NOT TESTED": 13
+  },
+  "supplementary": {
+   "NOT TESTED": 12
+  },
+  "open_required_rows": [
+   {
+    "row": "E2E-01@ENV-DESKTOP-CHROME",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-01@ENV-DESKTOP-EDGE",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-01@ENV-SFMOBILE-IOS",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-01@ENV-SFMOBILE-ANDROID",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-02@ENV-DESKTOP-CHROME",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-02@ENV-DESKTOP-EDGE",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-02@ENV-SFMOBILE-IOS",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-02@ENV-SFMOBILE-ANDROID",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-03@ENV-DESKTOP-CHROME",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-03@ENV-DESKTOP-EDGE",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-03@ENV-SFMOBILE-IOS",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-03@ENV-SFMOBILE-ANDROID",
+    "outcome": "NOT TESTED"
+   },
+   {
+    "row": "E2E-04@n/a",
+    "outcome": "NOT TESTED"
+   }
+  ],
+  "rejected": []
+ }
+]

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <title>PLACEHOLDER — not MF-IMAGE-001</title>
+  <rect width="640" height="360" fill="#e5e7eb"/>
+  <rect x="8" y="8" width="624" height="344" fill="none" stroke="#b91c1c" stroke-width="6" stroke-dasharray="18 10"/>
+  <g fill="#475569">
+    <rect x="170" y="150" width="220" height="110" rx="12"/>
+    <circle cx="430" cy="205" r="48"/>
+    <rect x="110" y="190" width="60" height="30"/>
+    <rect x="470" y="196" width="70" height="18"/>
+  </g>
+  <text x="320" y="70" font-family="monospace" font-size="26" font-weight="bold" fill="#b91c1c" text-anchor="middle">PLACEHOLDER — NOT MF-IMAGE-001</text>
+  <text x="320" y="105" font-family="monospace" font-size="16" fill="#334155" text-anchor="middle">Synthetic pump outline. Replace with the approved SMF-3 fixture image.</text>
+  <text x="320" y="320" font-family="monospace" font-size="16" fill="#334155" text-anchor="middle">SMF-8 static-image fallback (screen sharing unavailable)</text>
+</svg>

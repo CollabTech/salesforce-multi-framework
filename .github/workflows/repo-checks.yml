@@ -1,0 +1,63 @@
+name: repo-checks
+# SMF-1 GOV-01/GOV-03 on every push/PR, on Linux, macOS and Windows (incl. the Windows
+# junction fallback and Git's default CRLF checkout on Windows runners). No secrets used.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: repo-checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, link: default }
+          - { os: macos-latest, link: default }
+          - { os: windows-latest, link: default }
+          - { os: windows-latest, link: junction }
+    runs-on: ${{ matrix.os }}
+    env:
+      SMF_FORCE_JUNCTION: ${{ matrix.link == 'junction' && '1' || '0' }}
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Checkout line endings (Windows runners default to core.autocrlf=true)
+        shell: bash
+        run: git config --get core.autocrlf || echo "unset"
+      - name: Bootstrap pinned official skills
+        run: python scripts/bootstrap-skills.py
+      - name: Entry kinds in .claude/skills
+        shell: bash
+        run: python -c "import sys;sys.path.insert(0,'scripts');import smfskills as S;from collections import Counter;print(dict(Counter(S.link_kind(p) for p in S.CLAUDE_DIR.iterdir())))"
+      - run: python scripts/verify-skills.py
+      - run: python scripts/check-test-plan.py
+      - run: python scripts/scan-public-content.py
+      - run: python scripts/build-matrix.py --check
+      - name: GATE-01 check and report is current
+        shell: bash
+        run: |
+          python scripts/gate-check.py --write
+          git diff --exit-code -- testing/gate || { echo "testing/gate is stale: run python3 scripts/gate-check.py --write"; exit 1; }
+      - run: python -m unittest discover -s scripts/tests -v
+      - name: Negative check - tampered official skill must fail
+        shell: bash
+        run: |
+          echo "x" >> .agents/skills/dx-org-manage/SKILL.md
+          if python scripts/verify-skills.py; then echo "tamper NOT detected"; exit 1; fi
+          python scripts/bootstrap-skills.py
+      - name: Negative check - text placeholder entry must fail, bootstrap repairs it
+        shell: bash
+        run: |
+          python -c "import sys;sys.path.insert(0,'scripts');import smfskills as S;p=S.CLAUDE_DIR/'smf-evidence';S.remove_entry(p);p.write_text('../../.agents/skills/smf-evidence')"
+          if python scripts/verify-skills.py; then echo "placeholder NOT detected"; exit 1; fi
+          python scripts/bootstrap-skills.py --offline

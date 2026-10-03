@@ -1,0 +1,331 @@
+{
+  "contract_version": "1.0.0",
+  "source": {
+    "story": "SMF-3",
+    "url": "https://answersllc.atlassian.net/browse/SMF-3",
+    "retrieved": "2026-10-03",
+    "snapshot": "docs/jira-snapshot/2026-10-03/SMF-3.md",
+    "status_note": "DEFINED ONLY — test users and fixtures have not been provisioned or executed (quoted from SMF-3)."
+  },
+  "note": "Verbatim specifications from SMF-3. Logical IDs only: real usernames, org IDs, record IDs and provider room IDs are kept privately (private/, git-ignored). Contains no execution results.",
+  "scenario": "A technician investigates overheating in synthetic pump MF-ASSET-001 while a remote support specialist diagnoses the same case.",
+  "personas": [
+    {
+      "id": "MF-ADMIN",
+      "definition": "Provisioning and package install only; never use admin success to prove business-user access."
+    },
+    {
+      "id": "MF-TECH",
+      "definition": "Non-admin field technician: app access, read/update assigned MF-CASE-001 and its equipment, create/read case-linked Files, join that case's call/markup room. No access to MF-CASE-002 or its Files/rooms."
+    },
+    {
+      "id": "MF-SUPPORT",
+      "definition": "Separate non-admin remote support account: app access and read/update MF-CASE-001, read/create its Files, join its call/markup room. No access to MF-CASE-002 or its Files/rooms."
+    },
+    {
+      "id": "MF-RESTRICTED",
+      "definition": "Separate non-admin negative-test user: app access but no case/asset/File/room access. For the app-visibility test only, remove app permission, verify denial, then restore the baseline. Reconcile profile, role, sharing, and permission-set grants so they do not accidentally bypass denial."
+    }
+  ],
+  "persona_rules": "These are logical persona IDs, not existing usernames. Create org-unique usernames only after checking licenses and local username requirements; store the actual mapping privately. Use separate simultaneous sessions for TECH and SUPPORT. Reuse no business-user session as ADMIN. If licenses or devices are missing, mark affected cases BLOCKED rather than dropping the negative test.",
+  "fixtures": [
+    {
+      "id": "MF-ACCOUNT-001",
+      "definition": "Synthetic customer: CollabTech PoC Test Customer."
+    },
+    {
+      "id": "MF-ASSET-001",
+      "definition": "Synthetic equipment: pump MF-PUMP-001, assigned to the permitted case."
+    },
+    {
+      "id": "MF-CASE-001",
+      "definition": "Open synthetic case: Pump overheating — remote diagnosis. Visible/editable only to TECH, SUPPORT, and setup ADMIN according to the defined grants."
+    },
+    {
+      "id": "MF-CASE-002",
+      "definition": "Restricted synthetic case and linked asset MF-ASSET-002 owned outside all business test personas; negative control for records, Files, and room membership."
+    },
+    {
+      "id": "MF-IMAGE-001",
+      "definition": "Generated/licensed synthetic equipment PNG/JPEG <=2 MiB, linked to MF-CASE-001; no people, customer data, or location metadata."
+    },
+    {
+      "id": "MF-FILE-DENIED",
+      "definition": "A separate image linked only to MF-CASE-002 with no public link."
+    },
+    {
+      "id": "MF-UPLOAD-INVALID",
+      "definition": "A .txt file and a >5 MiB image to exercise the PoC's image-only, 5 MiB upload limit. Any limit change requires an explicit project-owner decision recorded before the test."
+    },
+    {
+      "id": "MF-ROOM-001 / MF-ROOM-002",
+      "definition": "Logical media/markup rooms bound to the permitted/restricted case respectively. Provider room IDs and short-lived participant credentials stay private; server-side authorization must bind the caller to the case."
+    },
+    {
+      "id": "MF-MARKUP-001",
+      "definition": "Image MF-IMAGE-001 plus two independent annotations: TECH creates a red circle over the inlet; SUPPORT creates an arrow and text 'Inspect inlet'. Snapshot and export must preserve both."
+    },
+    {
+      "id": "MF-MODEL-SMALL / MF-MODEL-REP",
+      "definition": "Redistributable equipment-like GLB models, small <=2 MiB and representative <=10 MiB. Record actual triangle/texture counts, asset provenance, and hash when fixtures are generated. Include a missing-asset path for failure tests."
+    }
+  ],
+  "fixture_rules": "Implement these logical records using the target org's verified schema and supported APIs; do not invent field names. Keep org record-ID mapping private. Seed is idempotent, baseline permissions are verified, and reset restores the known fixture state without touching non-PoC records. No fixtures are claimed to exist yet.",
+  "environments": {
+    "required_coverage_text": "Desktop Chrome and Edge (record exact versions), physical Salesforce mobile iOS and Android (record device/OS/Salesforce app versions), and mobile Safari/Chrome as separate exploratory rows. State the runtime origin/hosting context and build/commit. Missing a required device is BLOCKED/NOT TESTED, never a desktop-derived PASS.",
+    "rows": [
+      {
+        "id": "ENV-DESKTOP-CHROME",
+        "kind": "desktop browser",
+        "required": true,
+        "record": [
+          "browser version",
+          "OS version"
+        ]
+      },
+      {
+        "id": "ENV-DESKTOP-EDGE",
+        "kind": "desktop browser",
+        "required": true,
+        "record": [
+          "browser version",
+          "OS version"
+        ]
+      },
+      {
+        "id": "ENV-SFMOBILE-IOS",
+        "kind": "physical Salesforce mobile app",
+        "required": true,
+        "record": [
+          "device model",
+          "OS version",
+          "Salesforce app version"
+        ]
+      },
+      {
+        "id": "ENV-SFMOBILE-ANDROID",
+        "kind": "physical Salesforce mobile app",
+        "required": true,
+        "record": [
+          "device model",
+          "OS version",
+          "Salesforce app version"
+        ]
+      },
+      {
+        "id": "ENV-MOBILE-SAFARI",
+        "kind": "mobile browser",
+        "required": false,
+        "exploratory": true,
+        "record": [
+          "device model",
+          "OS version",
+          "browser version"
+        ]
+      },
+      {
+        "id": "ENV-MOBILE-CHROME",
+        "kind": "mobile browser",
+        "required": false,
+        "exploratory": true,
+        "record": [
+          "device model",
+          "OS version",
+          "browser version"
+        ]
+      },
+      {
+        "id": "ENV-CLOUD-CHROMIUM",
+        "kind": "cloud automation browser (Playwright Chromium, Linux)",
+        "required": false,
+        "record": [
+          "Chromium version",
+          "OS version"
+        ],
+        "note": "Separate evidence from the cloud workflow (docs/cloud/WORKFLOW.md); never a substitute for ENV-DESKTOP-CHROME or any other row."
+      },
+      {
+        "id": "ENV-EMULATION-LOCALHOST",
+        "kind": "emulation / localhost",
+        "required": false,
+        "note": "Separate evidence; never a substitute for any row above (SMF-3 AC3)."
+      }
+    ],
+    "rows_note": "Row IDs are repository labels for the environments SMF-3 names; they add no new coverage. SMF-3 AC3: Define separate environments for desktop browser versions, physical Salesforce mobile on iOS and Android, and mobile Safari/Chrome. Emulation and localhost are separate evidence, never substitutes.",
+    "execution_note": "Cloud-first execution (owner direction 2026-10-03, docs/cloud/WORKFLOW.md): repository/org rows and the desktop browser rows that automation can attest (ENV-DESKTOP-EDGE = official Microsoft Edge on Linux; ENV-DESKTOP-CHROME once branded Chrome can be installed; ENV-CLOUD-CHROMIUM) are executed by the agent in the cloud after HUMAN-SETUP H1/H2. Physical Salesforce mobile, mobile browsers, interactive password/MFA logins, OS permission prompts and observed audio/video stay human (testing/HUMAN-ACTIONS.md)."
+  },
+  "outcomes": {
+    "values": [
+      "NOT TESTED",
+      "PASS",
+      "FAIL",
+      "PARTIAL",
+      "BLOCKED"
+    ],
+    "default": "NOT TESTED",
+    "definitions": {
+      "NOT TESTED": "Not yet executed in this environment row. The initial state of every matrix row; a specification, plan, script or successful build is not an execution.",
+      "PASS": "Executed in the declared environment row with the specified personas and fixtures; the actual result meets the expected result; sanitized evidence is attached and names the tester.",
+      "FAIL": "Executed; the actual result does not meet the expected result (a missed target is a FAIL). The record states what was observed.",
+      "PARTIAL": "Executed; some required behaviour meets the expected result and some does not; the record states which parts did and which did not.",
+      "BLOCKED": "Could not be executed because a prerequisite (licence, device, tool, access, dependency) is missing; the record names the missing prerequisite and the smallest unblocking action."
+    },
+    "definitions_note": "Defined by SMF-3 AC5 (finalized in SMF-3; meanings unchanged from the SMF-1 wording). An outcome applies to one case ID in one environment row (and, where a case records them separately, one capability area); it is a capability result, not a Jira column. Changing these definitions needs a recorded project-owner decision before it is applied to any run.",
+    "capability_areas": [
+      "camera",
+      "mic",
+      "playback",
+      "two-way A/V",
+      "screen sharing",
+      "Files",
+      "markup sync/persistence",
+      "3D",
+      "recovery",
+      "packaging"
+    ],
+    "capability_area_cases": {
+      "camera": [
+        "CAP-01",
+        "CAP-02",
+        "CAP-03",
+        "CALL-02"
+      ],
+      "mic": [
+        "CAP-01",
+        "CAP-02",
+        "CAP-03",
+        "CALL-02"
+      ],
+      "playback": [
+        "CALL-01",
+        "CALL-02"
+      ],
+      "two-way A/V": [
+        "CALL-01",
+        "CALL-02",
+        "CALL-03"
+      ],
+      "screen sharing": [
+        "SHARE-01",
+        "SHARE-02",
+        "SHARE-03"
+      ],
+      "Files": [
+        "DATA-02",
+        "FILE-01",
+        "FILE-02",
+        "FILE-03",
+        "FILE-04",
+        "MARK-02",
+        "MARK-04"
+      ],
+      "markup sync/persistence": [
+        "MARK-01",
+        "MARK-02",
+        "MARK-03",
+        "MARK-04",
+        "SYNC-01",
+        "SYNC-02",
+        "SYNC-03",
+        "SYNC-04"
+      ],
+      "3D": [
+        "3D-01",
+        "3D-02",
+        "3D-03",
+        "BUDGET-01",
+        "BUDGET-02",
+        "BUDGET-03",
+        "BUDGET-04"
+      ],
+      "recovery": [
+        "REC-01",
+        "REC-02",
+        "REC-03",
+        "SYNC-02"
+      ],
+      "packaging": [
+        "PKG-01",
+        "PKG-02",
+        "PKG-03",
+        "E2E-03"
+      ]
+    },
+    "supporting_areas": {
+      "note": "Foundation and decision cases that are not AC5 capability areas but still have matrix rows.",
+      "governance": [
+        "GOV-01",
+        "GOV-02",
+        "GOV-03"
+      ],
+      "org readiness": [
+        "ENV-01",
+        "ENV-02",
+        "ENV-03"
+      ],
+      "test data and baseline access": [
+        "DATA-01",
+        "DATA-02",
+        "DATA-03",
+        "DATA-04"
+      ],
+      "app hosting": [
+        "HOST-01",
+        "HOST-02",
+        "HOST-03"
+      ],
+      "decision gate": [
+        "GATE-01",
+        "GATE-02",
+        "GATE-03"
+      ],
+      "vertical slice": [
+        "E2E-01",
+        "E2E-02",
+        "E2E-03",
+        "E2E-04"
+      ]
+    }
+  },
+  "matrix": {
+    "initialisation_owner": "SMF-3",
+    "rule": "Initialize the matrix as NOT TESTED. Each result includes capability, actor pair, org/build reference, device/OS/app/browser versions, context, steps, expectation, observation, outcome, evidence, tester, date, and limitation.",
+    "row_fields": [
+      "capability",
+      "actor pair",
+      "org/build reference",
+      "device/OS/app/browser versions",
+      "context",
+      "steps",
+      "expectation",
+      "observation",
+      "outcome",
+      "evidence",
+      "tester",
+      "date",
+      "limitation"
+    ],
+    "file": "testing/matrix.json (rendered as testing/MATRIX.md; built and validated by scripts/build-matrix.py)"
+  },
+  "evidence_fields_text": "Record test-case ID, persona pair, fixture IDs/hash/version, build/commit, host/device/OS/app/browser version, timestamp, preconditions, steps, expected and actual results, outcome, sanitized evidence link, tester, and follow-up limitation.",
+  "evidence_fields": [
+    "test-case ID",
+    "persona pair",
+    "fixture IDs/hash/version",
+    "build/commit",
+    "host/device/OS/app/browser version",
+    "timestamp",
+    "preconditions",
+    "steps",
+    "expected result",
+    "actual result",
+    "outcome",
+    "sanitized evidence link",
+    "tester",
+    "follow-up limitation"
+  ],
+  "testing_responsibilities": "The implementing agent creates the probe, seed/permission setup, meaningful automation, and manual script. This planning/testing assistant helps review criteria and evidence and runs accessible checks. Brandon or an explicitly designated tester performs passkey/permission interactions, physical-device actions, and subjective audio/video checks that automation cannot attest to. Mark who actually performed each test.",
+  "acceptance_targets": "Limits and performance targets in individual stories are initial PoC test targets, not claims of existing capability or vendor guarantees. Any adjustment requires an explicit project-owner decision recorded with its rationale before evaluating the run; never relax a target after a failure to manufacture a pass.",
+  "definition_of_done": "All listed acceptance scenarios have actual results for the declared test scope; code/PR and evidence are reviewed; matrix is updated; no secrets or private/customer data are published. PASS/FAIL/PARTIAL are capability outcomes, not board columns. A PoC may be Done with a reviewed FAIL/PARTIAL and a documented decision. A missing required test keeps it in Testing or blocked unless Brandon explicitly accepts reduced scope and the excluded coverage remains visible. A successful build or mocked test alone is not Done.",
+  "fixture_provisioning_ownership": "SMF-3 provisions the baseline users/grants, synthetic customer/equipment/cases, baseline image Files, and reusable local fixture specifications/assets and matrix. It verifies available baseline record/File access using supported platform interfaces. App-specific permission checks execute when SMF-4 provides the app. MF-ROOM-001/002 are case-binding specifications here; provider room/token setup belongs to SMF-7 and collaboration-service setup to SMF-12. MF-MARKUP-001 describes the expected annotations; actual saved snapshot/export artifacts are produced and checked in SMF-11/12. 3D fixtures are created or reconciled when required by SMF-13/14. Do not pretend service-specific fixtures already exist or make baseline provisioning depend on unbuilt PoCs."
+}

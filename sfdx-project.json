@@ -1,0 +1,24 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "FieldSupportPoC",
+      "versionName": "v1 launch baseline",
+      "versionNumber": "1.0.0.NEXT",
+      "versionDescription": "SMF-5 PKG-01: FieldSupport UI bundle, its CustomApplication and the FieldSupport_Access permission set."
+    },
+    {
+      "path": "unpackaged",
+      "default": false
+    },
+    {
+      "path": "probes",
+      "default": false
+    }
+  ],
+  "name": "salesforce-multi-framework",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "67.0"
+}

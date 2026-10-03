@@ -110,5 +110,16 @@ class ClaudeEntries(unittest.TestCase):
         self.assertEqual(calls[0][:4], ["cmd", "/c", "mklink", "/J"])
 
 
+class StaleEntries(ClaudeEntries):
+    def test_remove_entry_handles_every_kind(self):
+        os.symlink("../../.agents/skills/smf-a", self.claude / "s1", target_is_directory=True)
+        shutil.copytree(self.agents / "smf-a", self.claude / "s2")
+        (self.claude / "s3").write_text("placeholder", encoding="utf-8")
+        for n in ("s1", "s2", "s3"):
+            S.remove_entry(self.claude / n)
+            self.assertFalse(os.path.lexists(self.claude / n))
+        self.assertTrue((self.agents / "smf-a" / "SKILL.md").exists())  # target untouched
+
+
 if __name__ == "__main__":
     unittest.main()

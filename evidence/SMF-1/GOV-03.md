@@ -1,5 +1,7 @@
 # GOV-03 — repository — diff, provenance and test-plan integrity review
 
+> Historical record (before the PR #1 review). Current result: `GOV-03-portability.md`.
+
 | Field | Value |
 |---|---|
 | Case ID | GOV-03 |

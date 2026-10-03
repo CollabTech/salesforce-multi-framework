@@ -11,7 +11,7 @@ Three logical targets. Aliases are local names; the alias → org mapping lives 
 | Alias | Role | Create or reuse | Used by |
 |---|---|---|---|
 | `smf-devhub` | Dev Hub + package owner. **Not** an application test org. | Reuse the existing Developer org (if ENV-01 confirms edition/Hyperforce/Dev Hub) | SMF-5 package create; scratch-org creation |
-| `smf-dev` | Development / application test org: SMF-3 personas and fixtures, SMF-4..14 probes | Scratch org from `smf-devhub` (`config/smf-dev-scratch-def.json`) — or the Developer org itself **only if** ENV-02 shows a scratch org cannot hold the personas; record that decision | SMF-3..14 |
+| `smf-dev` | Development / application test org: SMF-3 personas and fixtures, SMF-4..14 probes | Scratch org from `smf-devhub` (`config/smf-dev-scratch-def.json`). Never the Dev Hub org itself (SMF-2 AC4); if a scratch org cannot hold the personas, ENV-02 is BLOCKED with that shortage | SMF-3..14 |
 | `smf-install-test` | Separate subscriber org for package install/upgrade | Scratch org from `smf-devhub` (`config/smf-install-test-scratch-def.json`) | SMF-5 |
 
 A Developer-Edition Dev Hub allows **3 active / 6 per day** scratch orgs. Two are used here.

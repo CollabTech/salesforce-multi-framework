@@ -122,3 +122,16 @@ action that closes it. Story text in Jira stays authoritative.
 - **To close:** if `sf package version create` rejects any of these, record the sanitized
   error as the PKG-01 run, then apply the smallest fix (bare `FieldSupport` reference via
   SMF-4; API 68.0; or a `definitionFile`) and rerun.
+
+## C-SMF5-6 — Running SMF-3 provisioning against the subscriber org (interface SMF-5 relies on)
+- **Affects:** PKG-01..03 (subscriber personas and the independently seeded MF-CASE-001)
+- **Gap:** SMF-5 must seed the SMF-3 baseline in `smf-install-test` with SMF-3's own logic,
+  but SMF-3's cloud stages (30–39) are being written in parallel and their interface is not
+  yet fixed.
+- **Meanwhile:** stage 62 runs every SMF-3 stage with `SMF_TARGET_ORG=smf-install-test` and
+  expects: persona users in that org with CLI aliases `smf-install-test-{tech,support,restricted}`
+  (`<org alias>-<persona>`, matching `smf-dev-<persona>`), FederationIdentifier `MF-*`,
+  fixtures seeded, and record IDs under the `install-test` key of `private/fixtures.json`.
+  If the aliases do not appear, stage 62 exits BLOCKED with that reason.
+- **To close:** SMF-3 honours `SMF_TARGET_ORG` (default `smf-dev`) with that alias rule, or
+  tells SMF-5 its interface and stage 62 is adapted.

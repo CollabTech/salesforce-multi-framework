@@ -2,7 +2,7 @@
 
 - **Story:** [SMF-5](https://answersllc.atlassian.net/browse/SMF-5) · **Dependencies:** SMF-4 (and, through the story's test data, the SMF-3 baseline in the install-test org; orgs from SMF-2)
 - **Case IDs:** PKG-01, PKG-02, PKG-03 (`testing/test-plan-index.json`)
-- **Status:** TESTING (implementation in, evidence BLOCKED) · **Capability outcome:** BLOCKED
+- **Status:** TESTING (implementation in; cloud stages 60–64 ready; evidence BLOCKED) · **Capability outcome:** BLOCKED
 - **Selected skills:** project `smf-story-workflow`, `smf-evidence`, `smf-capability-probe`, `smf-salesforce-boundaries`, `smf-public-provenance`; official `experience-ui-bundle-2gp-deploy` (mechanics), `experience-ui-bundle-frontend-generate` (marker page), `dx-org-permission-set-assign` (runbook assignment step)
 - **Source:** Jira snapshot `docs/jira-snapshot/2026-10-03/SMF-5.md` (identical to live Jira on 2026-10-03)
 
@@ -34,23 +34,26 @@ host/mobile matrix (SMF-4 HOST-03), provisioning personas/fixtures (SMF-3).
 ## Test plan per case ID
 | Case ID | Personas | Fixtures | Environment rows | Steps (summary) | Expected | Stop conditions |
 |---|---|---|---|---|---|---|
-| PKG-01 | MF-ADMIN installs; MF-TECH, MF-SUPPORT launch (install-test org) | MF-CASE-001 baseline seeded by SMF-3 tooling | ENV-DESKTOP-CHROME | Runbook 0–8; script § PKG-01 | Create/install unlocked v1, assign intended access, and verify a non-admin can launch the installed app. | 2GP gate off; version create Error; install not listed; any persona result missing |
-| PKG-02 | MF-ADMIN upgrades; MF-TECH, MF-SUPPORT verify | MF-CASE-001, MF-IMAGE-001 | ENV-DESKTOP-CHROME | Runbook 10–11 (snapshot, upgrade, compare); script § PKG-02 | Install v2 over v1, verify activation/version behavior, and confirm the seeded case/file state is preserved. | Upgrade refused (record, then owner decision on promote) |
-| PKG-03 | MF-ADMIN removes/restores; MF-RESTRICTED | baseline grants | ENV-DESKTOP-CHROME | Runbook 9; script § PKG-03; sanitized reports | Repeat the app permission-denial scenario in the install-test org. Capture package operation reports and limitations without auth material. | Baseline not restorable |
+| PKG-01 | MF-ADMIN installs; MF-TECH, MF-SUPPORT launch (install-test org) | MF-CASE-001 baseline seeded by SMF-3 tooling | ENV-DESKTOP-EDGE + ENV-CLOUD-CHROMIUM (cloud, agent); ENV-DESKTOP-CHROME if installable | Stages 60–63 | Create/install unlocked v1, assign intended access, and verify a non-admin can launch the installed app. | 2GP gate off; version create Error; install not listed; any persona result missing |
+| PKG-02 | MF-ADMIN upgrades; MF-TECH, MF-SUPPORT verify | MF-CASE-001, MF-IMAGE-001 | ENV-DESKTOP-EDGE + ENV-CLOUD-CHROMIUM (cloud, agent) | Stage 64 (snapshot, v2, upgrade, compare, persona queries, spec) | Install v2 over v1, verify activation/version behavior, and confirm the seeded case/file state is preserved. | Upgrade refused (record, then owner decision on promote) |
+| PKG-03 | MF-ADMIN removes/restores; MF-RESTRICTED | baseline grants | ENV-DESKTOP-EDGE + ENV-CLOUD-CHROMIUM (cloud, agent) | Stage 63 spec; sanitized reports from stages 60/61/64 | Repeat the app permission-denial scenario in the install-test org. Capture package operation reports and limitations without auth material. | Baseline not restorable |
 
 ## Prerequisites and blockers
 | Case | Gap | Smallest unblocking action |
 |---|---|---|
-| PKG-01..03 | SMF-2 ENV-01..03 BLOCKED: no org credential; environment egress to Salesforce denied | Allow egress to Salesforce hosts and provide the Dev Hub auth URL as a secret env var, or run on a contributor machine (`docs/smf-2/setup-path.md` steps 2–6) |
-| PKG-01..03 | Dev Hub `smf-devhub` with "Enable Unlocked Packages and Second-Generation Managed Packages" on, authenticated; ≥ 2 `Package2VersionCreates` remaining | Brandon: Setup → Dev Hub toggle; `sf org login web --alias smf-devhub` |
-| PKG-01..03 | `smf-install-test` scratch org, with Multi-Framework app domain and Edge Network observed | `sf org create scratch --definition-file config/smf-install-test-scratch-def.json --alias smf-install-test --target-dev-hub smf-devhub --duration-days 30`; Brandon: SMF-2 setup-path step 5 |
-| PKG-01..03 | SMF-3 personas and MF-CASE-001/MF-IMAGE-001 baseline in the install-test org, with DATA evidence | Run SMF-3 tooling with `--target-org smf-install-test` (runbook step 5) |
-| PKG-01..03 | Human steps | Brandon: `docs/test-scripts/SMF-5-PKG.md` § PKG-01, PKG-03, PKG-02 in Chrome |
+| PKG-01..03 | SMF-2 ENV-01..03 BLOCKED: no org credential; environment egress to Salesforce denied | Owner: `docs/cloud/HUMAN-SETUP.md` H1 (egress) and H2 (`SF_AUTH_URL_DEVHUB`); then the agent runs stages 10/20 |
+| PKG-01..03 | Dev Hub `smf-devhub` with "Enable Unlocked Packages and Second-Generation Managed Packages" on, authenticated; ≥ 2 `Package2VersionCreates` remaining | Owner consent H3 (`SMF_DEVHUB_ENABLE_OK=yes`); if the toggle is still off, Brandon: Setup → Dev Hub → enable it (no CLI equivalent) |
+| PKG-01..03 | `smf-install-test` scratch org, with Multi-Framework app domain and Edge Network observed | Agent: stage 20 creates it; Multi-Framework domain / Edge Network per SMF-2 |
+| PKG-01..03 | SMF-3 personas and MF-CASE-001/MF-IMAGE-001 baseline in the install-test org, with DATA evidence | Agent: stage 62 (runs SMF-3 stages against smf-install-test) |
+| PKG-01..03 | SMF-3 provisioning honouring `SMF_TARGET_ORG=smf-install-test` (C-SMF5-6) | SMF-3 stage interface; then stage 62 |
+| PKG-02 | Upgrade of an unpromoted v1 may be refused (C-SMF5-2) | Owner sets `SMF_PKG_PROMOTE_OK=yes` only if promoting v1 is approved |
+| supplementary | Physical Salesforce mobile launch of the installed app | Device tester: `docs/test-scripts/SMF-5-PKG.md` (HUMAN-ACTIONS rows) |
 
-Open questions are logged as C-SMF5-1..5 in `docs/contradictions.md`. Licensing/cost: no
+Open questions are logged as C-SMF5-1..6 in `docs/contradictions.md`. Licensing/cost: no
 paid service; package version creates count against the Dev Hub's daily limit.
 
 ## Results
 All three cases BLOCKED (`evidence/SMF-5/PKG-01.md`, `PKG-02.md`, `PKG-03.md`). Offline
-checks pass (`check_package.py --built`, unit tests, bundle lint/test/build); these are
+checks pass (`check_package.py --built`, unit tests, bundle lint/test/build, offline v2 build
+through `pkgflow.py`, cloud-e2e spec typecheck/listing); these are
 supporting evidence, not PASS.

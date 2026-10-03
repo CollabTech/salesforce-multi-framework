@@ -7,12 +7,18 @@ only for the admin steps marked **Admin**. **App:** "Field Support PoC" (App Lau
 Operator steps (build, create, install, upgrade, reports) are in
 `docs/smf-5/subscriber-runbook.md`; this script is only what a person does and observes.
 
-**Environment row:** `ENV-DESKTOP-CHROME` (record Chrome version from chrome://version and
-the OS version). Packaging cases name no host matrix; host coverage is SMF-4 HOST-03.
-Running these steps in another row (Edge, Salesforce mobile) is welcome but goes in a
-separate record and never substitutes for this one. Use a private window per persona.
+**Who runs what:** the desktop rows are automated in the cloud by the agent
+(`ENV-DESKTOP-EDGE`, plus `ENV-CLOUD-CHROMIUM` as a separate row and `ENV-DESKTOP-CHROME`
+when branded Chrome is installable) — pipeline stages 63/64 run
+`testing/cloud-e2e/tests/smf-5-package.spec.ts`, which performs PKG-01 steps 1–5, PKG-02 steps
+1–3 and PKG-03 steps 1–4 below as the real personas. A person uses this script for the
+**physical Salesforce mobile** rows (`ENV-SFMOBILE-IOS`, `ENV-SFMOBILE-ANDROID`: in the
+Salesforce app, App Launcher → "Field Support PoC"; record device model, OS and Salesforce
+app version) or as a manual desktop fallback. Packaging cases name no host matrix; mobile
+runs are supplementary evidence for the installed app, recorded separately and never
+copied from a desktop row. Use a private window (or a logged-out app) per persona.
 
-Record each run in `evidence/SMF-5/<CASE>-ENV-DESKTOP-CHROME.md` (fields from
+Record each run in `testing/device-results/` (template there; the agent turns it into `evidence/SMF-5/<CASE>-<ENV-ROW>.md`) (fields from
 `evidence/TEMPLATE.md`). Paste the "Copy for evidence" blocks. Screenshots: crop the URL
 bar's org domain and any record IDs; never photograph faces. Write version **numbers**
 (e.g. 1.0.0.1), never `04t…` IDs.

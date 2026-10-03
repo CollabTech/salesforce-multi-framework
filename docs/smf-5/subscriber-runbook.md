@@ -10,6 +10,29 @@ steps are in [`docs/test-scripts/SMF-5-PKG.md`](../test-scripts/SMF-5-PKG.md).
 against an org: SMF-2 ENV-01..03 are BLOCKED (no org credential; egress to Salesforce
 denied), so PKG-01..03 are BLOCKED (`evidence/SMF-5/`).
 
+## Cloud pipeline (primary path)
+
+After the owner's one-time setup (`docs/cloud/HUMAN-SETUP.md` H1–H3, H7), the agent runs
+everything below from a cloud session: `bash scripts/cloud/pipeline.sh 60 61 62 63 64`.
+The numbered manual steps further down are what those stages do, kept as the reference
+and for a contributor machine.
+
+| Stage | Does | Case | Exit 2 (BLOCKED) when |
+|---|---|---|---|
+| `60-smf5-package-v1.sh` (needs 10 20) | `check_package.py`; `pkgflow.py version v1`: create `FieldSupportPoC` if the Dev Hub has none, build HEAD in a throw-away worktree (`private/smf5/build-v1`), create a validated version tagged `smf5-v1-<sha>` unless one exists, poll, sanitized reports | PKG-01 | Dev Hub not authenticated; unlocked packaging off |
+| `61-smf5-install-v1.sh` (needs 60) | `pkgflow.py install v1` into `smf-install-test`, poll `installed list` | PKG-01 | no v1 recorded |
+| `62-smf5-subscriber-personas.sh` (needs 61) | runs SMF-3 stages 30–39 with `SMF_TARGET_ORG=smf-install-test` (independent baseline), then assigns `FieldSupport_Access` to `smf-install-test-{tech,support,restricted}` | PKG-01..03 | SMF-3 stages absent or not honouring `SMF_TARGET_ORG` (C-SMF5-6) |
+| `63-smf5-cloud-e2e-v1.sh` (needs 62) | `testing/cloud-e2e/tests/smf-5-package.spec.ts` (`SMF_PKG_EXPECT=v1`): TECH/SUPPORT launch the installed app, own name, marker v1; RESTRICTED denied, restored | PKG-01, PKG-03 | — (test failure = FAIL) |
+| `64-smf5-upgrade-v2.sh` (needs 62 63) | state snapshot `before-v2`; `version v2` (HEAD + `set_version.py v2`, tag `smf5-v2-<sha>`); upgrade `--upgrade-type Mixed`; snapshot `after-v2`; compare + assignment count + each persona's own query of MF-CASE-001 and its Files; spec with `SMF_PKG_EXPECT=v2` | PKG-02 | no SMF-3 fixtures for install-test; beta upgrade refused and `SMF_PKG_PROMOTE_OK` not `yes` |
+
+The package and versions are rediscovered from the Dev Hub on every run, so a fresh
+container needs no saved IDs; `private/packages.json` is a local cache and nothing
+package-related is added to the vault. Promoting v1 (only if the upgrade of an unpromoted
+v1 is refused, C-SMF5-2) needs the owner's consent variable `SMF_PKG_PROMOTE_OK=yes`.
+Rows: `ENV-DESKTOP-EDGE` (official Microsoft Edge on Linux) and `ENV-CLOUD-CHROMIUM` (separate,
+non-substitute); `ENV-DESKTOP-CHROME` when branded Chrome is installable (`SMF_CHROME=1`).
+Physical Salesforce mobile stays human (`docs/test-scripts/SMF-5-PKG.md`).
+
 ## Decisions (what is packaged and how)
 
 | # | Decision | Why |

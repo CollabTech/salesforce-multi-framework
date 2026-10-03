@@ -1,0 +1,268 @@
+{
+  "manifest_version": "1.0.0",
+  "note": "SMF-13/14 3D fixtures (SMF-3 MF-MODEL-SMALL / MF-MODEL-REP). Synthetic, generated deterministically by this repository; no third-party assets. Regenerate: cd testing/fixtures/models && npm ci && npm run generate. Verify: npm run verify.",
+  "licence": "CC0-1.0",
+  "provenance": "Procedural geometry (three.js primitives) and procedural PNG textures (seeded value noise); written by generate-models.mjs. No external URIs: buffers and images are embedded in the GLB BIN chunk.",
+  "generator": {
+    "command": "cd testing/fixtures/models && npm ci && node generate-models.mjs",
+    "script": "testing/fixtures/models/generate-models.mjs",
+    "node": "v22.22.0",
+    "three": "186",
+    "validator": "gltf-validator 2.0.0-dev.3.10"
+  },
+  "models": [
+    {
+      "id": "MF-MODEL-SMALL",
+      "path": "testing/fixtures/models/MF-MODEL-SMALL.glb",
+      "bytes": 317796,
+      "mib": 0.303,
+      "limit_bytes": 2097152,
+      "sha256": "b57acb02d969499687f238a866af84b16753fec7a4651854504670b6b1d84d85",
+      "format": "glTF 2.0 binary (GLB), single buffer, embedded images",
+      "triangles": 8676,
+      "vertices": 7974,
+      "meshes": 10,
+      "primitives": 10,
+      "nodes": 11,
+      "materials": 10,
+      "textures": [],
+      "textureCount": 0,
+      "externalUris": 0,
+      "parts": [
+        {
+          "name": "Base",
+          "partId": "MF-PART-BASE",
+          "label": "Base skid",
+          "triangles": 36,
+          "vertices": 72
+        },
+        {
+          "name": "Casing",
+          "partId": "MF-PART-CASING",
+          "label": "Pump casing (volute)",
+          "triangles": 4896,
+          "vertices": 2766
+        },
+        {
+          "name": "Inlet",
+          "partId": "MF-PART-INLET",
+          "label": "Suction inlet",
+          "triangles": 480,
+          "vertices": 633
+        },
+        {
+          "name": "Outlet",
+          "partId": "MF-PART-OUTLET",
+          "label": "Discharge outlet",
+          "triangles": 480,
+          "vertices": 633
+        },
+        {
+          "name": "Impeller",
+          "partId": "MF-PART-IMPELLER",
+          "label": "Impeller",
+          "triangles": 360,
+          "vertices": 485
+        },
+        {
+          "name": "BearingHousing",
+          "partId": "MF-PART-BEARING",
+          "label": "Bearing housing",
+          "triangles": 288,
+          "vertices": 341
+        },
+        {
+          "name": "Coupling",
+          "partId": "MF-PART-COUPLING",
+          "label": "Shaft coupling",
+          "triangles": 576,
+          "vertices": 682
+        },
+        {
+          "name": "Motor",
+          "partId": "MF-PART-MOTOR",
+          "label": "Electric motor",
+          "triangles": 780,
+          "vertices": 1090
+        },
+        {
+          "name": "TerminalBox",
+          "partId": "MF-PART-TERMINAL",
+          "label": "Motor terminal box",
+          "triangles": 12,
+          "vertices": 24
+        },
+        {
+          "name": "Fasteners",
+          "partId": "MF-PART-FASTENERS",
+          "label": "Flange bolts",
+          "triangles": 768,
+          "vertices": 1248
+        }
+      ],
+      "textureResolutions": [],
+      "gltfValidator": {
+        "validator": "2.0.0-dev.3.10",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 10,
+        "messages": []
+      },
+      "licence": "CC0-1.0",
+      "bundleCopy": "force-app/main/default/uiBundles/FieldSupport/src/probes/smf-13-3d/assets/MF-MODEL-SMALL.glb"
+    },
+    {
+      "id": "MF-MODEL-REP",
+      "path": "testing/fixtures/models/MF-MODEL-REP.glb",
+      "bytes": 8647528,
+      "mib": 8.247,
+      "limit_bytes": 10485760,
+      "sha256": "52eb2bab7af338afa088420ecd9e5e8523c29d8d0c1b29146ec51207557d49a5",
+      "format": "glTF 2.0 binary (GLB), single buffer, embedded images",
+      "triangles": 240692,
+      "vertices": 141722,
+      "meshes": 10,
+      "primitives": 10,
+      "nodes": 11,
+      "materials": 10,
+      "textures": [
+        {
+          "name": "cast-normal",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 1149758,
+          "format": "PNG RGB8"
+        },
+        {
+          "name": "casing-paint",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 381941,
+          "format": "PNG RGB8"
+        },
+        {
+          "name": "casing-metal-rough",
+          "width": 512,
+          "height": 512,
+          "bytes": 52676,
+          "format": "PNG RGB8"
+        },
+        {
+          "name": "motor-paint",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 184042,
+          "format": "PNG RGB8"
+        }
+      ],
+      "textureCount": 4,
+      "externalUris": 0,
+      "parts": [
+        {
+          "name": "Base",
+          "partId": "MF-PART-BASE",
+          "label": "Base skid",
+          "triangles": 2304,
+          "vertices": 1458
+        },
+        {
+          "name": "Casing",
+          "partId": "MF-PART-CASING",
+          "label": "Pump casing (volute)",
+          "triangles": 147968,
+          "vertices": 75684
+        },
+        {
+          "name": "Inlet",
+          "partId": "MF-PART-INLET",
+          "label": "Suction inlet",
+          "triangles": 17920,
+          "vertices": 11047
+        },
+        {
+          "name": "Outlet",
+          "partId": "MF-PART-OUTLET",
+          "label": "Discharge outlet",
+          "triangles": 17920,
+          "vertices": 11047
+        },
+        {
+          "name": "Impeller",
+          "partId": "MF-PART-IMPELLER",
+          "label": "Impeller",
+          "triangles": 3776,
+          "vertices": 3435
+        },
+        {
+          "name": "BearingHousing",
+          "partId": "MF-PART-BEARING",
+          "label": "Bearing housing",
+          "triangles": 16896,
+          "vertices": 9507
+        },
+        {
+          "name": "Coupling",
+          "partId": "MF-PART-COUPLING",
+          "label": "Shaft coupling",
+          "triangles": 3072,
+          "vertices": 3594
+        },
+        {
+          "name": "Motor",
+          "partId": "MF-PART-MOTOR",
+          "label": "Electric motor",
+          "triangles": 25972,
+          "vertices": 19192
+        },
+        {
+          "name": "TerminalBox",
+          "partId": "MF-PART-TERMINAL",
+          "label": "Motor terminal box",
+          "triangles": 768,
+          "vertices": 486
+        },
+        {
+          "name": "Fasteners",
+          "partId": "MF-PART-FASTENERS",
+          "label": "Flange bolts",
+          "triangles": 4096,
+          "vertices": 6272
+        }
+      ],
+      "textureResolutions": [
+        "1024x1024",
+        "1024x1024",
+        "512x512",
+        "1024x1024"
+      ],
+      "gltfValidator": {
+        "validator": "2.0.0-dev.3.10",
+        "errors": 0,
+        "warnings": 6,
+        "infos": 4,
+        "messages": []
+      },
+      "licence": "CC0-1.0"
+    }
+  ],
+  "fallbackImage": {
+    "id": "MF-MODEL-FALLBACK",
+    "path": "testing/fixtures/models/MF-MODEL-FALLBACK.png",
+    "bundleCopy": "force-app/main/default/uiBundles/FieldSupport/src/probes/smf-13-3d/assets/mf-pump-fallback.png",
+    "bytes": 70447,
+    "sha256": "78cf0417bc6f9b24567e19ae5630a5670bb5746064a767ad459cea2473c5eb50",
+    "width": 960,
+    "height": 640,
+    "format": "PNG RGB8, no metadata chunks (no EXIF/location)",
+    "method": "Software z-buffer rendering of MF-MODEL-SMALL geometry (Lambert shading, 3x3 supersampling) by generate-models.mjs",
+    "alt": "Static rendering of synthetic pump MF-PUMP-001: blue pump casing with the suction inlet facing forward and the discharge outlet on top, a yellow shaft coupling, and a grey finned electric motor with a terminal box, all on a dark base skid.",
+    "licence": "CC0-1.0"
+  },
+  "missingAsset": {
+    "id": "MF-MODEL-MISSING",
+    "path": "testing/fixtures/models/MF-MODEL-MISSING.glb",
+    "bundlePath": "src/probes/smf-13-3d/assets/MF-MODEL-MISSING.glb (never emitted; the probe requests it to exercise load failure)",
+    "filesControl": "A ContentVersion Id that does not resolve for the caller (SMF-14 BUDGET-03 uses the MF-CASE-002 copy for denial and a non-existent Id for missing).",
+    "rule": "This file must not exist. --verify fails if it does."
+  }
+}

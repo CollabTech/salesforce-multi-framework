@@ -1,0 +1,19 @@
+{
+  "name": "smf-3d-fixtures",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Deterministic generator for MF-MODEL-SMALL / MF-MODEL-REP (SMF-13/14 3D fixtures). Output is CC0-1.0.",
+  "type": "module",
+  "license": "CC0-1.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate": "node generate-models.mjs",
+    "verify": "node generate-models.mjs --verify"
+  },
+  "dependencies": {
+    "gltf-validator": "2.0.0-dev.3.10",
+    "three": "0.186.1"
+  }
+}

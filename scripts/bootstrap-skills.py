@@ -41,8 +41,12 @@ def install(name: str, m: dict) -> None:
         shutil.rmtree(target)
     src = f"{m['upstream_repo']}/tree/{m['revision']}/skills/{name}"
     print(f"==> install {name} @ {m['revision'][:12]}")
-    r = subprocess.run([npx(), "-y", m["installer_cli"], "add", src, "--agent", "codex", "-y"],
-                       cwd=S.ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+    try:
+        r = subprocess.run([npx(), "-y", m["installer_cli"], "add", src, "--agent", "codex", "-y"],
+                           cwd=S.ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+                           timeout=int(os.environ.get("SMF_INSTALL_TIMEOUT", "600")))
+    except subprocess.TimeoutExpired:
+        sys.exit(f"FAIL: installing {name} timed out (SMF_INSTALL_TIMEOUT); check network to github.com/npm")
     if r.returncode != 0:
         sys.exit(f"FAIL: installing {name}: {r.stderr.strip()[-500:]}")
 
@@ -84,6 +88,11 @@ def main() -> int:
     for n in names:
         if S.verify_claude_entry(n):
             kinds[n] = S.make_dir_link(S.CLAUDE_DIR / n, S.AGENTS_DIR / n)
+    if S.CLAUDE_DIR.is_dir():  # drop entries whose skill no longer exists (e.g. after a revision bump)
+        for p in list(S.CLAUDE_DIR.iterdir()):
+            if p.name not in names:
+                S.remove_entry(p)
+                print(f"removed stale .claude/skills/{p.name}")
     if kinds:
         print("linked:", ", ".join(f"{n} ({k})" for n, k in sorted(kinds.items())))
     return subprocess.call([sys.executable, str(S.ROOT / "scripts" / "verify-skills.py")])

@@ -22,8 +22,8 @@ side frames + decoded marker. Out: recovery (SMF-9), annotation of shared screen
 ## Test plan per case ID
 | Case | Personas | Fixtures | Rows | Executor | Expected |
 |---|---|---|---|---|---|
-| SHARE-01 | SUPPORT → TECH (reverse where offered) | MF-ROOM-001, diagnostic screen | desktop S1; desktop→mobile S2/S3 | stage 53 (desktop functional) + humans (seen) | start from gesture, changing screen seen, stop, restart |
-| SHARE-02 | same | + fallback image | S2–S5 | humans (mobile), stage 53 (desktop cancel stub) | mobile receive vs originate separate; cancel/unsupported keeps call + fallback |
+| SHARE-01 | SUPPORT → TECH (reverse where offered) | MF-ROOM-001, diagnostic screen | desktop S1; desktop→mobile S2/S3 | stage 54 (desktop functional) + humans (seen) | start from gesture, changing screen seen, stop, restart |
+| SHARE-02 | same | + fallback image | S2–S5 | humans (mobile), stage 54 (desktop cancel stub) | mobile receive vs originate separate; cancel/unsupported keeps call + fallback |
 | SHARE-03 | same | tone tab | S1 | humans | screen audio only if offered; heard |
 
 ## Prerequisites and blockers

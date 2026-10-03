@@ -9,7 +9,7 @@ canvas with a pump trend, a sweeping bar, a clock and a counter strip that chang
 MF-IMAGE-001"** until SMF-3 publishes the approved asset; record which image was shown.
 
 **Preconditions:** SMF-7 CALL-01 works in the same pair (stage 45 OK, O-SMF7-1 done).
-**Cloud-first split:** stage 53 automates desktop start/stop/restart, receive frames, cancel
+**Cloud-first split:** stage 54 automates desktop start/stop/restart, receive frames, cancel
 (stubbed) and fallback with fake capture. People do: real picker interactions, *seeing* the
 diagnostic screen, screen audio *heard*, and every mobile row. Results go in
 `testing/device-results/`.

@@ -440,75 +440,76 @@
   "story": "SMF-10",
   "verdict": "INCOMPLETE",
   "required": {
-   "NOT TESTED": 16
+   "BLOCKED": 16
   },
   "supplementary": {
-   "NOT TESTED": 16
+   "NOT TESTED": 13,
+   "PASS": 3
   },
   "open_required_rows": [
    {
     "row": "FILE-01@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-01@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-01@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-01@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-02@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-02@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-02@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-02@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-03@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-03@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-03@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-03@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-04@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-04@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-04@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "FILE-04@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    }
   ],
   "rejected": []
@@ -517,75 +518,76 @@
   "story": "SMF-11",
   "verdict": "INCOMPLETE",
   "required": {
-   "NOT TESTED": 16
+   "BLOCKED": 16
   },
   "supplementary": {
-   "NOT TESTED": 16
+   "NOT TESTED": 13,
+   "PASS": 3
   },
   "open_required_rows": [
    {
     "row": "MARK-01@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-01@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-01@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-01@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-02@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-02@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-02@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-02@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-03@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-03@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-03@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-03@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-04@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-04@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-04@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "MARK-04@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    }
   ],
   "rejected": []
@@ -594,75 +596,76 @@
   "story": "SMF-12",
   "verdict": "INCOMPLETE",
   "required": {
-   "NOT TESTED": 16
+   "BLOCKED": 16
   },
   "supplementary": {
-   "NOT TESTED": 16
+   "NOT TESTED": 13,
+   "PASS": 3
   },
   "open_required_rows": [
    {
     "row": "SYNC-01@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-01@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-01@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-01@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-02@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-02@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-02@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-02@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-03@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-03@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-03@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-03@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-04@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-04@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-04@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "SYNC-04@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    }
   ],
   "rejected": []
@@ -734,63 +737,65 @@
   "story": "SMF-14",
   "verdict": "INCOMPLETE",
   "required": {
-   "NOT TESTED": 13
+   "BLOCKED": 13
   },
   "supplementary": {
-   "NOT TESTED": 12
+   "NOT TESTED": 9,
+   "PASS": 2,
+   "PARTIAL": 1
   },
   "open_required_rows": [
    {
     "row": "BUDGET-01@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-01@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-01@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-01@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-02@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-02@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-02@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-02@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-03@ENV-DESKTOP-CHROME",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-03@ENV-DESKTOP-EDGE",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-03@ENV-SFMOBILE-IOS",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-03@ENV-SFMOBILE-ANDROID",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "BUDGET-04@n/a",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    }
   ],
   "rejected": []
@@ -799,21 +804,21 @@
   "story": "SMF-15",
   "verdict": "INCOMPLETE",
   "required": {
-   "NOT TESTED": 3
+   "BLOCKED": 3
   },
   "supplementary": {},
   "open_required_rows": [
    {
     "row": "GATE-01@n/a",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "GATE-02@n/a",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    },
    {
     "row": "GATE-03@n/a",
-    "outcome": "NOT TESTED"
+    "outcome": "BLOCKED"
    }
   ],
   "rejected": []

@@ -43,7 +43,11 @@ jobs:
       - run: python scripts/check-test-plan.py
       - run: python scripts/scan-public-content.py
       - run: python scripts/build-matrix.py --check
-      - run: python scripts/gate-check.py
+      - name: GATE-01 check and report is current
+        shell: bash
+        run: |
+          python scripts/gate-check.py --write
+          git diff --exit-code -- testing/gate || { echo "testing/gate is stale: run python3 scripts/gate-check.py --write"; exit 1; }
       - run: python -m unittest discover -s scripts/tests -v
       - name: Negative check - tampered official skill must fail
         shell: bash

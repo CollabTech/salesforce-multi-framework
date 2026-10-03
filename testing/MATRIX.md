@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 147 |
+| NOT TESTED | 144 |
 | PASS | 29 |
 | FAIL | 1 |
 | PARTIAL | 2 |
-| BLOCKED | 149 |
+| BLOCKED | 152 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -403,9 +403,9 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| GATE-01 | decision gate | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **NOT TESTED** | — | — | — |
-| GATE-02 | decision gate | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **NOT TESTED** | — | — | — |
-| GATE-03 | decision gate | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **NOT TESTED** | — | — | — |
+| GATE-01 | decision gate | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **BLOCKED** | [evidence/SMF-15/GATE-01.md](../evidence/SMF-15/GATE-01.md) | Implementing agent (Claude Code cloud session). Not reviewed by Brandon or any person yet. | 2026-10-03 |
+| GATE-02 | decision gate | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **BLOCKED** | [evidence/SMF-15/GATE-02.md](../evidence/SMF-15/GATE-02.md) | Implementing agent (Claude Code cloud session). Not reviewed by Brandon or any person yet. | 2026-10-03 |
+| GATE-03 | decision gate | n/a | n/a — no Salesforce persona (implementing agent / reviewer) | agent | **BLOCKED** | [evidence/SMF-15/GATE-03.md](../evidence/SMF-15/GATE-03.md) | Implementing agent (Claude Code cloud session). Not reviewed by Brandon or any person yet. | 2026-10-03 |
 
 ## SMF-16 [16] Compose and package the proven remote-support vertical slice
 

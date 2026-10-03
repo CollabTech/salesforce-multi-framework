@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 305 |
-| PASS | 4 |
+| NOT TESTED | 286 |
+| PASS | 7 |
 | FAIL | 0 |
 | PARTIAL | 0 |
-| BLOCKED | 19 |
+| BLOCKED | 35 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -233,34 +233,34 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| FILE-01 | Files | ENV-DESKTOP-CHROME | MF-SUPPORT | agent | **NOT TESTED** | — | — | — |
-| FILE-01 | Files | ENV-DESKTOP-EDGE | MF-SUPPORT | agent | **NOT TESTED** | — | — | — |
-| FILE-01 | Files | ENV-SFMOBILE-IOS | MF-SUPPORT | human | **NOT TESTED** | — | — | — |
-| FILE-01 | Files | ENV-SFMOBILE-ANDROID | MF-SUPPORT | human | **NOT TESTED** | — | — | — |
+| FILE-01 | Files | ENV-DESKTOP-CHROME | MF-SUPPORT | agent | **BLOCKED** | [evidence/SMF-10/FILE-01.md](../evidence/SMF-10/FILE-01.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-01 | Files | ENV-DESKTOP-EDGE | MF-SUPPORT | agent | **BLOCKED** | [evidence/SMF-10/FILE-01.md](../evidence/SMF-10/FILE-01.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-01 | Files | ENV-SFMOBILE-IOS | MF-SUPPORT | human | **BLOCKED** | [evidence/SMF-10/FILE-01.md](../evidence/SMF-10/FILE-01.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-01 | Files | ENV-SFMOBILE-ANDROID | MF-SUPPORT | human | **BLOCKED** | [evidence/SMF-10/FILE-01.md](../evidence/SMF-10/FILE-01.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
 | FILE-01 | Files | ENV-MOBILE-SAFARI | MF-SUPPORT | human | **NOT TESTED** | — | — | — |
 | FILE-01 | Files | ENV-MOBILE-CHROME | MF-SUPPORT | human | **NOT TESTED** | — | — | — |
 | FILE-01 | Files | ENV-CLOUD-CHROMIUM | MF-SUPPORT | agent | **NOT TESTED** | — | — | — |
-| FILE-01 | Files | ENV-EMULATION-LOCALHOST | MF-SUPPORT | agent | **NOT TESTED** | — | — | — |
-| FILE-02 | Files | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-02 | Files | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-02 | Files | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| FILE-02 | Files | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| FILE-01 | Files | ENV-EMULATION-LOCALHOST | MF-SUPPORT | agent | **PASS** | [evidence/SMF-10/FILE-01-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-10/FILE-01-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated) | 2026-10-03 |
+| FILE-02 | Files | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-10/FILE-02.md](../evidence/SMF-10/FILE-02.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-02 | Files | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-10/FILE-02.md](../evidence/SMF-10/FILE-02.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-02 | Files | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-10/FILE-02.md](../evidence/SMF-10/FILE-02.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-02 | Files | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-10/FILE-02.md](../evidence/SMF-10/FILE-02.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
 | FILE-02 | Files | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | FILE-02 | Files | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | FILE-02 | Files | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-02 | Files | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-03 | Files | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-03 | Files | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-03 | Files | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| FILE-03 | Files | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| FILE-02 | Files | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-10/FILE-02-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-10/FILE-02-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated) | 2026-10-03 |
+| FILE-03 | Files | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-10/FILE-03.md](../evidence/SMF-10/FILE-03.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-03 | Files | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-10/FILE-03.md](../evidence/SMF-10/FILE-03.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-03 | Files | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-10/FILE-03.md](../evidence/SMF-10/FILE-03.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-03 | Files | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-10/FILE-03.md](../evidence/SMF-10/FILE-03.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
 | FILE-03 | Files | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | FILE-03 | Files | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | FILE-03 | Files | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-03 | Files | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-04 | Files | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-04 | Files | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| FILE-04 | Files | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| FILE-04 | Files | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| FILE-03 | Files | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-10/FILE-03-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-10/FILE-03-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated) | 2026-10-03 |
+| FILE-04 | Files | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-10/FILE-04.md](../evidence/SMF-10/FILE-04.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-04 | Files | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-10/FILE-04.md](../evidence/SMF-10/FILE-04.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-04 | Files | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-10/FILE-04.md](../evidence/SMF-10/FILE-04.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
+| FILE-04 | Files | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-10/FILE-04.md](../evidence/SMF-10/FILE-04.md) | Implementing agent (Claude Code cloud session) — recorded blocker only | 2026-10-03 |
 | FILE-04 | Files | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | FILE-04 | Files | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | FILE-04 | Files | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |

@@ -61,5 +61,9 @@ action that closes it. Story text in Jira stays authoritative.
   versions for other operations.
 - **Meanwhile:** nothing assumed. The SMF-2 dry-run plan looks both up with
   `platform-docs-get` and labels results observed vs assumed.
-- **To close:** resolved during SMF-2 from current official documentation; if "Edge" stays
-  ambiguous, owner clarifies in SMF-2.
+- **Resolved (2026-10-03, owner clarification + SMF-2):** "Edge requirements" means the
+  **Salesforce Edge Network** org prerequisite (required for the Salesforce app domain);
+  **Microsoft Edge** is the separate `ENV-DESKTOP-EDGE` browser row tested from SMF-4 on.
+  The UIBundle packaging API version is not stated in the docs excerpt; SMF-4/5 use the
+  official template's `sourceApiVersion` 67.0 and SMF-2 checks the org supports it. See
+  `docs/smf-2/platform-requirements.md`.

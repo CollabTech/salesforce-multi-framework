@@ -28,6 +28,8 @@ export interface SessionState {
   connection: ConnectionState;
   autoplayBlocked: boolean;
   hasLastToken: boolean;
+  /** SMF-8: local screen share state as reported by the SDK. */
+  screenSharing: boolean;
   lastLeave: { at: string; tracks: string[]; allEnded: boolean } | null;
   log: LogEntry[];
 }
@@ -68,6 +70,7 @@ export class CallSession {
     connection: { ...INITIAL_CONN },
     autoplayBlocked: false,
     hasLastToken: false,
+    screenSharing: false,
     lastLeave: null,
     log: [],
   };
@@ -167,6 +170,10 @@ export class CallSession {
           case 'mediaPermissionError':
             this.log(`media permission error (${e.kind}): ${e.message}`);
             break;
+          case 'screenShare':
+            this.set({ screenSharing: e.enabled });
+            this.log(`screen share ${e.enabled ? 'started' : 'stopped'} (SDK event)`);
+            break;
         }
       });
       await client.join();
@@ -195,6 +202,28 @@ export class CallSession {
     this.log(`camera ${on ? 'on' : 'off'}${track ? ' (marker composite)' : ''} → sending video: ${this.client.local().videoEnabled}`);
   }
 
+  /**
+   * SMF-8: start/stop screen share. Returns the failure (cancel/denied/unsupported) instead of
+   * throwing so the call stays usable.
+   */
+  async setScreenShare(on: boolean): Promise<{ ok: true } | { ok: false; name: string; message: string }> {
+    if (!this.client?.setScreenShare) return { ok: false, name: 'NotSupportedError', message: 'The call client has no screen share.' };
+    const t0 = this.now().getTime();
+    try {
+      await this.client.setScreenShare(on);
+      const local = this.client.local();
+      this.set({ screenSharing: !!local.screenShareEnabled });
+      this.log(`screen share ${on ? 'start' : 'stop'} requested → sharing=${!!local.screenShareEnabled} video=${local.screenVideoTrack?.readyState ?? 'none'} audio=${local.screenAudioTrack ? local.screenAudioTrack.readyState : 'not captured'} (${this.now().getTime() - t0} ms)`);
+      return { ok: true };
+    } catch (e) {
+      const name = typeof e === 'object' && e !== null && 'name' in e ? String((e as { name: unknown }).name) : 'Error';
+      const message = e instanceof Error ? e.message : String(e);
+      this.set({ screenSharing: false });
+      this.log(`screen share ${on ? 'start' : 'stop'} FAILED: ${name}: ${message} — call continues (phase ${this.s.phase})`);
+      return { ok: false, name, message: redact(message) };
+    }
+  }
+
   async resumeAudio(): Promise<void> {
     await this.client?.resumeAudio();
     this.set({ autoplayBlocked: false });
@@ -207,7 +236,7 @@ export class CallSession {
     if (!client) return;
     this.set({ phase: 'leaving' });
     const local = client.local();
-    const tracks = [local.audioTrack, local.videoTrack].filter((t): t is MediaStreamTrack => !!t);
+    const tracks = [local.audioTrack, local.videoTrack, local.screenVideoTrack, local.screenAudioTrack].filter((t): t is MediaStreamTrack => !!t);
     try {
       await client.leave();
     } catch (e) {
@@ -217,7 +246,7 @@ export class CallSession {
     this.cleanupClient();
     const states = tracks.map(t => `${t.kind}:${t.readyState}`);
     const rec = { at: this.now().toISOString(), tracks: states, allEnded: tracks.every(t => t.readyState === 'ended') };
-    this.set({ phase: 'left', remotes: [], mic: false, camera: false, lastLeave: rec, connection: { ...INITIAL_CONN } });
+    this.set({ phase: 'left', remotes: [], mic: false, camera: false, screenSharing: false, lastLeave: rec, connection: { ...INITIAL_CONN } });
     this.log(`left: local tracks ${states.join(', ') || 'none'}; all ended=${rec.allEnded}`);
   }
 

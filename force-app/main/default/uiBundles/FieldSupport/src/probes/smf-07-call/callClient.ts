@@ -11,6 +11,10 @@ export interface RemoteParticipant {
   videoEnabled: boolean;
   audioTrack?: MediaStreamTrack;
   videoTrack?: MediaStreamTrack;
+  /** SMF-8 screen share (received). */
+  screenShareEnabled?: boolean;
+  screenVideoTrack?: MediaStreamTrack;
+  screenAudioTrack?: MediaStreamTrack;
 }
 
 export interface LocalMedia {
@@ -18,6 +22,10 @@ export interface LocalMedia {
   videoEnabled: boolean;
   audioTrack?: MediaStreamTrack;
   videoTrack?: MediaStreamTrack;
+  /** SMF-8 screen share (sent). */
+  screenShareEnabled?: boolean;
+  screenVideoTrack?: MediaStreamTrack;
+  screenAudioTrack?: MediaStreamTrack;
 }
 
 /** Socket (signaling) and media transport states as reported by the SDK. */
@@ -35,7 +43,8 @@ export type CallEvent =
   | { type: 'roomJoined'; reconnected: boolean }
   | { type: 'roomLeft'; state: string }
   | { type: 'autoplayBlocked' }
-  | { type: 'mediaPermissionError'; kind: string; message: string };
+  | { type: 'mediaPermissionError'; kind: string; message: string }
+  | { type: 'screenShare'; enabled: boolean };
 
 export interface CallClient {
   /** Opaque id of the local participant in this session (not a Salesforce id). */
@@ -45,6 +54,8 @@ export interface CallClient {
   setMic(on: boolean): Promise<void>;
   /** `track` replaces the camera with a custom track (the marker composite). */
   setCamera(on: boolean, track?: MediaStreamTrack): Promise<void>;
+  /** SMF-8: start/stop screen share (the SDK calls getDisplayMedia; must run from a user gesture). */
+  setScreenShare?(on: boolean): Promise<void>;
   /** Resume remote audio after an autoplay block (must run from a user gesture). */
   resumeAudio(): Promise<void>;
   local(): LocalMedia;

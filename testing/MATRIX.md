@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 262 |
-| PASS | 11 |
+| NOT TESTED | 247 |
+| PASS | 13 |
 | FAIL | 0 |
-| PARTIAL | 0 |
-| BLOCKED | 55 |
+| PARTIAL | 1 |
+| BLOCKED | 67 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -184,30 +184,30 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| SHARE-01 | screen sharing | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-01 | screen sharing | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-01 | screen sharing | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SHARE-01 | screen sharing | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SHARE-01 | screen sharing | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-8/SHARE-01.md](../evidence/SMF-8/SHARE-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-01 | screen sharing | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-8/SHARE-01.md](../evidence/SMF-8/SHARE-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-01 | screen sharing | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-8/SHARE-01.md](../evidence/SMF-8/SHARE-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-01 | screen sharing | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-8/SHARE-01.md](../evidence/SMF-8/SHARE-01.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | SHARE-01 | screen sharing | ENV-MOBILE-SAFARI | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SHARE-01 | screen sharing | ENV-MOBILE-CHROME | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SHARE-01 | screen sharing | ENV-CLOUD-CHROMIUM | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-01 | screen sharing | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-02 | screen sharing | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-02 | screen sharing | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-02 | screen sharing | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SHARE-02 | screen sharing | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SHARE-01 | screen sharing | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-8/SHARE-01-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-8/SHARE-01-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| SHARE-02 | screen sharing | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-8/SHARE-02.md](../evidence/SMF-8/SHARE-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-02 | screen sharing | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-8/SHARE-02.md](../evidence/SMF-8/SHARE-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-02 | screen sharing | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-8/SHARE-02.md](../evidence/SMF-8/SHARE-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-02 | screen sharing | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-8/SHARE-02.md](../evidence/SMF-8/SHARE-02.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | SHARE-02 | screen sharing | ENV-MOBILE-SAFARI | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SHARE-02 | screen sharing | ENV-MOBILE-CHROME | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SHARE-02 | screen sharing | ENV-CLOUD-CHROMIUM | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-02 | screen sharing | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-03 | screen sharing | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-03 | screen sharing | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-03 | screen sharing | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SHARE-03 | screen sharing | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SHARE-02 | screen sharing | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **PARTIAL** | [evidence/SMF-8/SHARE-02-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-8/SHARE-02-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
+| SHARE-03 | screen sharing | ENV-DESKTOP-CHROME | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-8/SHARE-03.md](../evidence/SMF-8/SHARE-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-03 | screen sharing | ENV-DESKTOP-EDGE | MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-8/SHARE-03.md](../evidence/SMF-8/SHARE-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-03 | screen sharing | ENV-SFMOBILE-IOS | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-8/SHARE-03.md](../evidence/SMF-8/SHARE-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
+| SHARE-03 | screen sharing | ENV-SFMOBILE-ANDROID | MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-8/SHARE-03.md](../evidence/SMF-8/SHARE-03.md) | Implementing agent (Claude Code cloud session) — recorded the blocker only | 2026-10-03 |
 | SHARE-03 | screen sharing | ENV-MOBILE-SAFARI | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SHARE-03 | screen sharing | ENV-MOBILE-CHROME | MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SHARE-03 | screen sharing | ENV-CLOUD-CHROMIUM | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SHARE-03 | screen sharing | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
+| SHARE-03 | screen sharing | ENV-EMULATION-LOCALHOST | MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-8/SHARE-03-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-8/SHARE-03-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated Playwright run) | 2026-10-03 |
 
 ## SMF-9 [09] Validate call recovery during mobile and network interruptions
 

@@ -25,7 +25,8 @@ action that closes it. Story text in Jira stays authoritative.
 - **Affects:** GOV-01, GOV-03 (public provenance)
 - **Gap:** `forcedotcom/afv-library` at `3c15867b` ships `LICENSE.txt` = Apache-2.0, but its
   `package.json` (and the npm package `@salesforce/afv-skills`) declares CC-BY-NC-4.0.
-  This public repo redistributes 28 skill folders.
+  Until revision 2 of ADR-0001 this public repo redistributed 28 skill folders (still present
+  in the SMF-1 branch history and PR refs).
 - **Meanwhile:** installed from the GitHub repository (Apache-2.0 `LICENSE.txt`), recorded both
   values in `docs/provenance/official-skills.md`.
 - **Resolved (2026-10-03, SMF-1 review):** the owner chose pinned, project-local
@@ -45,13 +46,17 @@ action that closes it. Story text in Jira stays authoritative.
   were created, so SMF-3 scope is not started.
 - **To close:** owner accepts that SMF-1's matrix obligation is met by the schema + GOV
   evidence, or asks for SMF-1 rows to be added when SMF-3 initialises the matrix.
+- **Update (2026-10-03, SMF-3):** the matrix (`testing/matrix.json`, `testing/MATRIX.md`) now
+  has GOV-01..03 rows carrying their reviewed-pending PASS records; nothing else is open.
 
 ## C-04 — Outcome definitions are required by SMF-3 AC5 but only named elsewhere
 - **Affects:** DATA-04 and every evidence record
 - **Gap:** all stories name PASS/FAIL/PARTIAL/BLOCKED/NOT TESTED; none defines them.
-- **Meanwhile:** `testing/contract.json` → `outcomes.definitions` holds draft wording, marked
-  "proposed draft pending SMF-3 review", used by the `smf-evidence` skill.
-- **To close:** confirm or amend the wording during SMF-3.
+- **Resolved (2026-10-03, SMF-3):** `testing/contract.json` → `outcomes.definitions` is final
+  (wording tightened, meanings unchanged from the SMF-1 draft; the "proposed draft" note is
+  removed). `outcomes.capability_area_cases` enumerates AC5's ten capability areas with the
+  case IDs that test each. Changes now need a recorded project-owner decision before a run.
+  Owner review happens with the SMF-3 PR.
 
 ## C-05 — SMF-2 terms the repository cannot resolve (found by the GOV-02 dry run)
 - **Affects:** ENV-01
@@ -85,3 +90,37 @@ action that closes it. Story text in Jira stays authoritative.
   delivers each model; if Connect file content is refused in the UI-bundle host, record BUDGET-03
   for REP as FAIL/PARTIAL and decide (owner) between a smaller REP fixture (contract change) or a
   different server path.
+
+## C-06 — Official test skill forbids org data; the SMF-3 access check must read the provisioned org
+- **Affects:** DATA-02 (org-level row)
+- **Gap:** `platform-apex-test-generate` says never rely on org data (`SeeAllData`).
+  DATA-02 asks whether the *provisioned* personas can reach the *provisioned* fixtures, which a
+  test that builds its own data cannot answer.
+- **Meanwhile:** `MF_AccessBaselineTest` uses `@IsTest(SeeAllData=true)`, creates nothing, and
+  its update probes roll back. It is a verification probe, not a unit test of production code;
+  PMD reports the expected `ApexUnitTestShouldNotUseSeeAllDataTrue`. The read-only
+  `baseline.py` (`UserRecordAccess`) and the cloud browser spec give two independent checks
+  that do not depend on it.
+- **To close:** reviewer accepts the exception for this class only (or drops the Apex probe
+  and relies on `baseline.py` + the browser spec).
+
+## C-07 — Vault saving before ADR-0004 approval (HUMAN-SETUP H7)
+- **Affects:** DATA-01..03 continuity; all persona-based cloud cases
+- **Gap:** the cloud addendum says SMF-3 stage 31 runs `scripts/cloud/vault.py save` after
+  creating personas; HUMAN-SETUP H7 says the vault is not saved until the owner approves ADR-0004.
+- **Meanwhile:** stage 31 calls `vault.py save` only when `SF_AUTH_URL_DEVHUB` is set, exactly
+  like stage 20; it adds no gate of its own.
+- **To close:** owner approves/rejects ADR-0004; if rejected, stages 20 and 31 both need the
+  same gate (integrator change in `vault.py` or both stages).
+
+## C-08 — Asset sharing design differs from the delegated brief
+- **Affects:** DATA-02, DATA-03
+- **Gap:** the delegation brief suggested TECH *Account Edit* so TECH can edit equipment under
+  Asset "Controlled by Parent". With that model every account reader also reads MF-ASSET-002
+  (linked to MF-CASE-002), which breaks the contract's negative control unless MF-ASSET-002
+  gets a separate parent the contract does not define.
+- **Meanwhile:** Asset OWD **Private** (documented in Salesforce Help, "Update the Default Asset
+  Sharing Setting"); TECH gets Edit on MF-ASSET-001 by asset share and only Read on the account;
+  SUPPORT gets no asset access (the contract gives SUPPORT the case, not the equipment).
+- **To close:** reviewer confirms; if the org rejects the Asset OWD deploy, the fallback is a
+  recorded decision on a separate parent for MF-ASSET-002.

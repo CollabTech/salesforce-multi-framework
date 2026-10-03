@@ -12,7 +12,10 @@ action that closes it. Story text in Jira stays authoritative.
   "without changing an org".
 - **Meanwhile:** followed the story-specific text; SMF-1 touched no org. GOV cases need no
   personas or fixtures.
-- **To close:** owner confirms (or edits SMF-1 to say the shared paragraph does not apply).
+- **Also:** the same shared paragraph appears in every story, including SMF-2, whose own scope
+  leaves provisioning to SMF-3 (noticed by the GOV-02 dry run).
+- **To close:** owner confirms that story-specific scope wins over the shared paragraph (or
+  edits the shared paragraph to say "where this story owns provisioning").
 
 ## C-02 — Upstream licence metadata disagrees
 - **Affects:** GOV-01, GOV-03 (public provenance)
@@ -40,3 +43,14 @@ action that closes it. Story text in Jira stays authoritative.
 - **Meanwhile:** `testing/contract.json` → `outcomes.definitions` holds draft wording, marked
   "proposed draft pending SMF-3 review", used by the `smf-evidence` skill.
 - **To close:** confirm or amend the wording during SMF-3.
+
+## C-05 — SMF-2 terms the repository cannot resolve (found by the GOV-02 dry run)
+- **Affects:** ENV-01
+- **Gap:** SMF-2 AC3 asks to verify "Edge requirements" (Microsoft Edge browser support, or
+  Salesforce Edge network?) and "the API version needed for UIBundle packaging"; neither is
+  defined in the stories, and the installed official skills cite different minimum API
+  versions for other operations.
+- **Meanwhile:** nothing assumed. The SMF-2 dry-run plan looks both up with
+  `platform-docs-get` and labels results observed vs assumed.
+- **To close:** resolved during SMF-2 from current official documentation; if "Edge" stays
+  ambiguous, owner clarifies in SMF-2.

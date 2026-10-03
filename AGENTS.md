@@ -117,7 +117,8 @@ Jira status flow: **To Discuss → In Progress → Testing → Done**. Use Jira'
 - **Keep out of Git and public logs:** passwords, passkeys, tokens, `sf` auth files/exports
   (`.sf/`, `.sfdx/`, `*.authfile`, `sfdxAuthUrl`), private org IDs, real usernames,
   provider room IDs/participant tokens, raw private conversations. Real persona↔username
-  and record-ID mappings live only in `private/` (git-ignored) or a credential store.
+  and record-ID mappings live only in `private/` (git-ignored; format in
+  `docs/private-mapping-format.md`) or a credential store.
 - **Preserve curated provenance:** task instructions, decisions, changes, and verification
   results go in the repo (`docs/provenance/`, `evidence/`, ADRs) — summarised, not raw transcripts.
 - **Done ≠ PASS.** Done means the evidence was reviewed. A reviewed FAIL or PARTIAL can be
@@ -142,7 +143,7 @@ docs/adr/                    architecture decision records (template: 0000)
 docs/poc-briefs/             one brief per PoC story (template + index)
 docs/provenance/             official-skill provenance, curated session records
 docs/jira-snapshot/          dated, read-only copy of SMF story text
-docs/dry-runs/               bounded planning dry runs (e.g. SMF-2)
+docs/dry-runs/               bounded planning dry runs (SMF-1 GOV-02: SMF-2 plan)
 testing/                     test-plan index, shared contract, matrix schema
 evidence/                    per-story, per-case evidence records
 scripts/                     install/verify tooling (no org access)

@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 PATTERNS = {
-    "sfdx auth URL": r"force://[A-Za-z0-9_.~-]+:[A-Za-z0-9_.~-]+@",
+    "sfdx auth URL": r"force://[^\s@'\"]+@[^\s'\"]+",
     "Salesforce session/access token": r"\b00D[A-Za-z0-9]{12,15}![A-Za-z0-9._-]{20,}",
     "Salesforce org ID": r"\b00D[A-Za-z0-9]{12}(?:[A-Za-z0-9]{3})?\b",
     "Salesforce user/record ID": r"\b(?:005|500|02i|001|069|068|0PS)[A-Za-z0-9]{12}(?:[A-Za-z0-9]{3})?\b",

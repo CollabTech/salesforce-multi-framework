@@ -24,9 +24,18 @@ export const MOCK_IDS = {
 
 export type MockFault = 'upload-fail-once' | 'link-fail-once' | 'link-lost-once';
 
+/** Serializable copy of one stored version (lets a test reopen in a fresh page). */
+export interface MockSeedEntry {
+  info: CaseFileInfo;
+  base64: string;
+  type: string;
+}
+
 export interface MockOptions {
   faults?: MockFault[];
   uploadDurationMs?: number;
+  /** Versions to preload (from exportState() of another page). */
+  seed?: MockSeedEntry[];
 }
 
 interface StoredVersion {
@@ -34,13 +43,29 @@ interface StoredVersion {
   blob: Blob;
 }
 
-let counter = 0;
+// Random start so Ids minted in a fresh page never collide with seeded ones.
+let counter = Math.floor(Math.random() * 9e7);
 const nextId = (prefix: string): string => `${prefix}MOCK${String(++counter).padStart(8, '0')}AAA`;
 
 export interface MockTransport extends FilesTransport {
   readonly faults: Set<MockFault>;
   readonly calls: { uploadBody: number; createVersion: number };
   versions(): CaseFileInfo[];
+  /** Serializes every stored version (bytes as base64) for seeding a fresh page. */
+  exportState(): Promise<MockSeedEntry[]>;
+}
+
+function toBase64(bytes: Uint8Array): string {
+  let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+
+function fromBase64(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
 }
 
 export function createMockTransport(options: MockOptions = {}): MockTransport {
@@ -72,6 +97,13 @@ export function createMockTransport(options: MockOptions = {}): MockTransport {
     },
   });
 
+  for (const entry of options.seed ?? []) {
+    versions.set(entry.info.latestVersionId, {
+      info: entry.info,
+      blob: new Blob([fromBase64(entry.base64) as BlobPart], { type: entry.type }),
+    });
+  }
+
   const visible = (recordId: string): boolean => sameId(recordId, MOCK_IDS.visibleCase);
 
   return {
@@ -79,6 +111,14 @@ export function createMockTransport(options: MockOptions = {}): MockTransport {
     faults,
     calls,
     versions: () => [...versions.values()].map(v => v.info),
+    exportState: async () =>
+      Promise.all(
+        [...versions.values()].map(async v => ({
+          info: v.info,
+          type: v.blob.type,
+          base64: toBase64(new Uint8Array(await v.blob.arrayBuffer())),
+        }))
+      ),
 
     async listCaseFiles(recordId: string): Promise<CaseFileInfo[]> {
       if (!visible(recordId)) throw new NotFoundOrDeniedError();

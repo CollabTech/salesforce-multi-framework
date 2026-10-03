@@ -9,7 +9,7 @@ export { CancelledError, NotFoundOrDeniedError, UploadFailedError } from './tran
 export type { CaseFileInfo, CreateVersionInput, FilesTransport, UploadBodyOptions } from './transport';
 export { salesforceTransport } from './salesforceTransport';
 export { MOCK_IDS, createMockTransport } from './mockTransport';
-export type { MockFault, MockOptions, MockTransport } from './mockTransport';
+export type { MockFault, MockOptions, MockSeedEntry, MockTransport } from './mockTransport';
 export { isLocalhostOrigin, parseFaults, selectFilesTransport } from './selectTransport';
 export { KEY_PREFIX, filesWithKey, markerFor, newAttempt, runUpload, sha256Hex } from './uploadFlow';
 export type { Attempt, FlowCallbacks, Phase, PersistedResult } from './uploadFlow';

@@ -25,5 +25,9 @@ Story tracks append their items here as their probes land; ordering = run order.
 | D32 | MARK-02 | ENV-SFMOBILE-IOS, ENV-SFMOBILE-ANDROID | Device tester as MF-SUPPORT | Log out and back in, reopen the latest markup: image, circle, arrow and label all present; export panel shown | MARK-02 1–3 |
 | D33 | MARK-03 | phone + desktop | Device tester (TECH on desktop, SUPPORT on phone) | Save at the same moment → explicit conflict; airplane mode during save → fails, retry saves; one revision per successful save | MARK-03 1–4 |
 | D34 | MARK-04 | ENV-SFMOBILE-IOS, ENV-SFMOBILE-ANDROID | Device tester as MF-RESTRICTED | Reopening the markup and fetching the snapshot, export and image all show DENIED | MARK-04 1–2 |
+| D35 | SYNC-01 | desktop ↔ ENV-SFMOBILE-IOS; desktop ↔ ENV-SFMOBILE-ANDROID | Device tester pair (TECH on desktop, SUPPORT on phone) | Join; see presence and cursors; draw with a finger; time 10 edits each way with a stopwatch against the 2 s target; record network type | `docs/test-scripts/SMF-12-SYNC.md` SYNC-01 1–4 |
+| D36 | SYNC-02 | same pairs | Device tester pair (agent redeploys the Worker) | Draw at the same time; phone in airplane mode for 20 s, then reconnect and confirm both sides converge; watch recovery while the Worker redeploys | SYNC-02 1–3 |
+| D37 | SYNC-03 | ENV-SFMOBILE-IOS, ENV-SFMOBILE-ANDROID | Device tester as MF-RESTRICTED and MF-TECH (agent removes access as MF-ADMIN) | Restricted and wrong-case joins are denied; time how long until the session is cut after access is removed (expected bound ≈315 s) | SYNC-03 1–3 |
+| D38 | SYNC-04 | desktop ↔ iPhone; desktop ↔ Android | Device tester pair (agent checks Files as MF-ADMIN) | Save at the same moment → one revision plus an explicit conflict, then "save on top"; Files show snapshot/export pairs, each export pointing to its snapshot | SYNC-04 1–3 |
 
 Desktop Edge (and Chrome once H1 allows it) rows for HOST-* and DATA-02 are automated in the cloud as the real personas.

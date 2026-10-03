@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>SMF12_RoomTokenResource</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>SMF-12 probe: lets a user request a markup room token (the Apex endpoint checks case visibility and edit access first) and use the SMF12_MarkupSync credential for the mint callout. Grants no record access. Assign to MF-TECH, MF-SUPPORT and MF-RESTRICTED alike so room denial is decided by case sharing.</description>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>SMF12_MarkupSync-SMF12Mint</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>SMF-12 Markup Sync Probe Access</label>
+</PermissionSet>

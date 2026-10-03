@@ -6,11 +6,11 @@ Initialised by SMF-3 (DATA-04). 328 rows across 54 case IDs. Outcome definitions
 
 | Outcome | Rows |
 |---|---|
-| NOT TESTED | 267 |
-| PASS | 10 |
+| NOT TESTED | 248 |
+| PASS | 13 |
 | FAIL | 0 |
 | PARTIAL | 0 |
-| BLOCKED | 51 |
+| BLOCKED | 67 |
 
 ## Environment applicability (SMF-3 initialisation decision)
 
@@ -307,34 +307,34 @@ CAP-01..03 have separate camera and mic rows (SMF-6 CAP-03). `n/a` = no end-user
 
 | Row | Capability | Environment | Actor pair | Executor | Outcome | Evidence | Tester | Date |
 |---|---|---|---|---|---|---|---|---|
-| SYNC-01 | markup sync/persistence | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-01 | markup sync/persistence | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-01 | markup sync/persistence | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SYNC-01 | markup sync/persistence | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SYNC-01 | markup sync/persistence | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-01.md](../evidence/SMF-12/SYNC-01.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-01 | markup sync/persistence | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-01.md](../evidence/SMF-12/SYNC-01.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-01 | markup sync/persistence | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-01.md](../evidence/SMF-12/SYNC-01.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-01 | markup sync/persistence | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-01.md](../evidence/SMF-12/SYNC-01.md) | Implementing agent — recorded blocker only | 2026-10-03 |
 | SYNC-01 | markup sync/persistence | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-01 | markup sync/persistence | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-01 | markup sync/persistence | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-01 | markup sync/persistence | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-02 | markup sync/persistence; recovery | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-02 | markup sync/persistence; recovery | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-02 | markup sync/persistence; recovery | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SYNC-02 | markup sync/persistence; recovery | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SYNC-01 | markup sync/persistence | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-12/SYNC-01-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-12/SYNC-01-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated) | 2026-10-03 |
+| SYNC-02 | markup sync/persistence; recovery | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-02.md](../evidence/SMF-12/SYNC-02.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-02 | markup sync/persistence; recovery | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-02.md](../evidence/SMF-12/SYNC-02.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-02 | markup sync/persistence; recovery | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-02.md](../evidence/SMF-12/SYNC-02.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-02 | markup sync/persistence; recovery | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-02.md](../evidence/SMF-12/SYNC-02.md) | Implementing agent — recorded blocker only | 2026-10-03 |
 | SYNC-02 | markup sync/persistence; recovery | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-02 | markup sync/persistence; recovery | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-02 | markup sync/persistence; recovery | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-02 | markup sync/persistence; recovery | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-03 | markup sync/persistence | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-03 | markup sync/persistence | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-03 | markup sync/persistence | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SYNC-03 | markup sync/persistence | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SYNC-02 | markup sync/persistence; recovery | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-12/SYNC-02-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-12/SYNC-02-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated) | 2026-10-03 |
+| SYNC-03 | markup sync/persistence | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-03.md](../evidence/SMF-12/SYNC-03.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-03 | markup sync/persistence | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-03.md](../evidence/SMF-12/SYNC-03.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-03 | markup sync/persistence | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-03.md](../evidence/SMF-12/SYNC-03.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-03 | markup sync/persistence | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-03.md](../evidence/SMF-12/SYNC-03.md) | Implementing agent — recorded blocker only | 2026-10-03 |
 | SYNC-03 | markup sync/persistence | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-03 | markup sync/persistence | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-03 | markup sync/persistence | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-03 | markup sync/persistence | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-04 | markup sync/persistence | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-04 | markup sync/persistence | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |
-| SYNC-04 | markup sync/persistence | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
-| SYNC-04 | markup sync/persistence | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
+| SYNC-03 | markup sync/persistence | ENV-EMULATION-LOCALHOST | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **PASS** | [evidence/SMF-12/SYNC-03-ENV-EMULATION-LOCALHOST.md](../evidence/SMF-12/SYNC-03-ENV-EMULATION-LOCALHOST.md) | Implementing agent (automated) | 2026-10-03 |
+| SYNC-04 | markup sync/persistence | ENV-DESKTOP-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-04.md](../evidence/SMF-12/SYNC-04.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-04 | markup sync/persistence | ENV-DESKTOP-EDGE | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **BLOCKED** | [evidence/SMF-12/SYNC-04.md](../evidence/SMF-12/SYNC-04.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-04 | markup sync/persistence | ENV-SFMOBILE-IOS | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-04.md](../evidence/SMF-12/SYNC-04.md) | Implementing agent — recorded blocker only | 2026-10-03 |
+| SYNC-04 | markup sync/persistence | ENV-SFMOBILE-ANDROID | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **BLOCKED** | [evidence/SMF-12/SYNC-04.md](../evidence/SMF-12/SYNC-04.md) | Implementing agent — recorded blocker only | 2026-10-03 |
 | SYNC-04 | markup sync/persistence | ENV-MOBILE-SAFARI | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-04 | markup sync/persistence | ENV-MOBILE-CHROME | MF-RESTRICTED + MF-SUPPORT + MF-TECH | human | **NOT TESTED** | — | — | — |
 | SYNC-04 | markup sync/persistence | ENV-CLOUD-CHROMIUM | MF-RESTRICTED + MF-SUPPORT + MF-TECH | agent | **NOT TESTED** | — | — | — |

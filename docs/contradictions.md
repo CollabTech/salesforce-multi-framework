@@ -67,3 +67,18 @@ action that closes it. Story text in Jira stays authoritative.
   The UIBundle packaging API version is not stated in the docs excerpt; SMF-4/5 use the
   official template's `sourceApiVersion` 67.0 and SMF-2 checks the org supports it. See
   `docs/smf-2/platform-requirements.md`.
+
+## C-SMF7-1 — CALL-03 "expired participant authorization" cannot be produced on demand
+- **Affects:** CALL-03 (and the REC-03 rejoin path that reuses a previous token)
+- **Gap:** SMF-7 asks to reject "expired" participant authorization. RealtimeKit participant
+  tokens are JWTs that expire exactly 100 days after issue; start/expiry cannot be configured
+  (cloudflare-docs `realtimekit/concepts/participant.mdx`, `faq.mdx`). An expired token
+  therefore needs one issued ≥100 days earlier.
+- **Meanwhile:** the probe and cloud spec test (a) a malformed token, (b) the real token with an
+  altered signature, and (c) a **revoked** token (participant deleted via the Cloudflare API) as
+  the nearest available control, each recorded separately; "expired" itself stays NOT TESTED.
+  Security finding recorded in `docs/smf-7/realtimekit-setup.md`: issued tokens outlive a
+  removal of case access unless the participant is deleted.
+- **To close:** owner decides either to accept the revoked-token control for the "expired"
+  wording, or to keep "expired" open until a token is ≥100 days old (record the issue date of a
+  kept test token privately).

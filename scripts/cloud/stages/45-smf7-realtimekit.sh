@@ -16,7 +16,8 @@ done
 python3 scripts/cloud/smf7_realtimekit.py prepare || exit $?
 
 # 2. SMF7 metadata (idempotent) and the generated, never-committed config record
-D=force-app/main/default
+# Probe server metadata lives in the non-packaged probes/ directory (the SMF-5 package is the app shell).
+D=probes/main/default
 args=()
 for f in $D/objects/SMF7_Call_Room__c $D/objects/SMF7_Call_Participant__c $D/objects/SMF7_RealtimeKit_Config__mdt \
          $D/customPermissions/SMF7_Join_Call.customPermission-meta.xml \

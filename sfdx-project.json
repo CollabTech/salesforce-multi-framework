@@ -11,6 +11,10 @@
     {
       "path": "unpackaged",
       "default": false
+    },
+    {
+      "path": "probes",
+      "default": false
     }
   ],
   "name": "salesforce-multi-framework",

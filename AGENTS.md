@@ -167,6 +167,7 @@ docs/dry-runs/               bounded planning dry runs (SMF-1 GOV-02: SMF-2 plan
 testing/                     test-plan index, shared contract, capability matrix,
                              fixtures (SMF-3), provisioning kit (SMF-3)
 evidence/                    per-story, per-case evidence records
+probes/                      probe server-side metadata (Apex, objects, credentials); never packaged (ADR-0005)
 scripts/                     install/verify tooling (no org access)
 private/                     git-ignored; local-only mappings, never committed
 ```

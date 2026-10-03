@@ -95,7 +95,7 @@ class ClaudeEntries(unittest.TestCase):
         calls = []
         def fake_run(cmd, **kw):
             calls.append(cmd)
-            os.symlink(os.path.relpath(cmd[4], os.path.dirname(cmd[3])), cmd[3], target_is_directory=True)
+            os.symlink(os.path.relpath(cmd[5], os.path.dirname(cmd[4])), cmd[4], target_is_directory=True)
             return mock.Mock(returncode=0)
         real_symlink = os.symlink
         def deny_first(*a, **k):

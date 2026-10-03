@@ -1,0 +1,186 @@
+{
+  "browserVersion": "141.0.7390.37",
+  "loadRequests": [
+    "GET /services/apexrest/smf10/v1/versions/<id>/data"
+  ],
+  "evidence": {
+    "probe": "SMF-14 budget",
+    "cases": [
+      "BUDGET-01",
+      "BUDGET-02",
+      "BUDGET-03",
+      "BUDGET-04"
+    ],
+    "declaredEnvRow": "ENV-EMULATION-LOCALHOST",
+    "declaredDevice": "headless Chromium 141.0.7390.37 (SwiftShader), Linux container",
+    "host": {
+      "origin": "http://localhost:5313",
+      "path": "/probes/3d-budget",
+      "inIframe": false,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Safari/537.36",
+      "viewport": "1280x900",
+      "devicePixelRatio": 1,
+      "online": true,
+      "secureContext": true,
+      "mediaDevicesApi": true,
+      "build": "73c5a03",
+      "capturedAt": "2026-10-03T22:52:26.402Z"
+    },
+    "device": {
+      "hardwareConcurrency": 4,
+      "deviceMemoryGiB": 8,
+      "jsHeapUsedMiB": 38.5,
+      "jsHeapLimitMiB": 4095.8,
+      "effectiveType": "4g",
+      "downlinkMbps": 1.35,
+      "rttMs": 100,
+      "devicePixelRatio": 1,
+      "viewport": "1280x900",
+      "orientation": "landscape-primary"
+    },
+    "webgl": {
+      "available": true,
+      "webgl2": true,
+      "webgl1": false,
+      "vendor": "Google Inc. (Google)",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "maxTextureSize": 8192
+    },
+    "case": "LCL…002",
+    "listedModels": [],
+    "listError": "Not found or no access.",
+    "deliveryChecks": [
+      {
+        "label": "MF-MODEL-SMALL",
+        "path": "connect-content",
+        "id": "LCL…001",
+        "outcome": "delivered",
+        "detail": "317796 B, HTTP 200",
+        "fixtureId": "MF-MODEL-SMALL",
+        "bytes": 317796,
+        "externalUris": 0
+      },
+      {
+        "label": "MF-MODEL-REP",
+        "path": "connect-content",
+        "id": "LCL…001",
+        "outcome": "delivered",
+        "detail": "8647528 B, HTTP 200",
+        "fixtureId": "MF-MODEL-REP",
+        "bytes": 8647528,
+        "externalUris": 0
+      },
+      {
+        "label": "denial control",
+        "path": "connect-content",
+        "id": "LCL…001",
+        "outcome": "denied",
+        "detail": "denied (HTTP 403): HTTP 403 from Connect file content",
+        "fixtureId": null,
+        "bytes": null,
+        "externalUris": null
+      },
+      {
+        "label": "MF-MODEL-SMALL",
+        "path": "smf10-apex",
+        "id": "LCL…001",
+        "outcome": "delivered",
+        "detail": "317796 B, HTTP 200",
+        "fixtureId": "MF-MODEL-SMALL",
+        "bytes": 317796,
+        "externalUris": 0
+      },
+      {
+        "label": "MF-MODEL-REP",
+        "path": "smf10-apex",
+        "id": "LCL…001",
+        "outcome": "delivered",
+        "detail": "8647528 B, HTTP 200",
+        "fixtureId": "MF-MODEL-REP",
+        "bytes": 8647528,
+        "externalUris": 0
+      },
+      {
+        "label": "denial control",
+        "path": "smf10-apex",
+        "id": "LCL…001",
+        "outcome": "denied",
+        "detail": "denied (HTTP 404): not found or no access (HTTP 404)",
+        "fixtureId": null,
+        "bytes": null,
+        "externalUris": null
+      },
+      {
+        "label": "MF-MODEL-SMALL (bundled asset)",
+        "path": "bundled",
+        "id": "***",
+        "outcome": "delivered",
+        "detail": "317796 B, HTTP 200",
+        "fixtureId": "MF-MODEL-SMALL",
+        "bytes": 317796,
+        "externalUris": 0
+      }
+    ],
+    "harness": [],
+    "budget": {
+      "status": "insufficient-device-data",
+      "devices": [],
+      "excludedRuns": [],
+      "note": "No hardware-rendered run on a required host row exists, so no scene budget can be published."
+    },
+    "fallbackTriggerRule": [
+      "Show the static equipment image instead of 3D when WebGL is unavailable on the host.",
+      "Show the static image (with an explicit \"Open 3D anyway\" choice) when the model is larger in bytes or triangles than the largest fixture that passed on that device class; if the device class has no passing run, 3D is not offered by default.",
+      "Switch to the static image when the model is not interactive within 10000 ms of the request.",
+      "Offer the static image when the median frame rate over the first 5 s of interaction is below 30 fps.",
+      "Show the static image with a retry when the graphics context is lost and not restored within 3 s (e.g. after backgrounding).",
+      "Show the static image without retry when delivery is denied or the asset is missing/invalid (never fall back to a non-access-checked copy)."
+    ],
+    "log": [
+      {
+        "t": 0,
+        "msg": "listed 2 model File(s) on the case as the current user: MF-MODEL-SMALL 317796 B, MF-MODEL-REP 8647528 B"
+      },
+      {
+        "t": 264,
+        "msg": "delivery MF-MODEL-SMALL via connect-content: DELIVERED 317796 B (MF-MODEL-SMALL)"
+      },
+      {
+        "t": 811,
+        "msg": "delivery MF-MODEL-REP via connect-content: DELIVERED 8647528 B (MF-MODEL-REP)"
+      },
+      {
+        "t": 1069,
+        "msg": "delivery denial control via connect-content: DENIED denied (HTTP 403): HTTP 403 from Connect file content"
+      },
+      {
+        "t": 1375,
+        "msg": "delivery MF-MODEL-SMALL via smf10-apex: DELIVERED 317796 B (MF-MODEL-SMALL)"
+      },
+      {
+        "t": 2005,
+        "msg": "delivery MF-MODEL-REP via smf10-apex: DELIVERED 8647528 B (MF-MODEL-REP)"
+      },
+      {
+        "t": 2349,
+        "msg": "delivery denial control via smf10-apex: DENIED denied (HTTP 404): not found or no access (HTTP 404)"
+      },
+      {
+        "t": 2564,
+        "msg": "delivery MF-MODEL-SMALL (bundled asset) via bundled: DELIVERED 317796 B (MF-MODEL-SMALL)"
+      },
+      {
+        "t": 2842,
+        "msg": "viewer: resize 974x448"
+      },
+      {
+        "t": 4503,
+        "msg": "open MF-MODEL-REP: interactive 1660.6 ms, 240692 triangles, 4 textures (1024x1024, 1024x1024, 512x512, 1024x1024)"
+      },
+      {
+        "t": 5441,
+        "msg": "list model Files: refused/failed: Not found or no access."
+      }
+    ]
+  }
+}

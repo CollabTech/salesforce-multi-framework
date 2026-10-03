@@ -1,0 +1,6 @@
+# Deterministic line endings for tracked text on every platform (SMF-1 review).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.glb binary
+*.zip binary

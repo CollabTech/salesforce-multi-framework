@@ -1,0 +1,29 @@
+# --- Never commit credentials, auth state, or private mappings (see AGENTS.md §5) ---
+private/
+.sf/
+.sfdx/
+*.authfile
+*auth*.json
+!**/skills/**
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+# Official dx-* skills write raw org JSON (usernames, org IDs) here when the folder exists
+**/adk-eval-output/
+
+# --- Tooling / build output ---
+node_modules/
+dist/
+coverage/
+.DS_Store
+__pycache__/
+*.pyc
+
+# --- Official Salesforce skills: installed on demand, never tracked (ADR-0001 rev 2, C-02) ---
+# python3 scripts/bootstrap-skills.py installs the pinned copies and generates .claude/skills.
+/.agents/skills/*
+!/.agents/skills/smf-*/
+/.claude/skills/

@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "skills": {
+    "design-systems-slds-apply": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/design-systems-slds-apply/SKILL.md",
+      "computedHash": "f61b26f87b673c72acf418dc4c0b7da4cfcb27f658ad57ef3b9cd642592c7c10"
+    },
+    "dx-code-analyzer-run": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-code-analyzer-run/SKILL.md",
+      "computedHash": "16860e788cdbaa9978a1299af301a97f0d1bc5693db9c846c6d933bc31cca343"
+    },
+    "dx-org-analyze": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-org-analyze/SKILL.md",
+      "computedHash": "b186ffa2bbfef567b3b47b3f1120e8c43115cc466d9a2c820aaf1c0dc1a0037a"
+    },
+    "dx-org-devhub-configure": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-org-devhub-configure/SKILL.md",
+      "computedHash": "4327845266d223613621a18d5ff638e3219fe02f6c0247902ff73104f9b5fd3b"
+    },
+    "dx-org-manage": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-org-manage/SKILL.md",
+      "computedHash": "a4d6a2d4bcd031c17a2f1fdbdd29dbedec58fee974262c5987319763ea74ac79"
+    },
+    "dx-org-permission-set-assign": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-org-permission-set-assign/SKILL.md",
+      "computedHash": "16f67631ce29d08b72557d4f3581170133528f525ec961ff1bd2ee7ee404a940"
+    },
+    "dx-org-switch": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-org-switch/SKILL.md",
+      "computedHash": "94cc531f46410eb0b657cd43f1d07179877f1ef8c6847fd82dc4ebb928558636"
+    },
+    "dx-org-trial-expiration-check": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/dx-org-trial-expiration-check/SKILL.md",
+      "computedHash": "c0a3bc6bdbb712604a12b64cedbb7aeafe0a62b2440c5e793f0fb04c5cdff889"
+    },
+    "experience-ui-bundle-2gp-deploy": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-2gp-deploy/SKILL.md",
+      "computedHash": "00308b4f2f9397b77ad60036de27666dc5fa0e84a80a691d1df73b8a4b346dd5"
+    },
+    "experience-ui-bundle-app-coordinate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-app-coordinate/SKILL.md",
+      "computedHash": "7e8ccfe11318d362431c24e223269ab94565f80227c375b6ec7517cef95eb729"
+    },
+    "experience-ui-bundle-custom-app-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-custom-app-generate/SKILL.md",
+      "computedHash": "a02f29b3d0f8d2a078347a1a45285d56235394ad0413edb8a6dc5f21cff9bda2"
+    },
+    "experience-ui-bundle-deploy": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-deploy/SKILL.md",
+      "computedHash": "cd93b9e8fa2301a3af908ace983e0543439089059ced1fbbc28523caa9041601"
+    },
+    "experience-ui-bundle-file-upload-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-file-upload-generate/SKILL.md",
+      "computedHash": "d11fc5af70366b3da511312258fac7ebf3a60885d82e809c7db69eca8962b254"
+    },
+    "experience-ui-bundle-frontend-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-frontend-generate/SKILL.md",
+      "computedHash": "0163f4fb4e37a7144cbdf0aef4b3f364fb8309ffdb2d3d85eeb9fc6281117ec8"
+    },
+    "experience-ui-bundle-metadata-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-metadata-generate/SKILL.md",
+      "computedHash": "8c7dd3f3da277d7913a7ce6ce7be07e88790c7f7f7251bef912320273450d1b1"
+    },
+    "experience-ui-bundle-project-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-project-generate/SKILL.md",
+      "computedHash": "3333bb482558ecab7c82b2e7d87315c71155dbc77cca7eea8076bc44a27a84b8"
+    },
+    "experience-ui-bundle-salesforce-data-access": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/experience-ui-bundle-salesforce-data-access/SKILL.md",
+      "computedHash": "8e83c7d3e665630e5f9404f178c135f0bd66dffef850bffee77f3324fd432028"
+    },
+    "platform-apex-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-apex-generate/SKILL.md",
+      "computedHash": "9b45d5e1ab2d6bd55bfa82baa3a708186e9cc9996dd29a850fa662c41090b2e8"
+    },
+    "platform-apex-test-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-apex-test-generate/SKILL.md",
+      "computedHash": "7a5e2514df23c677fffe6d7d5289fbea4d88d7b1d6cfd6bcd7a65ab2f85131b6"
+    },
+    "platform-apex-test-run": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-apex-test-run/SKILL.md",
+      "computedHash": "b98d2b7cf50c038a058a8a6c7f956f3289c8676c0e7c85f0445e69d7769716ea"
+    },
+    "platform-data-manage": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-data-manage/SKILL.md",
+      "computedHash": "07fc543eca5cfbeb5bb5eaab9634022d0d47c760d7f12d3cdcc1798d1662fd05"
+    },
+    "platform-docs-get": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-docs-get/SKILL.md",
+      "computedHash": "7e777d16b560be47095e9c281e915741205999ba4ddf0cbcb4ab0c440395e56d"
+    },
+    "platform-metadata-deploy": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-metadata-deploy/SKILL.md",
+      "computedHash": "64c261818c53ed3dbde54c51f350152366101a43a2a589dfea8aa091dcb71e3c"
+    },
+    "platform-metadata-retrieve": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-metadata-retrieve/SKILL.md",
+      "computedHash": "1ac5a740279c46c5d4a67b903eebdaf686982645f405896cf7181621cf60219f"
+    },
+    "platform-permission-set-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-permission-set-generate/SKILL.md",
+      "computedHash": "1e8268e0d42a5788e99ed5d48d4c101b8848c57a51126dc11eac25a0591c289d"
+    },
+    "platform-sharing-owd-configure": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-sharing-owd-configure/SKILL.md",
+      "computedHash": "b76b450097c8b4fb5df6f8f40c219e6c5bbcad93901b33536392d805e7f793e2"
+    },
+    "platform-sharing-rules-generate": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-sharing-rules-generate/SKILL.md",
+      "computedHash": "8f05c3d08ff1e3ce3e7b7dadf7d82faf179d59efb489ae7a45b8851715347c09"
+    },
+    "platform-soql-query": {
+      "source": "forcedotcom/afv-library",
+      "ref": "3c15867bdb9dacd515960174c661c706d041bb63",
+      "sourceType": "github",
+      "skillPath": "skills/platform-soql-query/SKILL.md",
+      "computedHash": "63bf2f8804b5e2cf7cd464c5e5666345fe7f133292cf626bebe8e82e132aedec"
+    }
+  }
+}

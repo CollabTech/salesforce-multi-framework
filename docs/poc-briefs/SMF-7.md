@@ -24,9 +24,9 @@ See `docs/smf-7/realtimekit-setup.md` (boundary, prerequisites, owner step, CSP 
 ## Test plan per case ID
 | Case ID | Personas | Fixtures | Environment rows | Executor | Expected | Stop conditions |
 |---|---|---|---|---|---|---|
-| CALL-01 | TECH + SUPPORT | MF-CASE-001, MF-ROOM-001 | pairs desktop↔desktop, desktop↔iOS, desktop↔Android | stage 52 (functional, fake devices) + humans (phrase heard, marker seen) | 5-min call; phrase heard both ways; marker changes seen remotely | stage 45 BLOCKED |
-| CALL-02 | TECH + SUPPORT | MF-ROOM-001 | same pairs | stage 52 (desktop functional) + humans (mobile, audible/visible) | mute/camera/join/leave work; send and receive recorded separately | — |
-| CALL-03 | RESTRICTED, TECH/SUPPORT (wrong case), TECH (tokens) | MF-CASE-001/002, MF-ROOM-001/002, invalid/tampered/revoked token | desktop automated | stage 52 + Apex tests | denied without token; tokens rejected once; nothing leaked | expired variant: C-SMF7-1 |
+| CALL-01 | TECH + SUPPORT | MF-CASE-001, MF-ROOM-001 | pairs desktop↔desktop, desktop↔iOS, desktop↔Android | stage 53 (functional, fake devices) + humans (phrase heard, marker seen) | 5-min call; phrase heard both ways; marker changes seen remotely | stage 45 BLOCKED |
+| CALL-02 | TECH + SUPPORT | MF-ROOM-001 | same pairs | stage 53 (desktop functional) + humans (mobile, audible/visible) | mute/camera/join/leave work; send and receive recorded separately | — |
+| CALL-03 | RESTRICTED, TECH/SUPPORT (wrong case), TECH (tokens) | MF-CASE-001/002, MF-ROOM-001/002, invalid/tampered/revoked token | desktop automated | stage 53 + Apex tests | denied without token; tokens rejected once; nothing leaked | expired variant: C-SMF7-1 |
 
 ## Prerequisites and blockers (smallest unblocking action)
 - Org/personas/app: SMF-2 ENV-01..03 BLOCKED → HUMAN-SETUP H1 + H2, then stages 20/30/40.

@@ -17,7 +17,7 @@
 | Outcome | BLOCKED |
 | Evidence link | docs/test-scripts/SMF-6-CAPTURE.md; docs/poc-briefs/SMF-6.md |
 | Tester | Implementing agent (Claude Code cloud session) — recorded the blocker only |
-| Limitation / follow-up | Smallest unblocking action: (1) owner completes docs/cloud/HUMAN-SETUP.md H1 (network allowlist) and H2 (SF_AUTH_URL_DEVHUB), complete SMF-3 DATA-01..03 and SMF-4 HOST-01; (2) deploy branch claude/smf-6-capture per docs/smf-4/deploy.md; (3) agent runs scripts/cloud/stages/51-smf6-capture-e2e.sh (desktop Edge/Chromium, fake devices, functional rows); (4) Brandon: run docs/test-scripts/SMF-6-CAPTURE.md steps for CAP-03 as MF-TECH on desktop Chrome, desktop Edge, a physical iPhone (iOS 18+) in the Salesforce app and a physical Android phone (12+) in the Salesforce app, accepting/denying the OS/browser prompts as scripted and recording camera and mic results separately. |
+| Limitation / follow-up | Smallest unblocking action: (1) owner completes docs/cloud/HUMAN-SETUP.md H1 (network allowlist) and H2 (SF_AUTH_URL_DEVHUB), complete SMF-3 DATA-01..03 and SMF-4 HOST-01; (2) deploy branch claude/smf-6-capture per docs/smf-4/deploy.md; (3) agent runs scripts/cloud/stages/52-smf6-capture-e2e.sh (desktop Edge/Chromium, fake devices, functional rows); (4) Brandon: run docs/test-scripts/SMF-6-CAPTURE.md steps for CAP-03 as MF-TECH on desktop Chrome, desktop Edge, a physical iPhone (iOS 18+) in the Salesforce app and a physical Android phone (12+) in the Salesforce app, accepting/denying the OS/browser prompts as scripted and recording camera and mic results separately. |
 
 Per-row results (camera and mic recorded separately, SMF-6 AC4):
 

@@ -1,0 +1,61 @@
+{
+  "baseline_version": "1.0.0",
+  "story": "SMF-3",
+  "note": "Intended access baseline for DATA-02/DATA-03. Logical IDs only. baseline.py compares the org against this file; MF_AccessBaselineTest asserts the record/File rows with System.runAs + WITH USER_MODE. FieldSupport_Access (app access) is owned by SMF-4 and is expected only once it exists in the org.",
+  "org_wide_defaults": {
+    "Account": "Private",
+    "Case": "Private",
+    "Asset": "Private"
+  },
+  "personas": {
+    "MF-TECH": {
+      "profile": "Minimum Access - Salesforce",
+      "licence": "Salesforce",
+      "role": null,
+      "permission_sets": ["MF_Case_Worker"],
+      "permission_sets_when_present": ["FieldSupport_Access"],
+      "public_groups_or_queues": 0
+    },
+    "MF-SUPPORT": {
+      "profile": "Minimum Access - Salesforce",
+      "licence": "Salesforce",
+      "role": null,
+      "permission_sets": ["MF_Case_Worker"],
+      "permission_sets_when_present": ["FieldSupport_Access"],
+      "public_groups_or_queues": 0
+    },
+    "MF-RESTRICTED": {
+      "profile": "Minimum Access - Salesforce",
+      "licence": "Salesforce",
+      "role": null,
+      "permission_sets": [],
+      "permission_sets_when_present": ["FieldSupport_Access"],
+      "public_groups_or_queues": 0
+    }
+  },
+  "forbidden_system_permissions": ["PermissionsViewAllData", "PermissionsModifyAllData"],
+  "forbidden_object_permissions": ["PermissionsViewAllRecords", "PermissionsModifyAllRecords"],
+  "object_permissions": {
+    "MF-TECH": {"Case": "RE", "Account": "R", "Asset": "RE"},
+    "MF-SUPPORT": {"Case": "RE", "Account": "R", "Asset": "RE"},
+    "MF-RESTRICTED": {"Case": "", "Account": "", "Asset": ""}
+  },
+  "manual_shares": {
+    "MF-ACCOUNT-001": {"MF-TECH": "Read", "MF-SUPPORT": "Read"},
+    "MF-CASE-001": {"MF-TECH": "Edit", "MF-SUPPORT": "Edit"},
+    "MF-ASSET-001": {"MF-TECH": "Edit"},
+    "MF-CASE-002": {},
+    "MF-ASSET-002": {}
+  },
+  "owner": "MF-ADMIN",
+  "record_access": {
+    "_legend": "R = read only, E = read and edit, - = no access",
+    "MF-TECH":       {"MF-ACCOUNT-001": "R", "MF-CASE-001": "E", "MF-ASSET-001": "E", "MF-IMAGE-001": "R", "MF-CASE-002": "-", "MF-ASSET-002": "-", "MF-FILE-DENIED": "-"},
+    "MF-SUPPORT":    {"MF-ACCOUNT-001": "R", "MF-CASE-001": "E", "MF-ASSET-001": "-", "MF-IMAGE-001": "R", "MF-CASE-002": "-", "MF-ASSET-002": "-", "MF-FILE-DENIED": "-"},
+    "MF-RESTRICTED": {"MF-ACCOUNT-001": "-", "MF-CASE-001": "-", "MF-ASSET-001": "-", "MF-IMAGE-001": "-", "MF-CASE-002": "-", "MF-ASSET-002": "-", "MF-FILE-DENIED": "-"}
+  },
+  "files": {
+    "MF-IMAGE-001": {"linked_to": "MF-CASE-001", "share_type": "V", "public_links": 0},
+    "MF-FILE-DENIED": {"linked_to": "MF-CASE-002", "share_type": "V", "public_links": 0}
+  }
+}

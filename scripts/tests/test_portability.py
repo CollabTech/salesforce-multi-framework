@@ -14,6 +14,11 @@ spec = importlib.util.spec_from_file_location("build_index", SCRIPTS / "build-te
 build_index = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(build_index)
 
+def rel(name: str) -> str:
+    """OS-native relative link target (Windows symlinks need backslashes)."""
+    return os.path.join("..", "..", ".agents", "skills", name)
+
+
 SKILL = "---\nname: {n}\ndescription: test skill\n---\n\nbody\n"
 
 
@@ -69,12 +74,12 @@ class ClaudeEntries(unittest.TestCase):
         self.assertTrue(err and "text placeholder" in err[0], err)
 
     def test_wrong_target_rejected(self):
-        os.symlink("../../.agents/skills/smf-b", self.claude / "smf-a", target_is_directory=True)
+        os.symlink(rel("smf-b"), self.claude / "smf-a", target_is_directory=True)
         err = S.verify_claude_entry("smf-a")
         self.assertTrue(err and "wrong target" in err[0], err)
 
     def test_dangling_rejected(self):
-        os.symlink("../../.agents/skills/nope", self.claude / "smf-a", target_is_directory=True)
+        os.symlink(rel("nope"), self.claude / "smf-a", target_is_directory=True)
         self.assertTrue(S.verify_claude_entry("smf-a"))
 
     def test_symlink_ok_and_repair(self):
@@ -112,7 +117,7 @@ class ClaudeEntries(unittest.TestCase):
 
 class StaleEntries(ClaudeEntries):
     def test_remove_entry_handles_every_kind(self):
-        os.symlink("../../.agents/skills/smf-a", self.claude / "s1", target_is_directory=True)
+        os.symlink(rel("smf-a"), self.claude / "s1", target_is_directory=True)
         shutil.copytree(self.agents / "smf-a", self.claude / "s2")
         (self.claude / "s3").write_text("placeholder", encoding="utf-8")
         for n in ("s1", "s2", "s3"):

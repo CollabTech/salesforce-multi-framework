@@ -1,6 +1,6 @@
 # ADR-0004: Cross-session org access for ephemeral cloud containers
 
-- **Status:** rev 2, 2026-10-04.
+- **Status:** rev 2, 2026-10-04. JWT is the proposed cloud authentication approach, adopted by the owner subject to live verification (2026-10-04).
   - The custom vault (rev 1, Option 3) is **disabled** and must not be used for the first real
     run. The owner directed this on 2026-10-04.
   - Option 2 (JWT) is **proposed**, pending the owner's decision.
@@ -53,9 +53,14 @@ Rev 1 stated: "Revocation: delete the File or revoke the Dev Hub refresh token; 
   records (`Status = 'Active'`, matched on the definition file's `OrgName`), never through the
   local alias.
   - An active org is either recovered, or the role is BLOCKED with that org's expiry date.
-  - A replacement is created only when the owner sets `SMF_RECREATE_DEV` or
-    `SMF_RECREATE_INSTALL_TEST` to `yes`. The old org is then deleted through its
-    `ActiveScratchOrg` record before the new one is created.
+  - Session startup (`connect-orgs.sh`, `ensure(create=False)`) and stage 20
+    (`ensure(create=True)`) never delete an org and ignore every environment flag. A retained
+    `SMF_RECREATE_*` variable has no effect.
+  - Replacement is a separate operation, `orgs.py replace ROLE --org-id ID --username U`. No
+    stage calls it; it is run only on the owner's instruction. It deletes exactly the one active
+    org for ROLE whose org ID and admin username both match, after checking it is not the Dev
+    Hub (which must have been identity-verified in that session). It creates the new org only
+    once the Dev Hub no longer lists the old one as active. Any mismatch aborts before deleting.
   - Two active orgs for one role are BLOCKED, with no automatic choice.
   - Unit tests: `scripts/tests/test_orgs_recovery.py`.
 - **Identity checks** (`orgs.py devhub` / `ensure`):

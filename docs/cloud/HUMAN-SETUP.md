@@ -43,10 +43,11 @@ Secrets go **only** into the environment's settings (session title bar → envir
 4. Revocation: remove or rotate the certificate on the app, or delete the scratch orgs
    (ADR-0004 rev 2).
 
-### Only when stage 20 asks for it
-- **`SMF_RECREATE_DEV=yes` or `SMF_RECREATE_INSTALL_TEST=yes`.** Stage 20 asks only when a
-  scratch org exists, cannot be recovered, and you choose to replace it. The old org is deleted
-  through the Dev Hub first, so no duplicate is created.
+### Replacing a scratch org (only on your explicit instruction)
+No environment variable can trigger replacement, and session startup never deletes an org. If a
+stage reports an org that exists but cannot be recovered, tell the agent to replace it. The agent
+then runs `orgs.py replace`, bound to that org's verified ID and admin username. That deletes
+exactly that org through the Dev Hub and creates its successor.
 
 ## H1 domain list
 

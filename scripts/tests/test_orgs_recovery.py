@@ -19,12 +19,14 @@ class FakeSf:
 
     def __call__(self, args, stdin=None):
         self.calls.append(args)
+        if args[:3] == ["data", "delete", "record"] and hasattr(self, "after_delete_active"):
+            self.active = self.after_delete_active
         if args[:2] == ["data", "query"]:
             q = args[3]
             if "FROM ScratchOrgInfo" in q:
                 return {"status": 0, "result": {"records": self.active}}
             if "FROM ActiveScratchOrg" in q:
-                return {"status": 0, "result": {"records": [{"Id": "0Ex"}]}}
+                return {"status": 0, "result": {"records": [{"Id": "0Ex", "ScratchOrg": ACTIVE["ScratchOrg"]}]}}
             return {"status": 0, "result": {"records": []}}
         if args[:2] == ["org", "display"]:
             return {"status": 0, "result": {"username": self.local}} if self.local else {"status": 1}
@@ -92,10 +94,83 @@ class Recovery(unittest.TestCase):
             self.ensure(f, URL)
         self.assertEqual(f.did("org", "create"), [])
 
-    def test_explicit_recreate_deletes_via_devhub_then_creates(self):
+    # ---- replacement flags must never act during recovery or startup ----------------------
+    FLAGS = {"SMF_RECREATE_DEV": "yes", "SMF_RECREATE_INSTALL_TEST": "yes"}
+
+    def test_recovery_only_with_flags_present_authurl_blocks_and_deletes_nothing(self):
         f = FakeSf(active=[ACTIVE])
-        self.assertEqual(self.ensure(f, dict(URL, SMF_RECREATE_DEV="yes")), "created")
+        with self.assertRaises(O.Blocked):
+            O.Orgs(sf=f, env=dict(URL, **self.FLAGS)).ensure("smf-dev", create=False)
+        self.assertEqual(f.did("data", "delete"), [])
+        self.assertEqual(f.did("org", "delete"), [])
+        self.assertEqual(f.did("org", "create"), [])
+
+    def test_recovery_only_with_flags_present_jwt_recovers_and_deletes_nothing(self):
+        f = FakeSf(active=[ACTIVE])
+        self.assertEqual(O.Orgs(sf=f, env=dict(JWT, **self.FLAGS)).ensure("smf-dev", create=False), "recovered")
+        self.assertEqual(f.did("data", "delete"), [])
+        self.assertEqual(f.did("org", "create"), [])
+
+    def test_stage20_create_true_with_flags_present_never_replaces(self):
+        f = FakeSf(active=[ACTIVE], jwt_ok=False)
+        with self.assertRaises(O.Blocked):
+            O.Orgs(sf=f, env=dict(JWT, **self.FLAGS)).ensure("smf-dev", create=True)
+        self.assertEqual(f.did("data", "delete"), [])
+        self.assertEqual(f.did("org", "create"), [])
+
+    def test_ensure_never_deletes_in_any_state(self):
+        for active, local, jwt_ok in ((ACTIVE,), None, True), ((ACTIVE,), None, False), ((), "x@example.com", True), ((), None, True):
+            for env in (URL, JWT):
+                f = FakeSf(active=list(active), local=local, jwt_ok=jwt_ok)
+                try:
+                    O.Orgs(sf=f, env=dict(env, **self.FLAGS)).ensure("smf-dev", create=True)
+                except O.Blocked:
+                    pass
+                self.assertEqual(f.did("data", "delete"), [], (active, local, env))
+
+    def test_connect_orgs_script_has_no_replace_path(self):
+        script = (SCRIPTS / "cloud" / "connect-orgs.sh").read_text()
+        stage20 = (SCRIPTS / "cloud" / "stages" / "20-orgs.sh").read_text()
+        for text in (script, stage20):
+            self.assertNotIn("replace", text)
+            self.assertNotIn("SMF_RECREATE", text)
+
+    # ---- explicit, bound replacement --------------------------------------------------------
+    def hub_identity(self, org_id="00D" + "H" * 12):
+        O.save_private("identity.json", {O.DEVHUB: {"org_id": org_id}})
+
+    def test_replace_bound_to_matching_org_deletes_once_then_creates(self):
+        self.hub_identity()
+        f = FakeSf(active=[ACTIVE])
+        f.after_delete_active = []
+        self.assertEqual(O.Orgs(sf=f, env=URL).replace("smf-dev", ACTIVE["ScratchOrg"], ACTIVE["SignupUsername"]), "created")
         self.assertEqual(len(f.did("data", "delete", "record")), 1)
+        self.assertEqual(len(f.did("org", "create", "scratch")), 1)
+
+    def test_replace_wrong_org_id_or_username_deletes_nothing(self):
+        self.hub_identity()
+        for oid, user in (("00D" + "Z" * 12, ACTIVE["SignupUsername"]), (ACTIVE["ScratchOrg"], "other@example.com"), ("", "")):
+            f = FakeSf(active=[ACTIVE])
+            with self.assertRaises(O.Blocked):
+                O.Orgs(sf=f, env=URL).replace("smf-dev", oid, user)
+            self.assertEqual(f.did("data", "delete"), [])
+            self.assertEqual(f.did("org", "create"), [])
+
+    def test_replace_refuses_devhub_or_unverified_hub(self):
+        f = FakeSf(active=[ACTIVE])
+        with self.assertRaises(O.Blocked):   # no verified Dev Hub identity this session
+            O.Orgs(sf=f, env=URL).replace("smf-dev", ACTIVE["ScratchOrg"], ACTIVE["SignupUsername"])
+        self.hub_identity(org_id=ACTIVE["ScratchOrg"])
+        with self.assertRaises(O.Blocked):   # target is the Dev Hub
+            O.Orgs(sf=f, env=URL).replace("smf-dev", ACTIVE["ScratchOrg"], ACTIVE["SignupUsername"])
+        self.assertEqual(f.did("data", "delete"), [])
+
+    def test_replace_does_not_create_if_old_org_still_active(self):
+        self.hub_identity()
+        f = FakeSf(active=[ACTIVE])   # delete "succeeds" but the Dev Hub still lists the org
+        with self.assertRaises(O.Blocked):
+            O.Orgs(sf=f, env=URL).replace("smf-dev", ACTIVE["ScratchOrg"], ACTIVE["SignupUsername"])
+        self.assertEqual(f.did("org", "create"), [])
 
     def test_authurl_login_passes_secret_on_stdin_only(self):
         seen = []

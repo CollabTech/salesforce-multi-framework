@@ -17,12 +17,16 @@ consequences:
     when it creates a scratch org or user from a JWT-authorized hub (scratchOrgInfoApi.js
     buildOAuth2Options; user.js createUser copies the admin's privateKey).
 Recovery is impossible with auth-URL Dev Hub auth (no private key). The role is then BLOCKED
-with the existing org's expiry. It is never silently recreated: creating a replacement needs
-SMF_RECREATE_<ROLE>=yes, and that deletes the old org first.
+with the existing org's expiry. `devhub`, `ensure` and `personas` never delete anything and
+ignore every environment flag that could request replacement. Replacing an org is only the
+separate `replace` command, run on the owner's instruction and bound to that org's identity.
 
   orgs.py devhub                 log in as smf-devhub; verify identity (writes private/identity.json)
   orgs.py ensure ROLE [--create] recover or (with --create, none active) create ROLE
   orgs.py personas ROLE          recover persona aliases ROLE-tech|support|restricted (JWT only)
+  orgs.py replace ROLE --org-id ID --username U
+                                 owner-instructed: delete exactly that verified org via the Dev Hub,
+                                 then create its replacement (never called by any stage)
 ROLE is smf-dev or smf-install-test. Exit codes: 0 OK, 2 BLOCKED, 1 error.
 """
 import json, os, subprocess, sys
@@ -136,7 +140,12 @@ class Orgs:
         return r.get("status") == 0
 
     def ensure(self, role, create=False):
-        """Returns 'present' | 'recovered' | 'created'; raises Blocked otherwise."""
+        """Recover or (create=True, nothing active) create ROLE. Returns 'present' | 'recovered' | 'created'.
+
+        Never deletes anything and never reads SMF_RECREATE_* or any other replacement flag:
+        session startup (connect-orgs.sh, create=False) and stage 20 (create=True) can only
+        recover an existing org or create one when the Dev Hub lists none. Replacement is the
+        separate, explicitly bound `replace` operation."""
         active = self.active_scratch(role)
         if len(active) > 1:
             raise Blocked(f"{len(active)} active scratch orgs named for {role}; resolve manually (no automatic choice)")
@@ -145,32 +154,59 @@ class Orgs:
             rec = active[0]
             if local and local.lower() == rec["SignupUsername"].lower():
                 return "present"
-            exp = rec.get("ExpirationDate")
-            if recreate_ok(self.env, role):
-                # No local session to the old org is needed: the Dev Hub deletes it via its ActiveScratchOrg record.
-                aso = self.query(DEVHUB, f"SELECT Id FROM ActiveScratchOrg WHERE ScratchOrg = '{rec['ScratchOrg'][:15]}'")
-                r = self.sf(["data", "delete", "record", "--sobject", "ActiveScratchOrg", "--record-id", aso[0]["Id"],
-                             "--target-org", DEVHUB]) if aso else {"status": 1}
-                if r.get("status") != 0:
-                    raise Blocked(f"{role}: SMF_RECREATE set but the existing org could not be deleted via the Dev Hub")
-            elif self.auth_mode() == "jwt" and self.jwt_login(rec["SignupUsername"], rec.get("LoginUrl") or "https://test.salesforce.com", role):
+            if self.auth_mode() == "jwt" and self.jwt_login(rec["SignupUsername"], rec.get("LoginUrl") or "https://test.salesforce.com", role):
                 return "recovered"
-            else:
-                why = ("JWT login to the existing scratch org was rejected" if self.auth_mode() == "jwt"
-                       else "the Dev Hub uses an auth URL, so the existing org cannot be re-authorized")
-                raise Blocked(f"{role} exists (active until {exp}) but has no session here: {why}. "
-                              "Not creating a duplicate. Remedy: JWT Dev Hub auth (HUMAN-SETUP H2), or "
-                              f"SMF_RECREATE_{role_key(role)}=yes to delete and recreate it")
-        elif local:
+            why = ("JWT login to the existing scratch org was rejected" if self.auth_mode() == "jwt"
+                   else "the Dev Hub uses an auth URL, so the existing org cannot be re-authorized")
+            raise Blocked(f"{role} exists (active until {rec.get('ExpirationDate')}) but has no session here: {why}. "
+                          "Not creating a duplicate and not deleting it. Remedy: JWT Dev Hub auth (HUMAN-SETUP H2); "
+                          "replacement only on owner instruction via `orgs.py replace`")
+        if local:
             raise Blocked(f"local alias {role} points to an org the Dev Hub does not list as active; "
                           "remove the stale alias (`sf alias unset`) and rerun")
         if not create:
             raise Blocked(f"{role} does not exist (no active ScratchOrgInfo); creation not requested")
+        return self._create(role)
+
+    def _create(self, role):
         r = self.sf(["org", "create", "scratch", "--definition-file", DEFS[role], "--alias", role,
                      "--target-dev-hub", DEVHUB, "--duration-days", "30", "--wait", "30"])
         if r.get("status") != 0:
             raise Blocked(f"{role} creation failed: {(r.get('message') or '')[:160]}")
         return "created"
+
+    def replace(self, role, org_id, username):
+        """Explicit, owner-instructed replacement, bound to the org being replaced.
+
+        Deletes exactly one org: the single active scratch org for ROLE whose org ID (first 15
+        characters) AND admin username both match the arguments, and which is not the Dev Hub.
+        Any mismatch, ambiguity or missing record aborts before anything is deleted. The
+        replacement is created only after the Dev Hub no longer lists the old org as active."""
+        if not org_id or not username:
+            raise Blocked("replace needs --org-id and --username of the org being replaced")
+        oid = org_id[:15]
+        active = self.active_scratch(role)
+        if len(active) != 1:
+            raise Blocked(f"replace {role}: expected exactly one active org, found {len(active)}; nothing deleted")
+        rec = active[0]
+        if rec.get("ScratchOrg", "")[:15] != oid or rec["SignupUsername"].lower() != username.lower():
+            raise Blocked(f"replace {role}: the active org does not match the given org ID and username; nothing deleted")
+        hub = load_private("identity.json").get(DEVHUB, {})
+        if not hub.get("org_id"):
+            raise Blocked("replace: Dev Hub identity not verified in this session (run `orgs.py devhub`); nothing deleted")
+        if hub["org_id"] == oid:
+            raise Blocked("replace: the given org is the Dev Hub; nothing deleted")
+        aso = self.query(DEVHUB, f"SELECT Id, ScratchOrg FROM ActiveScratchOrg WHERE ScratchOrg = '{oid}'")
+        if len(aso) != 1 or aso[0].get("ScratchOrg", "")[:15] != oid:
+            raise Blocked(f"replace {role}: no unique ActiveScratchOrg record for that org; nothing deleted")
+        r = self.sf(["data", "delete", "record", "--sobject", "ActiveScratchOrg", "--record-id", aso[0]["Id"],
+                     "--target-org", DEVHUB])
+        if r.get("status") != 0:
+            raise Blocked(f"replace {role}: Dev Hub refused the delete; old org unchanged")
+        if self.active_scratch(role):
+            raise Blocked(f"replace {role}: old org still listed as active after delete; not creating a second org")
+        self.sf(["alias", "unset", role])
+        return self._create(role)
 
     def verify_scratch(self, role):
         """The org behind ROLE is a scratch org, is not the Dev Hub, and matches its ScratchOrgInfo."""
@@ -207,12 +243,9 @@ class Orgs:
         return done, missing, absent
 
 
-def role_key(role):
-    return role.replace("smf-", "").replace("-", "_").upper()
-
-
-def recreate_ok(env, role):
-    return env.get(f"SMF_RECREATE_{role_key(role)}") == "yes"
+def load_private(name):
+    p = PRIVATE / name
+    return json.loads(p.read_text()) if p.exists() else {}
 
 
 def save_private(name, data):
@@ -240,6 +273,13 @@ def main(argv):
             state = o.ensure(role, create="--create" in argv)
             ident = o.verify_scratch(role)
             say(f"OK  {role} {state}; edition={ident['edition']} instance={ident['instance']} (not the Dev Hub)")
+            return 0
+        if cmd == "replace":
+            role = argv[1]
+            opt = dict(zip(argv[2::2], argv[3::2]))
+            state = o.replace(role, opt.get("--org-id", ""), opt.get("--username", ""))
+            ident = o.verify_scratch(role)
+            say(f"OK  {role} {state} (old org deleted via the Dev Hub); edition={ident['edition']}")
             return 0
         if cmd == "personas":
             done, missing, absent = o.personas(argv[1])

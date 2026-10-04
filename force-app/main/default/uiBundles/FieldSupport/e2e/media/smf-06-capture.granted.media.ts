@@ -99,3 +99,21 @@ test('diagnostics block carries policy observations', async ({ page }) => {
   await expect(page.getByTestId('diagnostics')).toContainText('framed: false');
   await expect(page.getByTestId('diagnostics')).toContainText('policy API:');
 });
+
+test('CAP-01 mic clip: record 5 s, then it plays back to the end (fake mic, simulated media)', async ({ page }) => {
+  await page.getByTestId('start-mic').click();
+  await expect(page.getByTestId('ready-audio')).toHaveText('live');
+  await page.getByTestId('record-clip').click();
+  await expect(page.getByTestId('clip-info')).toBeVisible({ timeout: 15_000 });
+  const bytes = Number((await page.getByTestId('clip-info').textContent())?.match(/(\d+) bytes/)?.[1] ?? 0);
+  expect(bytes).toBeGreaterThan(1000);
+  const duration = await page.getByTestId('clip-audio').evaluate(async (a: HTMLAudioElement) => {
+    a.muted = true;
+    await a.play();
+    await new Promise(r => a.addEventListener('ended', r, { once: true }));
+    return a.currentTime;
+  });
+  expect(duration).toBeGreaterThan(3);
+  await expect(page.getByTestId('diagnostics')).toContainText('clip playback ended');
+  test.info().annotations.push({ type: 'measured', description: `${(await page.getByTestId('clip-info').textContent()) ?? ''}; played ${duration.toFixed(1)} s (simulated media)` });
+});

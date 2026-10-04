@@ -22,7 +22,7 @@ import type { Duplex } from 'node:stream';
 import { WebSocketServer, type WebSocket } from 'ws';
 import { NodeSqliteWrapper, SQLiteSyncStorage, TLSocketRoom } from '@tldraw/sync-core';
 import { createTLSchema, defaultBindingSchemas, defaultShapeSchemas, type TLRecord } from '@tldraw/tlschema';
-import { assertSecret, mint, roomFromPath, safeEqual, verifyToken, type RoomClaims } from '../shared/token.js';
+import { assertSecret, mint, originAllowed, parseOrigins, roomFromPath, safeEqual, verifyToken, type RoomClaims } from '../shared/token.js';
 
 export interface SyncServerConfig {
   port: number;
@@ -31,6 +31,8 @@ export interface SyncServerConfig {
   dataDir: string;
   recheckMs: number;
   allowedOrigins: string[];
+  /** Loopback tests only (SMF12_ALLOW_ANY_ORIGIN=1); otherwise an empty allowlist denies every connection. */
+  allowAnyOrigin?: boolean;
   publicWsUrl?: string;
   log?: (event: Record<string, unknown>) => void;
 }
@@ -116,7 +118,7 @@ export async function startSyncServer(config: SyncServerConfig): Promise<Running
       const roomId = roomFromPath(url.pathname);
       if (!roomId) return reject(socket, 404, 'Not Found');
       const origin = header(req, 'origin');
-      if (config.allowedOrigins.length && (!origin || !config.allowedOrigins.includes(origin))) {
+      if (!originAllowed(origin, config.allowedOrigins, config.allowAnyOrigin === true)) {
         log({ event: 'connect-denied', reason: 'origin', room: roomId });
         return reject(socket, 403, 'Forbidden');
       }
@@ -201,7 +203,8 @@ export function configFromEnv(env: NodeJS.ProcessEnv = process.env): SyncServerC
     secret: assertSecret(env.SMF12_ROOM_TOKEN_SECRET),
     dataDir: env.SMF12_DATA_DIR ?? './data',
     recheckMs: Number(env.SMF12_RECHECK_MS ?? 15_000),
-    allowedOrigins: (env.SMF12_ALLOWED_ORIGINS ?? '').split(',').map(s => s.trim()).filter(Boolean),
+    allowedOrigins: parseOrigins(env.SMF12_ALLOWED_ORIGINS),
+    allowAnyOrigin: env.SMF12_ALLOW_ANY_ORIGIN === '1',
     publicWsUrl: env.SMF12_PUBLIC_WS_URL,
   };
 }

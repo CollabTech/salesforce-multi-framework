@@ -12,12 +12,13 @@
 import { DurableObject } from 'cloudflare:workers';
 import { DurableObjectSqliteSyncWrapper, SQLiteSyncStorage, TLSocketRoom } from '@tldraw/sync-core';
 import { createTLSchema, defaultBindingSchemas, defaultShapeSchemas, type TLRecord } from '@tldraw/tlschema';
-import { MIN_SECRET_LENGTH, mint, roomFromPath, safeEqual, verifyToken, type RoomClaims } from '../shared/token';
+import { MIN_SECRET_LENGTH, mint, originAllowed, parseOrigins, roomFromPath, safeEqual, verifyToken, type RoomClaims } from '../shared/token';
 
 export interface Env {
   SMF12_ROOM_TOKEN_SECRET?: string;
   SMF12_RECHECK_MS?: string;
   SMF12_ALLOWED_ORIGINS?: string;
+  SMF12_ALLOW_ANY_ORIGIN?: string;
   TLDRAW_DURABLE_OBJECT: DurableObjectNamespace<TldrawDurableObject>;
 }
 
@@ -36,7 +37,8 @@ export default {
     const url = new URL(request.url);
     const secret = secretOf(env);
     if (request.method === 'GET' && url.pathname === '/health') {
-      return json(200, { ok: true, secretConfigured: !!secret });
+      const origins = parseOrigins(env.SMF12_ALLOWED_ORIGINS);
+      return json(200, { ok: true, secretConfigured: !!secret, allowedOriginCount: origins.length, allowAnyOrigin: env.SMF12_ALLOW_ANY_ORIGIN === '1' });
     }
     if (!secret) return json(503, { message: 'SMF12_ROOM_TOKEN_SECRET not configured' });
 
@@ -53,9 +55,9 @@ export default {
     const room = roomFromPath(url.pathname);
     if (!room) return new Response(null, { status: 404 });
     if (request.headers.get('upgrade')?.toLowerCase() !== 'websocket') return new Response(null, { status: 426 });
-    const allowed = (env.SMF12_ALLOWED_ORIGINS ?? '').split(',').map(s => s.trim()).filter(Boolean);
-    const origin = request.headers.get('origin');
-    if (allowed.length && (!origin || !allowed.includes(origin))) return new Response(null, { status: 403 });
+    if (!originAllowed(request.headers.get('origin'), parseOrigins(env.SMF12_ALLOWED_ORIGINS), env.SMF12_ALLOW_ANY_ORIGIN === '1')) {
+      return new Response(null, { status: 403 });
+    }
     const result = await verifyToken(url.searchParams.get('token'), secret, room, nowSeconds());
     if (!result.ok) return new Response(null, { status: result.reason === 'wrong-room' ? 403 : 401 });
 

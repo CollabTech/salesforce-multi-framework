@@ -139,17 +139,16 @@ Mobile Safari, mobile Chrome, cloud Chromium and localhost stay exploratory or s
 - **H4:** Cloudflare account and token.
 - **H5:** tldraw licence key.
 - **H6:** tester mailbox.
-- **H7:** ADR-0004 vault decision.
-- **H8:** secrets entered in Salesforce, covering O-SMF7-1 and the SMF-12 mint key.
+- Secrets inside Salesforce and on the Worker are now set by the agent (stages 45 and 49); the former H7/H8 steps are gone (ADR-0004 rev 2).
 - **H9:** v1 promotion, only if needed.
 - **Org settings:** Salesforce Edge Network and the Multi-Framework domain on each org (SMF-2).
 
 ### Access-control findings (to accept, or fix before SMF-16)
 | # | Finding | Source | Proposed handling |
 |---|---|---|---|
-| A1 | RealtimeKit participant tokens outlive a removal of case access unless the participant is deleted | SMF-7 setup doc | Delete participants when access is removed; owner decides |
-| A2 | Live-sync access is re-checked periodically; a revoked user can stay up to ≈315 s with defaults | SMF-12 SYNC-03 | Accept the bound or shorten the token lifetime and re-check interval (cost: more Apex calls) |
-| A3 | `SMF12_ALLOWED_ORIGINS` is empty (any origin); only the room token protects the socket | SMF-12 `wrangler.toml` | Set it to the Salesforce app origin once known (stage 49) |
+| A1 | RealtimeKit participant tokens outlive a removal of case access unless the participant is deleted | SMF-7 setup doc; assessed in `docs/findings/token-revocation.md` | New CALL-03 check (token reused after access removal) asserts the criterion; expected to FAIL with the current design. Not accepted. |
+| A2 | Live-sync access is re-checked periodically; a revoked user can stay up to ≈315 s with defaults | SMF-12 SYNC-03; assessed in `docs/findings/token-revocation.md` | Measured timing is the SYNC-03 result; whether ≈315 s meets AC4 is an owner interpretation. Recorded as PARTIAL until then. Not accepted. |
+| A3 | Was: empty `SMF12_ALLOWED_ORIGINS` allowed any origin | SMF-12 | **Changed:** empty now denies; stage 49 deploys the observed app origin and verifies 101/403/403 with a real token before stage 72. Host verification pending access. |
 | A4 | The bundled MF-MODEL-SMALL app asset can be loaded by anyone who can open the app, with no case or Files check | SMF-14 BUDGET-03 | Serve case models only through Files in SMF-16; bundle only non-sensitive demo assets |
 | A5 | The Apex read path holds files on the 6 MB heap: 8.25 MiB models fail; 5 MiB images fit narrowly | SMF-10, C-SMF14-01 | Use Connect REST file content for large files; measured at the host run |
 | A6 | `MF_AccessBaselineTest` uses `SeeAllData=true` to verify provisioned access | C-06 | Reviewer accepts the exception for this class only |

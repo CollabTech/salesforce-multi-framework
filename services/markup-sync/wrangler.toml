@@ -1,6 +1,6 @@
 # SMF-12 markup sync service — Cloudflare Workers deployment (stage 49).
 # Account comes from CF_ACCOUNT_ID / CLOUDFLARE_ACCOUNT_ID at deploy time; no secrets here.
-# The owner sets the room-token signing secret once:  wrangler secret put SMF12_ROOM_TOKEN_SECRET
+# Stage 49 generates the room-token signing secret and sets it with `wrangler secret put` (stdin).
 name = "smf-markup-sync"
 main = "src/worker/worker.ts"
 compatibility_date = "2025-10-01"
@@ -9,8 +9,8 @@ workers_dev = true
 
 [vars]
 SMF12_RECHECK_MS = "15000"
-# Comma-separated origins allowed to open WebSockets (the Salesforce app origin); empty = any.
-SMF12_ALLOWED_ORIGINS = ""
+# SMF12_ALLOWED_ORIGINS is NOT set here: stage 49 passes the observed Salesforce app origin with
+# `wrangler deploy --var SMF12_ALLOWED_ORIGINS:<origin>` and verifies it. Unset/empty = deny all.
 
 [durable_objects]
 bindings = [{ name = "TLDRAW_DURABLE_OBJECT", class_name = "TldrawDurableObject" }]

@@ -134,3 +134,18 @@ export function roomFromPath(pathname: string): string | null {
   const m = /^\/connect\/(mf-[0-9a-f]{32})$/.exec(pathname);
   return m ? m[1] : null;
 }
+
+/**
+ * WebSocket Origin policy (fail closed): a connection is allowed only when its Origin header is
+ * in the configured allowlist. An empty allowlist denies everything unless allowAny is set, which
+ * is only for loopback tests (SMF12_ALLOW_ANY_ORIGIN=1). Deploy stage 49 sets the allowlist to the
+ * Salesforce origin it observed and verifies it before any live-sync test.
+ */
+export function parseOrigins(value: string | undefined): string[] {
+  return (value ?? '').split(',').map(s => s.trim().replace(/\/+$/, '')).filter(Boolean);
+}
+
+export function originAllowed(origin: string | null | undefined, allowed: readonly string[], allowAny = false): boolean {
+  if (allowAny) return true;
+  return !!origin && allowed.includes(origin);
+}

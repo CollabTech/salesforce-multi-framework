@@ -179,7 +179,7 @@ def main():
                 K.say(f"[6] reconciled profile/role/active for {p}: {'ok' if ok else lines}")
         alias = cli_alias(org, p)
         if alias_user_id(alias) != u["Id"]:
-            deviations.append((p, "CLI alias", f"{alias} missing or not this user (restore the vault, ADR-0004)"))
+            deviations.append((p, "CLI alias", f"{alias} missing or not this user (recover with scripts/cloud/orgs.py personas; ADR-0004 rev 2)"))
         mapping[p] = {"org": a.org_role, "org_alias": org, "cli_alias": alias, "username": u["Username"],
                       "user_id": u["Id"], "profile": PROFILE, "role": None, "permission_sets": want}
     K.write_private("personas.json", mapping)

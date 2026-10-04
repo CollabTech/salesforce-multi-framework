@@ -1,22 +1,52 @@
 # One-time human setup for the cloud workflow
 
-Everything else — org creation, provisioning, deploy, packaging, browser automation,
-evidence and the matrix — runs in the Claude Code cloud environment (`docs/cloud/WORKFLOW.md`).
-These steps need the project owner because they involve account ownership, a passkey, or
-environment settings an agent cannot change. Secrets go **only** into the environment's
-settings, never into chat, Jira, or Git. A new cloud session picks up changes.
+Everything else (org creation and recovery, provisioning, deploy, secrets into Salesforce and
+Cloudflare, browser automation, evidence, matrix) runs in the Claude Code cloud environment
+(`docs/cloud/WORKFLOW.md`). Only the steps below need the project owner. They involve account
+ownership, a passkey, or environment settings an agent cannot change.
 
-| # | Who | Where | Action | Unblocks |
+Secrets go **only** into the environment's settings (session title bar → environment menu →
+**Edit**), never into chat, Jira or Git. A new cloud session picks up changes.
+
+| # | Where | Action | Interaction only you can do | Unblocks |
 |---|---|---|---|---|
-| H1 | Brandon | Claude Code → session title bar → environment menu → **Edit → Network access** | Choose **Custom**, keep the default package-manager list, and add the domains below | every org/Cloudflare case |
-| H2 | Brandon | A machine with the Salesforce CLI (`npm i -g @salesforce/cli`) | `sf org login web --alias smf-devhub --instance-url https://login.salesforce.com` (complete the passkey), then `sf org display --verbose --json --target-org smf-devhub` and copy `result.sfdxAuthUrl` into the environment variable **`SF_AUTH_URL_DEVHUB`** (Edit → Environment variables). Delete the local auth afterwards if wanted (`sf org logout --target-org smf-devhub`). | ENV-01..03 and everything after |
-| H3 | Brandon | Same environment settings | Confirm in the variable **`SMF_DEVHUB_ENABLE_OK=yes`** that the agent may enable Dev Hub and unlocked packaging if they are off (irreversible on that org) | ENV-01, PKG-* |
-| H4 | Brandon | dash.cloudflare.com | Create an API token scoped to the project account with **Realtime: Edit** (RealtimeKit apps, meetings, participants) and **Workers Scripts: Edit** + **Workers R2 Storage: Edit** (markup sync service). Set **`CF_ACCOUNT_ID`** and **`CF_API_TOKEN`** | CALL-*, SHARE-*, REC-*, SYNC-* |
-| H5 | Brandon | tldraw.dev → license (trial or commercial) | Set **`TLDRAW_LICENSE_KEY`** (needed because the app is served over HTTPS from a Salesforce domain = tldraw "production") | MARK-*, SYNC-* host rows |
-| H7 | Brandon | Review ADR-0004 | **Approve or reject** the encrypted org-session vault (stores agent-created scratch-org/persona auth URLs, encrypted, as a private File in the Dev Hub). Until approved, `vault.py save` is not run: orgs and personas created in a session last only for that session, and a new session recreates them (2 of the 6 daily Developer-Edition scratch orgs) | cross-session continuity |
-| H8 | Brandon | Salesforce Setup (smf-dev) after the agent deploys SMF-7 / SMF-12 | Enter the Cloudflare API token into the SMF-7 External Credential principal and the markup room-token signing secret into the SMF-12 credential, (SMF-7: step **O-SMF7-1** in `docs/smf-7/realtimekit-setup.md`, Authentication Parameter `ApiToken` on principal `SMF7_Principal`; repeat after each scratch-org recreation, stage 45 detects it; SMF-12: its handoff). Secrets are never written by scripts | CALL-*, SYNC-* |
-| H9 | Brandon | Same environment settings, only if stage 64 reports the upgrade was refused for an unpromoted v1 (C-SMF5-2) | Set **`SMF_PKG_PROMOTE_OK=yes`** to let the agent promote the v1 package version (irreversible) | PKG-02 |
-| H6 | Brandon | Same environment settings | Set **`SMF_TESTER_EMAIL`** to the mailbox that should receive persona verification/password-reset email for device logins (only stored on the synthetic persona users in the scratch org) | device rows of all stories |
+| H1 | Environment settings → **Network access** | Choose **Custom**, keep the default package-manager list, and add the domains below | Editing environment settings | Every org, Cloudflare and Chrome row |
+| H2 | Dev Hub org UI, then environment settings | **Preferred: JWT.** Steps below. **Quick alternative:** `SF_AUTH_URL_DEVHUB` from `sf org display --verbose --json --target-org <devhub>` (field `sfdxAuthUrl`). Without JWT, scratch orgs and personas cannot be recovered in later sessions; they are reported BLOCKED, never recreated | Dev Hub login (passkey), creating the app, setting the variables | ENV-01..03 and everything after |
+| H3 | Environment settings | `SMF_DEVHUB_ENABLE_OK=yes`, only if stage 20 reports the Dev Hub disabled. Enabling it is irreversible | Consent | ENV-01, PKG-* |
+| H4 | dash.cloudflare.com, then environment settings | `CF_ACCOUNT_ID`; `CF_API_TOKEN` (Realtime: Edit, Workers Scripts: Edit; used by the agent to deploy); `CF_RTK_ORG_TOKEN` (**Realtime: Edit only**; the agent stores it in the scratch org's External Credential through the Connect REST API, replacing the old Setup step) | Cloudflare account and token creation | CALL-*, SHARE-*, REC-*, SYNC-* |
+| H5 | tldraw.dev, then environment settings | `TLDRAW_LICENSE_KEY` (production key valid for the Salesforce app domain) | Licence purchase or trial | MARK-*, SYNC-* host rows |
+| H6 | Environment settings | `SMF_TESTER_EMAIL`: the mailbox for persona verification and password-reset mail on devices | Choosing the mailbox | Device rows |
+| H9 | Environment settings | `SMF_PKG_PROMOTE_OK=yes`, only if stage 64 reports a beta upgrade refusal (C-SMF5-2). Promotion is irreversible | Consent | PKG-02 |
+
+**Dropped from earlier versions:**
+- **H7 (vault approval).** The vault is disabled (ADR-0004 rev 2). Your decision on JWT recovery
+  is a review item, not a setup step.
+- **H8 (secrets typed into Salesforce Setup).** Now automated:
+  - SMF-7 `ApiToken` is set by stage 45 from `CF_RTK_ORG_TOKEN`.
+  - The SMF-12 signing secret is generated each deploy by stage 49 and set on both the Worker
+    (`wrangler secret put`, stdin) and the External Credential (Connect REST). Both are verified
+    end to end.
+
+### H2 with JWT (one time, about 10 minutes)
+1. On your own machine:
+   `openssl req -x509 -newkey rsa:2048 -nodes -keyout smf-devhub.key -out smf-devhub.crt -days 365 -subj "/CN=smf-cloud"`
+2. In the Dev Hub (Setup → External Client App Manager, or App Manager → New Connected App):
+   - Enable OAuth with the scopes `api`, `refresh_token` and `web`.
+   - Enable **JWT bearer flow** (use digital signatures) and upload `smf-devhub.crt`.
+   - Set **Admin approved users are pre-authorized** and add the System Administrator profile.
+   - Copy the consumer key.
+3. In the environment settings, set:
+   - `SF_DEVHUB_USERNAME`: the Dev Hub admin username;
+   - `SF_DEVHUB_CLIENT_ID`: the consumer key;
+   - `SF_DEVHUB_JWT_KEY`: the full text of `smf-devhub.key`.
+   Optionally set `SF_DEVHUB_INSTANCE_URL` to your My Domain login URL.
+4. Revocation: remove or rotate the certificate on the app, or delete the scratch orgs
+   (ADR-0004 rev 2).
+
+### Only when stage 20 asks for it
+- **`SMF_RECREATE_DEV=yes` or `SMF_RECREATE_INSTALL_TEST=yes`.** Stage 20 asks only when a
+  scratch org exists, cannot be recovered, and you choose to replace it. The old org is deleted
+  through the Dev Hub first, so no duplicate is created.
 
 ## H1 domain list
 
@@ -49,10 +79,14 @@ browsers reach them only over TCP/TLS through the egress proxy; if the proxy can
 the cloud call rows report BLOCKED with that reason (people on real networks are unaffected).
 The SMF-12 handoff lists any additional tldraw hosts.
 
-## What the agent does after H1–H2 (no further human steps)
+## What the agent does after H1–H2
 
-1. `bash scripts/cloud/session-setup.sh` (first command of each cloud session): sf CLI, skills,
-   Microsoft Edge, bundle deps, Dev Hub login from `SF_AUTH_URL_DEVHUB`, restore of the
-   dev/install-test/persona sessions from the encrypted vault in the Dev Hub (ADR-0004).
-2. `scripts/cloud/pipeline.sh all`: readiness (ENV-*), scratch orgs, SMF-3 provisioning and
-   access checks, SMF-4 deploy, cloud browser tests, packaging, matrix and evidence update.
+1. **`bash scripts/cloud/session-setup.sh`** (first command of each session):
+   - sf CLI, skills, Microsoft Edge, bundle dependencies;
+   - Dev Hub login and identity check (`scripts/cloud/orgs.py devhub`);
+   - recovery of existing scratch orgs and personas found through the Dev Hub.
+     **It never creates an org because a local alias is missing.**
+2. **`scripts/cloud/pipeline.sh all`:**
+   - readiness (ENV-*), scratch orgs, SMF-3 provisioning and access checks, SMF-4 deploy;
+   - story stages, including the org and Cloudflare secrets;
+   - cloud browser tests, packaging, matrix and evidence update.

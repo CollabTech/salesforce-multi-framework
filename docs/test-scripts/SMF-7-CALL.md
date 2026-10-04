@@ -8,7 +8,7 @@ sessions (separate browsers/devices; never one person in both); MF-RESTRICTED fo
 line of the diagnostics block = PR head under test.
 
 **Preconditions (else BLOCKED):** stage 45 printed `OK RealtimeKit reachable…` (owner step
-O-SMF7-1 done); SMF-6 CAP-01 passed in the same env rows (capture works there); SMF-4 HOST-01
+org-side token set from `CF_RTK_ORG_TOKEN`); SMF-6 CAP-01 passed in the same env rows (capture works there); SMF-4 HOST-01
 passed in those rows.
 
 **Cloud-first split.** Desktop CALL-03 (all controls) and the *functional* part of CALL-01/02

@@ -5,7 +5,7 @@
 # needs: 20
 T="${SMF_TARGET_ORG:-smf-dev}"   # SMF-5 reuses these stages for smf-install-test
 set -uo pipefail
-sf org display --target-org "$T" --json >/dev/null 2>&1 || { echo "BLOCKED: $T not authenticated (stage 20 / vault)"; exit 2; }
+sf org display --target-org "$T" --json >/dev/null 2>&1 || { echo "BLOCKED: $T not authenticated (stage 20 / scripts/cloud/orgs.py)"; exit 2; }
 out=$(sf project deploy start --metadata-dir testing/provisioning/metadata --wait 30 --target-org "$T" --json 2>/dev/null)
 rc=$?
 python3 - "$out" <<'PY'

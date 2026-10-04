@@ -19,7 +19,7 @@ const events: Array<Record<string, unknown>> = [];
 
 beforeAll(async () => {
   dir = mkdtempSync(join(tmpdir(), 'smf12-'));
-  srv = await startSyncServer({ port: 0, host: '127.0.0.1', secret: TEST_KEY, dataDir: dir, recheckMs: 250, allowedOrigins: [], log: e => events.push(e) });
+  srv = await startSyncServer({ port: 0, host: '127.0.0.1', secret: TEST_KEY, dataDir: dir, recheckMs: 250, allowedOrigins: [], allowAnyOrigin: true, log: e => events.push(e) });
 });
 afterAll(async () => {
   await srv.close();
@@ -99,4 +99,40 @@ describe('server authorization', () => {
     expect(lateBy).toBeLessThan(1.5);
     events.push({ event: 'measured-revocation', lateBySeconds: Number(lateBy.toFixed(3)) });
   }, 15_000);
+});
+
+describe('origin policy (fail closed)', () => {
+  it('denies every origin when the allowlist is empty and allowAny is off', async () => {
+    const { originAllowed } = await import('../src/shared/token');
+    expect(originAllowed('https://x.my.salesforce.com', [], false)).toBe(false);
+    expect(originAllowed(null, [], false)).toBe(false);
+  });
+  it('allows only listed origins (exact match)', async () => {
+    const { originAllowed, parseOrigins } = await import('../src/shared/token');
+    const list = parseOrigins(' https://a.lightning.force.com/ ,https://b.my.salesforce.app');
+    expect(list).toEqual(['https://a.lightning.force.com', 'https://b.my.salesforce.app']);
+    expect(originAllowed('https://a.lightning.force.com', list)).toBe(true);
+    expect(originAllowed('https://evil.example', list)).toBe(false);
+    expect(originAllowed(undefined, list)).toBe(false);
+  });
+  it('a server with an empty allowlist rejects a valid token (403)', async () => {
+    const d = mkdtempSync(join(tmpdir(), 'smf12-o-'));
+    const s = await startSyncServer({ port: 0, host: '127.0.0.1', secret: TEST_KEY, dataDir: d, recheckMs: 250, allowedOrigins: [], log: () => undefined });
+    try {
+      const m = await fetch(`http://127.0.0.1:${s.port}/mint`, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-smf-mint-key': TEST_KEY },
+        body: JSON.stringify({ userId: USER, caseId: CASE_A }),
+      }).then(r => r.json() as Promise<Record<string, string>>);
+      const status = await new Promise<number>(resolve => {
+        const ws = new WebSocket(`ws://127.0.0.1:${s.port}/connect/${m.room}?token=${encodeURIComponent(m.token)}`, { origin: 'https://x.my.salesforce.com' });
+        ws.on('open', () => { ws.close(); resolve(101); });
+        ws.on('unexpected-response', (_q, r) => resolve(r.statusCode ?? 0));
+        ws.on('error', () => undefined);
+      });
+      expect(status).toBe(403);
+    } finally {
+      await s.close();
+      rmSync(d, { recursive: true, force: true });
+    }
+  });
 });

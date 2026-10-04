@@ -1,5 +1,6 @@
 // Localhost smoke test of the Cloudflare Worker build under `wrangler dev --local` (workerd).
 // Usage: SMF12_URL=http://127.0.0.1:8799 SMF12_TEST_KEY=<same throwaway key passed with --var> node test/worker-smoke.mjs
+// (start wrangler dev with --var SMF12_ALLOW_ANY_ORIGIN:1; the deployed Worker denies unlisted origins)
 // Checks: health, mint-key guard, mint, WebSocket accept with a valid token, refusal of no /
 // wrong-room / expired tokens. Prints one JSON line; exit 1 on any mismatch.
 import WebSocket from 'ws';

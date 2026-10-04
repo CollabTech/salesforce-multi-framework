@@ -206,3 +206,36 @@ test.describe('SMF-7 CALL-01/02 desktop↔desktop (fake devices)', () => {
     await supCtx.close();
   });
 });
+
+// CALL-03 / SMF-7 AC2 "deny unauthorized room access": a token issued BEFORE the user's access is
+// removed. Removing SMF7_Access (and with it SMF7_Join_Call) stops new tokens; this checks whether
+// the previously issued participant token still joins. The assertion is the agreed criterion (must
+// not join). Current design: RealtimeKit tokens live 100 days and are not tied to the Salesforce
+// session (docs/findings/token-revocation.md, A1), so this test is expected to FAIL until
+// participants are deleted on access removal. It is recorded as-is, never skipped.
+test('CALL-03 access removed after a token was issued: the previous token must not join', async ({ browser }, info) => {
+  const ctx = await personaContext(browser, 'tech');
+  const { app } = await probeFor(ctx);
+  await joinRoom1(app, 'TECH');
+  await app.getByTestId('leave-call').click();
+  await expect(app.getByTestId('phase')).toHaveText('left');
+  const username = JSON.parse(execFileSync('sf', ['org', 'display', 'user', '--target-org', 'smf-dev-tech', '--json'], { encoding: 'utf8' })).result.username as string;
+  const psa = JSON.parse(execFileSync('sf', ['data', 'query', '--query',
+    `SELECT Id FROM PermissionSetAssignment WHERE PermissionSet.Name = 'SMF7_Access' AND Assignee.Username = '${username}'`,
+    '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' })).result.records as Array<{ Id: string }>;
+  const t0 = Date.now();
+  let observed = '';
+  try {
+    for (const a of psa) execFileSync('sf', ['data', 'delete', 'record', '--sobject', 'PermissionSetAssignment', '--record-id', a.Id, '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' });
+    await app.getByTestId('rejoin-last').click();
+    await expect(app.getByTestId('phase')).toHaveText(/failed|joined/, { timeout: 60_000 });
+    observed = (await cell(app, 'phase')) === 'joined' ? 'JOINED with the pre-removal token' : `rejected: ${await cell(app, 'failure-code')}`;
+    if (observed.startsWith('JOINED')) await app.getByTestId('leave-call').click();
+  } finally {
+    execFileSync('sf', ['org', 'assign', 'permset', '--name', 'SMF7_Access', '--on-behalf-of', username, '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' });
+    await ctx.close();
+  }
+  record(info, { case: 'CALL-03', persona: 'MF-TECH', browserVersion: browser.version(),
+    control: 'access removed after token issue (SMF7_Access unassigned)', observed, secondsAfterRemoval: Math.round((Date.now() - t0) / 1000) });
+  expect(observed, 'SMF-7 AC2: unauthorized room access is denied after an access change').not.toMatch(/^JOINED/);
+});

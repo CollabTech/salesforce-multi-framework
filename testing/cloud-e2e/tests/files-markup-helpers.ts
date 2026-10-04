@@ -29,13 +29,16 @@ function adminQuery(soql: string): Array<Record<string, unknown>> {
 
 const ID = /^[A-Za-z0-9]{15}(?:[A-Za-z0-9]{3})?$/;
 
-/** Logical fixture → dev-org record Id, or null (caller records BLOCKED). */
-export function fixtureRecordId(logical: 'MF-CASE-001' | 'MF-CASE-002'): string | null {
+/**
+ * Logical fixture → dev-org record Id, or null (caller records BLOCKED). private/fixtures.json is
+ * written by testing/provisioning/fixtures.py as {"smf-dev": {"records": {"MF-CASE-001": [Id], …}}}
+ * (MF-IMAGE/MF-FILE entries hold ContentDocument Ids).
+ */
+export function fixtureRecordId(logical: string): string | null {
   const file = join(ROOT, 'private', 'fixtures.json');
   if (existsSync(file)) {
-    const map = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
-    const v = map[logical];
-    const id = typeof v === 'string' ? v : (v as Record<string, string> | undefined)?.dev;
+    const map = JSON.parse(readFileSync(file, 'utf8')) as Record<string, { records?: Record<string, string[]> } | undefined>;
+    const id = map['smf-dev']?.records?.[logical]?.[0];
     if (id && ID.test(id)) return id;
   }
   if (logical === 'MF-CASE-001') {
@@ -44,6 +47,12 @@ export function fixtureRecordId(logical: 'MF-CASE-001' | 'MF-CASE-002'): string 
     if (typeof id === 'string') return id;
   }
   return null;
+}
+
+/** Latest ContentVersion Id of a ContentDocument (MF-ADMIN query, setup only). */
+export function latestVersionOf(contentDocumentId: string): string | null {
+  const id = adminQuery(`SELECT Id FROM ContentVersion WHERE ContentDocumentId = '${contentDocumentId}' AND IsLatest = true LIMIT 1`)[0]?.Id;
+  return typeof id === 'string' ? id : null;
 }
 
 /** Latest ContentVersion Ids of Files linked to a record (MF-ADMIN query, setup only). */

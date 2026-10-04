@@ -12,7 +12,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import { DurableObjectSqliteSyncWrapper, SQLiteSyncStorage, TLSocketRoom } from '@tldraw/sync-core';
 import { createTLSchema, defaultBindingSchemas, defaultShapeSchemas, type TLRecord } from '@tldraw/tlschema';
-import { MIN_SECRET_LENGTH, mint, originAllowed, parseOrigins, roomFromPath, safeEqual, verifyToken, type RoomClaims } from '../shared/token';
+import { MAX_TTL_SECONDS, MIN_SECRET_LENGTH, mint, originAllowed, parseOrigins, parseRevoke, revokedBy, roomFromPath, roomIdForCase, safeEqual, userKey, verifyToken, type RoomClaims } from '../shared/token';
 
 export interface Env {
   SMF12_ROOM_TOKEN_SECRET?: string;
@@ -52,6 +52,20 @@ export default {
       }
     }
 
+    if (request.method === 'POST' && url.pathname === '/revoke') {
+      // Push revocation from Salesforce (SMF12_AccessSweep), authenticated like /mint.
+      if (!safeEqual(request.headers.get('x-smf-mint-key'), secret)) return new Response(null, { status: 401 });
+      let revoke;
+      try {
+        revoke = parseRevoke(await request.json());
+      } catch (e) {
+        return json(400, { message: e instanceof Error ? e.message : 'bad request' });
+      }
+      const target = await roomIdForCase(revoke.caseId);
+      const stub = env.TLDRAW_DURABLE_OBJECT.get(env.TLDRAW_DURABLE_OBJECT.idFromName(target));
+      return stub.fetch(new Request('https://room.internal/revoke', { method: 'POST', body: JSON.stringify({ userId: revoke.userId }) }));
+    }
+
     const room = roomFromPath(url.pathname);
     if (!room) return new Response(null, { status: 404 });
     if (request.headers.get('upgrade')?.toLowerCase() !== 'websocket') return new Response(null, { status: 426 });
@@ -87,9 +101,11 @@ export class TldrawDurableObject extends DurableObject<Env> {
   }
 
   async fetch(request: Request): Promise<Response> {
-    // Only reachable through the Worker above, which has already verified the token.
+    // Only reachable through the Worker above, which has already verified the token or mint key.
+    if (new URL(request.url).pathname === '/revoke') return this.revoke(((await request.json()) as { userId: string }).userId);
     const claims = JSON.parse(request.headers.get('x-smf-claims') ?? 'null') as RoomClaims | null;
     if (!claims) return new Response(null, { status: 401 });
+    if (revokedBy(claims, await this.ctx.storage.get<number>(`revoked:${userKey(claims.sub)}`))) return new Response(null, { status: 401 });
     const sessionId = new URL(request.url).searchParams.get('sessionId') ?? crypto.randomUUID();
     const pair = new WebSocketPair();
     const [client, server] = [pair[0], pair[1]];
@@ -100,6 +116,23 @@ export class TldrawDurableObject extends DurableObject<Env> {
     this.getRoom().handleSocketConnect({ sessionId, socket: server });
     await this.scheduleRecheck();
     return new Response(null, { status: 101, webSocket: client });
+  }
+
+  /** Records the revocation durably, closes the user's sessions in this room at once. */
+  private async revoke(userId: string): Promise<Response> {
+    const at = nowSeconds();
+    const stale = await this.ctx.storage.list<number>({ prefix: 'revoked:' });
+    for (const [k, v] of stale) if (v + MAX_TTL_SECONDS < at) await this.ctx.storage.delete(k);
+    await this.ctx.storage.put(`revoked:${userKey(userId)}`, at);
+    let closed = 0;
+    for (const c of this.connections) {
+      if (userKey(c.claims.sub) === userKey(userId)) {
+        this.connections.delete(c);
+        c.socket.close(4003, 'access revoked');
+        closed++;
+      }
+    }
+    return json(200, { revokedAt: at, closed });
   }
 
   private async scheduleRecheck(): Promise<void> {

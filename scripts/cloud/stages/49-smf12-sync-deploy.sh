@@ -70,6 +70,7 @@ sf project deploy start \
   --source-dir "$P/externalCredentials/SMF12_MarkupSync.externalCredential-meta.xml" \
   --source-dir "${FILES[0]}" --source-dir "${FILES[1]}" \
   $(for c in "$P"/classes/SMF12_*.cls; do printf -- '--source-dir %s ' "$c"; done) \
+  --source-dir "$P/objects/SMF12_Room_Grant__c" \
   --source-dir "$P/permissionsets/SMF12_Access.permissionset-meta.xml" \
   --target-org smf-dev --wait 30 --json > private/smf12-probe-deploy.json 2>&1 \
   || { unset SECRET; echo "SMF-12 probe metadata deploy failed (private/smf12-probe-deploy.json)"; exit 1; }
@@ -84,8 +85,16 @@ for p in tech support restricted; do
   out=$(sf org assign permset --name SMF12_Access --on-behalf-of "$u" --target-org smf-dev --json 2>&1)
   grep -q '"status": 0' <<<"$out" || grep -qi duplicate <<<"$out" || { echo "assign SMF12_Access to MF-${p^^} failed"; exit 1; }
 done
-sf apex run test --class-names SMF12_RoomTokenServiceTest --target-org smf-dev --wait 30 --json > private/smf12-apex-tests.json 2>&1
+# The setup admin runs SMF12_AccessSweep, whose /revoke callout uses the SMF12_MarkupSync principal.
+out=$(sf org assign permset --name SMF12_Access --target-org smf-dev --json 2>&1)
+grep -q '"status": 0' <<<"$out" || grep -qi duplicate <<<"$out" || { echo "assign SMF12_Access to the setup admin failed"; exit 1; }
+sf apex run test --class-names SMF12_RoomTokenServiceTest --class-names SMF12_AccessSweepTest --target-org smf-dev --wait 30 --json > private/smf12-apex-tests.json 2>&1
 python3 -c 'import json,sys;s=json.load(open("private/smf12-apex-tests.json")).get("result",{}).get("summary",{});print("Apex tests:",s.get("outcome"),s.get("passing"),"passing",s.get("failing"),"failing");sys.exit(0 if s.get("outcome")=="Passed" else 1)' || exit 1
+
+# Baseline state for the SYNC-03 access-change runs (stage 72): sweep OFF; the tests switch it on.
+tmp=$(mktemp --suffix=.apex); echo "SMF12_AccessSweep.stop();" >"$tmp"
+sf apex run --file "$tmp" --target-org smf-dev --json >/dev/null 2>&1; rm -f "$tmp"
+echo "OK  SMF12 access sweep stopped (baseline state)"
 
 # 7. Real room token as MF-TECH through Apex (fixtures.json: {org: {records: {key: [ids]}}}).
 CASE=$(python3 -c 'import json;print(json.load(open("private/fixtures.json"))["smf-dev"]["records"]["MF-CASE-001"][0])' 2>/dev/null)

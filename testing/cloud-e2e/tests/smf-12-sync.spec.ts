@@ -2,7 +2,9 @@ import { test, expect, type Browser, type Frame, type Page } from '@playwright/t
 import { execFileSync } from 'node:child_process';
 import { personaContext, type Persona } from './persona';
 import { record } from './record';
-import { fixtureRecordId, markupVersionIds, openProbe } from './files-markup-helpers';
+import { readFileSync } from 'node:fs';
+import { join as pjoin } from 'node:path';
+import { ROOT, fixtureRecordId, latestVersionOf, markupVersionIds, openProbe } from './files-markup-helpers';
 
 // SMF-12 SYNC-01..03 and the desktop half of SYNC-04 as real personas (Edge / Chromium) against
 // the deployed Worker. Automation attests: convergence and presence between two real persona
@@ -18,7 +20,9 @@ const HEADING = /Live two-user markup/;
 type App = Page | Frame;
 interface Session { page: Page; app: App; close: () => Promise<void> }
 
-test.describe.configure({ mode: 'serial' });
+// Not 'serial': a failed test (e.g. an expected baseline FAIL) must not skip the later runs. Order
+// is still sequential (workers: 1), and every test restores what it changes.
+test.describe.configure({ mode: 'default' });
 test.setTimeout(600_000);
 
 let case1 = '';
@@ -126,21 +130,135 @@ test('SYNC-03: RESTRICTED and wrong-case joins denied; token-issuance revocation
   record(info, { case: 'SYNC-03', persona: 'MF-TECH', observed: 'MF-CASE-002 (wrong case) room: token refused (DENIED)' });
   await w.close();
 
-  // Revocation proxy: remove SUPPORT's SMF12_Access (no new tokens) while connected; measure the cut.
-  const s = await join(browser, 'support', case1);
-  const username = JSON.parse(execFileSync('sf', ['org', 'display', 'user', '--target-org', 'smf-dev-support', '--json'], { encoding: 'utf8' })).result.username as string;
-  const q = JSON.parse(execFileSync('sf', ['data', 'query', '--query', `SELECT Id FROM PermissionSetAssignment WHERE PermissionSet.Name = 'SMF12_Access' AND Assignee.Username = '${username}'`, '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' })).result.records as Array<{ Id: string }>;
-  const tRevoke = Date.now();
-  try {
-    for (const a of q) sfAdmin(['data', 'delete', 'record', '--sobject', 'PermissionSetAssignment', '--record-id', a.Id]);
-    await expect(s.app.getByTestId('sync-status')).not.toContainText('synced (online)', { timeout: 400_000 });
-    const cutMs = Date.now() - tRevoke;
-    record(info, { case: 'SYNC-03', persona: 'MF-SUPPORT', observed: `token issuance revoked; live session cut ${cutMs} ms later (TTL 300 s + re-check 15 s bound)` });
-  } finally {
-    sfAdmin(['org', 'assign', 'permset', '--name', 'SMF12_Access', '--on-behalf-of', username]);
-    await s.close();
-  }
 });
+
+// SYNC-03 / SMF-12 AC4 "deny unauthorized room joins and file access, including after access
+// changes" (finding A2). MF-SUPPORT holds a live session in the MF-CASE-001 room and a token
+// issued earlier through Apex. Then ONE access change is made, each in its own run:
+//   - case-sharing: the SMF-3 manual CaseShare (Edit) on MF-CASE-001 is deleted,
+//   - join-permission: SMF12_Access is unassigned (the token endpoint becomes unavailable),
+// first with enforcement OFF (baseline: token TTL 300 s + 15 s re-check), then ON
+// (SMF12_AccessSweep every minute pushes /revoke). Each run records, with timing from the change:
+//   (a) existing connection: when the live session leaves "synced (online)", and when its
+//       reconnect is refused a new token;
+//   (b) new join with the previously issued token: when it is refused (HTTP status);
+//   (c) file access: when MF-IMAGE-001 (a File on the case) stops being readable by MF-SUPPORT
+//       (record query and VersionData download as that persona).
+// Assertions are the criterion: every one must be denied within the run window. Nothing is relaxed;
+// whether the measured times satisfy AC4 is the reviewer's call (docs/findings/token-revocation.md).
+const WINDOW_MS = 7 * 60_000; // longer than the baseline bound, so the baseline time is measured
+type AccessKind = 'case-sharing' | 'join-permission';
+
+function sfJson(args: string[]): any { // eslint-disable-line @typescript-eslint/no-explicit-any
+  return JSON.parse(execFileSync('sf', [...args, '--json'], { encoding: 'utf8', env: { ...process.env, SF_DISABLE_TELEMETRY: 'true' } }));
+}
+function apexAdmin(code: string): void {
+  const file = `/tmp/smf12-apex-${Date.now()}.apex`;
+  execFileSync('bash', ['-c', `cat > ${file}`], { input: code });
+  execFileSync('sf', ['apex', 'run', '--file', file, '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' });
+}
+function supportIdentity(): { username: string; id: string } {
+  const username = sfJson(['org', 'display', 'user', '--target-org', 'smf-dev-support']).result.username as string;
+  const id = sfJson(['data', 'query', '--query', `SELECT Id FROM User WHERE Username = '${username}'`, '--target-org', 'smf-dev']).result.records[0].Id as string;
+  return { username, id };
+}
+interface Issued { token: string; room: string; wsUrl: string }
+/** A room token issued to MF-SUPPORT through the real Apex endpoint (kept in memory only). */
+function issueAsSupport(caseId: string): Issued {
+  const r = sfJson(['api', 'request', 'rest', `/services/apexrest/smf12/v1/cases/${caseId}/room-token`, '--method', 'POST', '--target-org', 'smf-dev-support']);
+  const body = typeof r.result.body === 'string' ? JSON.parse(r.result.body) : r.result.body;
+  if (r.result.statusCode !== 200 || !body?.token) throw new Error(`MF-SUPPORT could not obtain a room token before the change (HTTP ${r.result.statusCode})`);
+  return { token: body.token, room: body.room, wsUrl: body.wsUrl };
+}
+function appOrigin(): string {
+  return JSON.parse(readFileSync(pjoin(ROOT, 'private', 'smf12-app-origin.json'), 'utf8')).appOrigin as string;
+}
+function joinWith(t: Issued): string {
+  return execFileSync('node', [pjoin(ROOT, 'services', 'markup-sync', 'test', 'token-join.mjs')], {
+    encoding: 'utf8', env: { ...process.env, SMF12_WS_URL: t.wsUrl, SMF12_ROOM: t.room, SMF12_TOKEN: t.token, SMF12_ORIGIN: appOrigin() },
+  }).trim();
+}
+/** MF-SUPPORT's own view of the File: record visible? download status? */
+function supportFileAccess(versionId: string): { visible: boolean; download: string } {
+  const rows = sfJson(['data', 'query', '--query', `SELECT Id FROM ContentVersion WHERE Id = '${versionId}'`, '--target-org', 'smf-dev-support']).result.records;
+  let download: string;
+  try {
+    const r = sfJson(['api', 'request', 'rest', `/services/data/v67.0/sobjects/ContentVersion/${versionId}/VersionData`, '--target-org', 'smf-dev-support']);
+    download = String(r.result?.statusCode ?? r.status);
+  } catch (e) {
+    const out = String((e as { stdout?: string }).stdout ?? '');
+    download = /"statusCode":\s*(\d+)/.exec(out)?.[1] ?? /"name":\s*"(\w+)"/.exec(out)?.[1] ?? 'error';
+  }
+  return { visible: rows.length > 0, download };
+}
+function removeAccess(kind: AccessKind, who: { username: string; id: string }, caseId: string): () => void {
+  if (kind === 'join-permission') {
+    const psa = sfJson(['data', 'query', '--query', `SELECT Id FROM PermissionSetAssignment WHERE PermissionSet.Name = 'SMF12_Access' AND AssigneeId = '${who.id}'`, '--target-org', 'smf-dev']).result.records;
+    for (const a of psa) sfAdmin(['data', 'delete', 'record', '--sobject', 'PermissionSetAssignment', '--record-id', a.Id]);
+    return () => sfAdmin(['org', 'assign', 'permset', '--name', 'SMF12_Access', '--on-behalf-of', who.username]);
+  }
+  const shares = sfJson(['data', 'query', '--query', `SELECT Id, CaseAccessLevel FROM CaseShare WHERE CaseId = '${caseId}' AND RowCause = 'Manual' AND UserOrGroupId = '${who.id}'`, '--target-org', 'smf-dev']).result.records;
+  if (shares.length === 0) throw new Error('No manual CaseShare for MF-SUPPORT on MF-CASE-001: SMF-3 baseline not in place; nothing to revoke.');
+  for (const sh of shares) sfAdmin(['data', 'delete', 'record', '--sobject', 'CaseShare', '--record-id', sh.Id]);
+  return () => { for (const sh of shares) sfAdmin(['data', 'create', 'record', '--sobject', 'CaseShare', '--values', `CaseId=${caseId} UserOrGroupId=${who.id} CaseAccessLevel=${sh.CaseAccessLevel}`]); };
+}
+async function within(pred: () => Promise<boolean> | boolean, stepMs: number): Promise<number | null> {
+  const t0 = Date.now();
+  while (Date.now() - t0 < WINDOW_MS) {
+    if (await pred()) return Date.now() - t0;
+    await new Promise(r => setTimeout(r, stepMs));
+  }
+  return null;
+}
+const secs = (ms: number | null): string => (ms === null ? `not within ${WINDOW_MS / 1000} s` : `${(ms / 1000).toFixed(1)} s`);
+
+for (const enforcement of ['baseline (sweep off)', 'enforced (sweep every 1 min)'] as const) {
+  for (const kind of ['case-sharing', 'join-permission'] as const) {
+    test(`SYNC-03 access change, ${kind}, ${enforcement}: live session, earlier token, file access`, async ({ browser }, info) => {
+      test.skip(!case1, 'MF-CASE-001 mapping missing (SMF-3)');
+      test.setTimeout(WINDOW_MS + 5 * 60_000);
+      const imageDoc = fixtureRecordId('MF-IMAGE-001');
+      const imageVersion = imageDoc ? latestVersionOf(imageDoc) : null;
+      if (!imageVersion) throw new Error('MF-IMAGE-001 not found (SMF-3 Files baseline missing)');
+      apexAdmin(enforcement.startsWith('baseline') ? 'SMF12_AccessSweep.stop();' : 'SMF12_AccessSweep.start(1);');
+      const who = supportIdentity();
+      const live = await join(browser, 'support', case1);
+      const issued = issueAsSupport(case1);
+      const before = { join: joinWith(issued), file: supportFileAccess(imageVersion) };
+      expect(before.join, 'precondition: the issued token joins before the change').toBe('101');
+      expect(before.file.visible, 'precondition: MF-SUPPORT can read MF-IMAGE-001 before the change').toBe(true);
+
+      const restore = removeAccess(kind, who, case1);
+      const changedAt = new Date().toISOString();
+      let left: number | null = null, refused: number | null = null, oldToken: number | null = null, file: number | null = null;
+      let oldTokenStatus = '', fileAfter = before.file;
+      try {
+        [left, refused, oldToken, file] = await Promise.all([
+          within(async () => !(await live.app.getByTestId('sync-status').innerText()).includes('synced (online)'), 1_000),
+          within(async () => (await live.app.getByTestId('sync-status').innerText()).includes('Not found or no access'), 2_000),
+          within(() => { oldTokenStatus = joinWith(issued); return oldTokenStatus !== '101'; }, 10_000),
+          kind === 'case-sharing' ? within(() => { fileAfter = supportFileAccess(imageVersion); return !fileAfter.visible; }, 5_000) : Promise.resolve(null),
+        ]);
+      } finally {
+        restore();
+        apexAdmin('SMF12_AccessSweep.stop();');
+        await live.close();
+      }
+      record(info, {
+        case: 'SYNC-03', persona: 'MF-SUPPORT', browserVersion: browser.version(), finding: 'A2', accessChange: kind, enforcement, changedAt,
+        existingConnection: `left "synced (online)" after ${secs(left)}; reconnect refused a new token after ${secs(refused)}`,
+        newJoinWithEarlierToken: oldToken === null ? `still joins after ${WINDOW_MS / 1000} s` : `refused (HTTP ${oldTokenStatus}) after ${secs(oldToken)}`,
+        fileAccess: kind === 'case-sharing'
+          ? (file === null ? `MF-IMAGE-001 still readable after ${WINDOW_MS / 1000} s` : `MF-IMAGE-001 not readable after ${secs(file)} (download: ${fileAfter.download})`)
+          : `not changed by this access change (SMF12_Access grants no record access); readable: ${fileAfter.visible}`,
+      });
+      expect.soft(left, 'AC4: the existing live session must not continue after the access change').not.toBeNull();
+      expect.soft(refused, 'AC4: the reconnect must not obtain a new token').not.toBeNull();
+      expect.soft(oldToken, 'AC4: a previously issued token must not join after the access change').not.toBeNull();
+      if (kind === 'case-sharing') expect.soft(file, 'AC4: file access must be denied after the access change').not.toBeNull();
+    });
+  }
+}
 
 test('SYNC-04 (desktop half): simultaneous Files saves → one revision + explicit conflict', async ({ browser }, info) => {
   test.skip(!case1, 'MF-CASE-001 mapping missing (SMF-3)');

@@ -30,12 +30,18 @@ public without sharing class SMF7_AccessSweep implements Schedulable, Queueable,
         public String reason;
     }
 
-    /** Scheduled entry point: hands off to a Queueable, because scheduled Apex cannot make callouts. */
+    /**
+     * Scheduled entry point: hands off to a Queueable, because scheduled Apex cannot make callouts.
+     * @param ctx scheduler context (unused)
+     */
     public void execute(SchedulableContext ctx) {
         System.enqueueJob(new SMF7_AccessSweep());
     }
 
-    /** Queueable entry point (callouts allowed). */
+    /**
+     * Queueable entry point (callouts allowed).
+     * @param ctx queueable context (unused)
+     */
     public void execute(QueueableContext ctx) {
         run();
     }
@@ -188,7 +194,10 @@ public without sharing class SMF7_AccessSweep implements Schedulable, Queueable,
         return n;
     }
 
-    /** @return number of sweep jobs aborted */
+    /**
+     * Aborts every scheduled sweep job.
+     * @return number of sweep jobs aborted
+     */
     public static Integer stop() {
         Integer n = 0;
         for (CronTrigger ct : [

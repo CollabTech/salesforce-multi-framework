@@ -136,3 +136,61 @@ describe('origin policy (fail closed)', () => {
     }
   });
 });
+
+describe('push revocation (/revoke, finding A2)', () => {
+  const USER2 = ['005', 'TESTUSER0002AAA'].join('');
+  async function revokeHttp(body: unknown, key = TEST_KEY): Promise<{ status: number; json: Record<string, number> }> {
+    const res = await fetch(`http://127.0.0.1:${srv.port}/revoke`, {
+      method: 'POST', headers: { 'content-type': 'application/json', 'x-smf-mint-key': key }, body: JSON.stringify(body),
+    });
+    return { status: res.status, json: res.status === 200 ? ((await res.json()) as Record<string, number>) : {} };
+  }
+
+  it('requires the mint key and valid Ids', async () => {
+    expect((await revokeHttp({ userId: USER2, caseId: CASE_A }, 'wrong')).status).toBe(401);
+    expect((await revokeHttp({ userId: 'x', caseId: CASE_A })).status).toBe(400);
+  });
+
+  it('closes the live session at once, refuses the earlier token, accepts a token issued afterwards, leaves others alone', async () => {
+    const issued = await mintHttp({ userId: USER2, caseId: CASE_A, ttlSeconds: 300 });
+    const other = await mintHttp({ userId: USER, caseId: CASE_A, ttlSeconds: 300 });
+    const elsewhere = await mintHttp({ userId: USER2, caseId: CASE_B, ttlSeconds: 300 });
+    const room = issued.json.room as string;
+    const live = await connect(room, issued.json.token as string);
+    const bystander = await connect(room, other.json.token as string);
+    const otherRoom = await connect(elsewhere.json.room as string, elsewhere.json.token as string);
+    expect([live.status, bystander.status, otherRoom.status]).toEqual([101, 101, 101]);
+    const closed = new Promise<{ code: number; at: number }>(resolve => live.ws!.on('close', code => resolve({ code, at: Date.now() })));
+    const t0 = Date.now();
+    const r = await revokeHttp({ userId: USER2.slice(0, 15), caseId: CASE_A });
+    expect(r.status).toBe(200);
+    expect(r.json.closed).toBe(1);
+    const c = await closed;
+    expect(c.code).toBe(4003);
+    events.push({ event: 'measured-push-revocation', cutAfterMs: c.at - t0 });
+    expect(c.at - t0).toBeLessThan(1000);
+    // previously issued token, new join: refused
+    expect((await connect(room, issued.json.token as string)).status).toBe(401);
+    // other user in the same room and the same user in another case: unaffected
+    expect(bystander.ws!.readyState).toBe(WebSocket.OPEN);
+    expect(otherRoom.ws!.readyState).toBe(WebSocket.OPEN);
+    // access restored: Apex mints a new token after the revocation; it is accepted
+    const fresh = await mint({ userId: USER2, caseId: CASE_A, ttlSeconds: 60 }, TEST_KEY, r.json.revokedAt + 1, 'after');
+    const again = await connect(room, fresh.token);
+    expect(again.status).toBe(101);
+    for (const s of [bystander, otherRoom, again]) s.ws!.close();
+  });
+
+  it('Revocations: blocks iat <= revokedAt only, per room and user, and prunes after MAX_TTL', async () => {
+    const { Revocations, MAX_TTL_SECONDS } = await import('../src/shared/token');
+    const rv = new Revocations();
+    rv.revoke('mf-a', USER2, 1000);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2, iat: 1000 })).toBe(true);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2.slice(0, 15), iat: 999 })).toBe(true);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2, iat: 1001 })).toBe(false);
+    expect(rv.blocks({ room: 'mf-b', sub: USER2, iat: 900 })).toBe(false);
+    expect(rv.blocks({ room: 'mf-a', sub: USER, iat: 900 })).toBe(false);
+    rv.prune(1000 + MAX_TTL_SECONDS + 1);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2, iat: 900 })).toBe(false);
+  });
+});

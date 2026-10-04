@@ -74,3 +74,15 @@ case "$check" in
   PROVIDER_ERROR_0) echo "BLOCKED: org cannot reach api.cloudflare.com ($check)"; exit 2 ;;
   *) echo "BLOCKED: readiness check returned $check"; exit 2 ;;
 esac
+
+# 6. Apex tests (incl. the A1 access sweep) and the baseline state: sweep OFF. The CALL-03
+#    access-change runs in stage 53 record the baseline first and switch the sweep on themselves.
+sf apex run test --class-names SMF7_CallAuthServiceTest --class-names SMF7_CallTokenRestResourceTest \
+  --class-names SMF7_AccessSweepTest --target-org "$ORG" --code-coverage --wait 30 --json >private/smf7/apex-tests.json 2>&1
+outcome=$(python3 -c 'import json;r=json.load(open("private/smf7/apex-tests.json")).get("result",{}).get("summary",{});print(r.get("outcome","?"),r.get("passing","?"),r.get("failing","?"))' 2>/dev/null || echo "? ? ?")
+read -r o p f <<<"$outcome"
+[ "$o" = Passed ] || { echo "FAILED: SMF7 Apex tests ($o, passing $p, failing $f; private/smf7/apex-tests.json)"; exit 1; }
+echo "OK  SMF7 Apex tests passed ($p)"
+tmp=$(mktemp --suffix=.apex); echo "SMF7_AccessSweep.stop();" >"$tmp"
+sf apex run --file "$tmp" --target-org "$ORG" --json >/dev/null 2>&1; rm -f "$tmp"
+echo "OK  SMF7 access sweep stopped (baseline state for CALL-03 access-change runs)"

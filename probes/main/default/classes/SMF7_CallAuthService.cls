@@ -166,6 +166,11 @@ public with sharing class SMF7_CallAuthService {
         return EncodingUtil.convertToHex(digest).left(32);
     }
 
+    /** @return the RealtimeKit configuration (or null when not configured); used by SMF7_AccessSweep. */
+    public static SMF7_RealtimeKitClient.Config currentConfig() {
+        return loadConfig();
+    }
+
     private static SMF7_RealtimeKitClient.Config loadConfig() {
         if (forceNotConfigured) {
             return null;

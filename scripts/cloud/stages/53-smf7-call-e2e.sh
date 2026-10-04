@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SMF-7 CALL-01..03 cloud desktop rows (ENV-DESKTOP-EDGE, ENV-CLOUD-CHROMIUM) as MF-TECH,
+# SMF-7 CALL-01..03 cloud desktop rows (incl. A1 access-change runs: baseline, then sweep enforced) (ENV-DESKTOP-EDGE, ENV-CLOUD-CHROMIUM) as MF-TECH,
 # MF-SUPPORT and MF-RESTRICTED against the real Apex boundary and RealtimeKit, fake devices.
 # Audio heard / video seen and all mobile rows stay human (docs/test-scripts/SMF-7-CALL.md).
 # needs: 30 40 45

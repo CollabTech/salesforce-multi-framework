@@ -3,7 +3,7 @@
 - **Status:** rev 2, 2026-10-04. JWT is the proposed cloud authentication approach, adopted by the owner subject to live verification (2026-10-04).
   - The custom vault (rev 1, Option 3) is **disabled** and must not be used for the first real
     run. The owner directed this on 2026-10-04.
-  - Option 2 (JWT) is **proposed**, pending the owner's decision.
+  - Option 2 (JWT) is the adopted approach, subject to live verification (see "Not yet verified").
 - **Story / case IDs:** SMF-2 (ENV-01..03), SMF-3 (DATA-01..03), all cloud-automated cases.
 - **Deciders:** project owner (decision); implementing agent (proposal).
 
@@ -35,12 +35,12 @@ Rev 1 stated: "Revocation: delete the File or revoke the Dev Hub refresh token; 
 ## Options
 1. **One auth URL per org or persona as environment secrets.** Many human steps, repeated every
    time an org is recreated.
-2. **JWT Dev Hub auth (proposed).** A connected app or External Client App in the Dev Hub with an
+2. **JWT Dev Hub auth (adopted, subject to live verification).** A connected app or External Client App in the Dev Hub with an
    uploaded certificate. The environment holds three values: `SF_DEVHUB_USERNAME`,
    `SF_DEVHUB_CLIENT_ID` and `SF_DEVHUB_JWT_KEY` (the private key).
 3. **Encrypted vault File in the Dev Hub (rev 1).** Disabled, for the reasons above.
 
-## Proposal: Option 2, with server-side discovery (`scripts/cloud/orgs.py`)
+## Adopted (subject to live verification): Option 2, with server-side discovery (`scripts/cloud/orgs.py`)
 - **What is verified offline (from the installed Salesforce CLI 2.152.14, `@salesforce/core`):**
   - **Scratch-org admin.** When the Dev Hub's auth carries a private key,
     `scratchOrgInfoApi.js buildOAuth2Options` authorizes a new scratch org's admin by JWT, using
@@ -81,7 +81,7 @@ Rev 1 stated: "Revocation: delete the File or revoke the Dev Hub refresh token; 
   org.
 
 ### Not yet verified (checked by the first real run, recorded in `evidence/SMF-2/`)
-- JWT login of each persona user in a scratch org with the Dev Hub app. It depends on that app
+- JWT login of the scratch-org admin from a fresh container, and of each persona user, each recorded separately. It depends on that app
   being usable for those users in the scratch org.
 - If the app is not usable for them, persona aliases exist only in the container that created
   them. The affected automated cases are then BLOCKED with that reason. An admin session is never
@@ -92,5 +92,5 @@ Rev 1 stated: "Revocation: delete the File or revoke the Dev Hub refresh token; 
   - The agent uses whichever Dev Hub credential is present.
   - The vault is never written or read: `scripts/cloud/vault.py` refuses unless both
     `SMF_VAULT_APPROVED` and `SMF_VAULT_ENABLE` are set to `yes`.
-- **If the owner accepts Option 2:** the human setup becomes one Dev Hub app with a certificate
+- **With Option 2 adopted:** the human setup becomes one Dev Hub app with a certificate
   (HUMAN-SETUP H2), and `SF_AUTH_URL_DEVHUB` is no longer needed.

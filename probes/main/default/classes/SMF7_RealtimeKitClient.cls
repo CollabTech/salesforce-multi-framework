@@ -90,6 +90,27 @@ public with sharing class SMF7_RealtimeKitClient {
     }
 
     /**
+     * Deletes a participant at RealtimeKit, so any token issued for it stops working
+     * (used by SMF7_AccessSweep when the user's case access or join permission is gone).
+     * @param meetingId RealtimeKit meeting id
+     * @param participantId RealtimeKit participant id
+     * @return true when deleted now or already absent (404)
+     */
+    public Boolean deleteParticipant(String meetingId, String participantId) {
+        HttpResponse res = execute(
+            'DELETE',
+            basePath() + '/meetings/' + EncodingUtil.urlEncode(meetingId, 'UTF-8') + '/participants/' +
+            EncodingUtil.urlEncode(participantId, 'UTF-8'),
+            null
+        );
+        Integer status = res.getStatusCode();
+        if ((status >= 200 && status <= 299) || status == 404) {
+            return true;
+        }
+        throw newProviderException(status);
+    }
+
+    /**
      * Configuration check used by the deploy stage: lists presets (no body returned to the caller).
      * @return true when the configured preset exists in the app
      */

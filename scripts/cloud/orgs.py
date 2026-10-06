@@ -69,10 +69,13 @@ class Orgs:
     # ---- Dev Hub -------------------------------------------------------------------------
     def auth_mode(self):
         e = self.env
-        if all(e.get(k) for k in ("SF_DEVHUB_USERNAME", "SF_DEVHUB_CLIENT_ID", "SF_DEVHUB_JWT_KEY")):
-            return "jwt"
+        # The auth URL (Salesforce's built-in CLI connected app) wins: the JWT path used an External
+        # Client App that scratch-org creation cannot install (C-1016, 2026-10-06), so it is only a
+        # fallback when no auth URL is supplied. Scratch-org creation never passes a client ID.
         if e.get("SF_AUTH_URL_DEVHUB"):
             return "authurl"
+        if all(e.get(k) for k in ("SF_DEVHUB_USERNAME", "SF_DEVHUB_CLIENT_ID", "SF_DEVHUB_JWT_KEY")):
+            return "jwt"
         return None
 
     def login_devhub(self):

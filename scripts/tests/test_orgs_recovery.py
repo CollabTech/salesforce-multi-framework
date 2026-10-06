@@ -182,6 +182,14 @@ class Recovery(unittest.TestCase):
         self.assertEqual(stdin, "force://x")
         self.assertNotIn("force://x", " ".join(args))
 
+    def test_authurl_preferred_over_jwt_and_no_client_id_on_create(self):
+        self.assertEqual(O.Orgs(sf=FakeSf(), env=dict(JWT, **URL)).auth_mode(), "authurl")
+        f = FakeSf()
+        O.Orgs(sf=f, env=dict(JWT, **URL)).ensure("smf-dev", create=True)
+        create = f.did("org", "create", "scratch")[0]
+        self.assertNotIn("--client-id", create)
+        self.assertIn("--target-dev-hub", create)
+
     def test_no_credential_blocks(self):
         with self.assertRaises(O.Blocked):
             O.Orgs(sf=FakeSf(), env={}).login_devhub()

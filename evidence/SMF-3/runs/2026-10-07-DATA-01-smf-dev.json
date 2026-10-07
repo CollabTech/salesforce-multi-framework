@@ -1,0 +1,64 @@
+{
+  "command": "seed-twice",
+  "timestamp": "2026-10-07T00:50:40Z",
+  "commit": "28d167f",
+  "org": {
+    "edition": "Enterprise Edition",
+    "sandbox": true,
+    "is_scratch": true,
+    "api_version": "67.0"
+  },
+  "before": {
+    "MF-ACCOUNT-001": 0,
+    "MF-ASSET-001": 0,
+    "MF-ASSET-002": 0,
+    "MF-CASE-001": 0,
+    "MF-CASE-001.owner_is_MF-ADMIN": null,
+    "MF-CASE-001.open": null,
+    "MF-CASE-002": 0,
+    "MF-CASE-002.owner_is_MF-ADMIN": null,
+    "MF-IMAGE-001": 0,
+    "MF-IMAGE-001.md5_matches_manifest": null,
+    "MF-FILE-DENIED": 0,
+    "MF-FILE-DENIED.md5_matches_manifest": null
+  },
+  "runs": [
+    {
+      "counts": {
+        "MF-ACCOUNT-001": 1,
+        "MF-ASSET-001": 1,
+        "MF-ASSET-002": 1,
+        "MF-CASE-001": 1,
+        "MF-CASE-001.owner_is_MF-ADMIN": false,
+        "MF-CASE-001.open": true,
+        "MF-CASE-002": 1,
+        "MF-CASE-002.owner_is_MF-ADMIN": false,
+        "MF-IMAGE-001": 0,
+        "MF-IMAGE-001.md5_matches_manifest": null,
+        "MF-FILE-DENIED": 0,
+        "MF-FILE-DENIED.md5_matches_manifest": null
+      },
+      "summary": ""
+    },
+    {
+      "counts": {
+        "MF-ACCOUNT-001": 1,
+        "MF-ASSET-001": 1,
+        "MF-ASSET-002": 1,
+        "MF-CASE-001": 1,
+        "MF-CASE-001.owner_is_MF-ADMIN": false,
+        "MF-CASE-001.open": true,
+        "MF-CASE-002": 1,
+        "MF-CASE-002.owner_is_MF-ADMIN": false,
+        "MF-IMAGE-001": 0,
+        "MF-IMAGE-001.md5_matches_manifest": null,
+        "MF-FILE-DENIED": 0,
+        "MF-FILE-DENIED.md5_matches_manifest": null
+      },
+      "summary": ""
+    }
+  ],
+  "counts_stable": true,
+  "logical_identities_stable": true,
+  "no_duplicates": false
+}

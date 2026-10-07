@@ -9,7 +9,7 @@
     <enableReports>false</enableReports>
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
-    <enableStreamingApi>false</enableStreamingApi>
+    <enableStreamingApi>true</enableStreamingApi>
     <label>SMF12 Room Grant</label>
     <nameField>
         <displayFormat>G-{000000}</displayFormat>

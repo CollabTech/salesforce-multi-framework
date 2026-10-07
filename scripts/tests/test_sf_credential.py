@@ -12,18 +12,24 @@ SECRET = "s3cr3t-" + "x" * 30
 
 
 class Runner:
-    def __init__(self, exists=False, write_status=201, final="Configured"):
-        self.exists, self.write_status, self.final, self.calls = exists, write_status, final, []
+    def __init__(self, exists=False, write_status=201, stores=True):
+        self.exists, self.write_status, self.stores, self.calls = exists, write_status, stores, []
+        self.written = False
 
     def __call__(self, args, input=None, **kw):
         self.calls.append((args, input))
         method, path = args[args.index("--method") + 1], args[4]
         if method == "GET" and "/credential?" in path:
-            res = {"statusCode": 200, "body": {"credentials": {"ApiToken": {}}} if self.exists else {}}
+            if self.written and self.stores:   # Salesforce returns the entry without its value
+                body = {"authenticationStatus": "Unknown", "credentials": {"ApiToken": {"encrypted": True, "id": "0pw", "revision": 1}}}
+            else:
+                body = {"credentials": {"ApiToken": {}}} if self.exists else {}
+            res = {"statusCode": 200, "body": body}
         elif method in ("POST", "PUT"):
+            self.written = self.write_status < 400
             res = {"statusCode": self.write_status, "body": {} if self.write_status < 400 else [{"errorCode": "INVALID_INPUT"}]}
         else:
-            res = {"statusCode": 200, "body": {"principals": [{"principalName": "P", "authenticationStatus": self.final}]}}
+            res = {"statusCode": 404, "body": {}}
         return SimpleNamespace(stdout=json.dumps({"status": 0, "result": res}), returncode=0)
 
 
@@ -49,9 +55,15 @@ class Credential(unittest.TestCase):
         self.assertIn("INVALID_INPUT", msg)
         self.assertNotIn(SECRET, msg)
 
-    def test_unverified_status_is_not_success(self):
-        ok, _ = C.set_parameter("org", "X", "P", "ApiToken", SECRET, runner=Runner(final="NotConfigured"))
+    def test_unverified_write_is_not_success(self):
+        ok, msg = C.set_parameter("org", "X", "P", "ApiToken", SECRET, runner=Runner(stores=False))
         self.assertFalse(ok)
+        self.assertNotIn(SECRET, msg)
+
+    def test_custom_protocol_unknown_status_with_stored_parameter_is_success(self):
+        ok, msg = C.set_parameter("org", "X", "P", "ApiToken", SECRET, runner=Runner())
+        self.assertTrue(ok)
+        self.assertIn("revision 1", msg)
 
     def test_missing_env_value_blocks(self):
         buf = io.StringIO()

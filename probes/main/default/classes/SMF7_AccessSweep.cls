@@ -14,11 +14,11 @@
  *
  * Runs system-wide (without sharing) because it inspects other users' access. It is started
  * and stopped only by an administrator: SMF7_AccessSweep.start(intervalMinutes) schedules one
- * job per interval slot within the hour; stop() aborts them. Each run is a Queueable with
+ * job per interval slot within the hour; stop() aborts them. Each run is a Queueable (Job) with
  * callouts. All callouts happen before any DML. Enforcement latency = interval + queue delay;
  * the live run measures it (docs/findings/token-revocation.md).
  */
-public without sharing class SMF7_AccessSweep implements Schedulable, Queueable, Database.AllowsCallouts {
+public without sharing class SMF7_AccessSweep implements Schedulable {
     public static final String JOB_PREFIX = 'SMF7 access sweep ';
     @TestVisible
     private static final Integer MAX_PER_RUN = 90; // callout limit is 100 per transaction
@@ -31,19 +31,23 @@ public without sharing class SMF7_AccessSweep implements Schedulable, Queueable,
     }
 
     /**
-     * Scheduled entry point: hands off to a Queueable, because scheduled Apex cannot make callouts.
+     * Scheduled entry point: hands off to the callout job, because scheduled Apex cannot make
+     * callouts. (Salesforce rejects a class that is both Schedulable and Queueable at enqueue
+     * time, so the Queueable is the separate Job class.)
      * @param ctx scheduler context (unused)
      */
     public void execute(SchedulableContext ctx) {
-        System.enqueueJob(new SMF7_AccessSweep());
+        System.enqueueJob(new Job());
     }
 
-    /**
-     * Queueable entry point (callouts allowed).
-     * @param ctx queueable context (unused)
-     */
-    public void execute(QueueableContext ctx) {
-        run();
+    /** Queueable with callouts that performs one sweep. */
+    public class Job implements Queueable, Database.AllowsCallouts {
+        /**
+         * @param ctx queueable context (unused)
+         */
+        public void execute(QueueableContext ctx) {
+            run();
+        }
     }
 
     /**

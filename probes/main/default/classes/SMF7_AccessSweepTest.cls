@@ -17,17 +17,18 @@ private class SMF7_AccessSweepTest {
         Case c = SMF7_TestDataFactory.createCase(tech.Id, CASE1);
         insert new CaseShare(CaseId = c.Id, UserOrGroupId = support.Id, CaseAccessLevel = 'Edit');
         SMF7_Call_Room__c room = new SMF7_Call_Room__c(Case__c = c.Id, CaseKey__c = String.valueOf(c.Id), MeetingId__c = 'meeting-sweep');
-        insert room;
-        insert new List<SMF7_Call_Participant__c>{
+        Database.insert(room, AccessLevel.SYSTEM_MODE); // test data setup, not the code under test
+        Database.insert(new List<SMF7_Call_Participant__c>{
             new SMF7_Call_Participant__c(Room__c = room.Id, User__c = tech.Id, ParticipantId__c = 'p-tech',
                 UniqueKey__c = SMF7_CallRoomStore.participantKey(c.Id, tech.Id)),
             new SMF7_Call_Participant__c(Room__c = room.Id, User__c = support.Id, ParticipantId__c = 'p-supp',
                 UniqueKey__c = SMF7_CallRoomStore.participantKey(c.Id, support.Id))
-        };
+        }, AccessLevel.SYSTEM_MODE);
     }
 
     private static User persona(String alias) {
-        return [SELECT Id FROM User WHERE Alias = :alias LIMIT 1];
+        // Scoped to this test's users: real SMF-3 personas in the org share these aliases.
+        return [SELECT Id FROM User WHERE Alias = :alias AND Username LIKE 'smf7.%' LIMIT 1];
     }
 
     private static SMF7_RealtimeKitMock configure() {
@@ -43,7 +44,7 @@ private class SMF7_AccessSweepTest {
 
     private static Set<String> remainingParticipants() {
         Set<String> ids = new Set<String>();
-        for (SMF7_Call_Participant__c p : [SELECT ParticipantId__c FROM SMF7_Call_Participant__c]) {
+        for (SMF7_Call_Participant__c p : [SELECT ParticipantId__c FROM SMF7_Call_Participant__c WITH SYSTEM_MODE]) {
             ids.add(p.ParticipantId__c);
         }
         return ids;
@@ -51,7 +52,7 @@ private class SMF7_AccessSweepTest {
 
     private static void sweep() {
         Test.startTest();
-        System.enqueueJob(new SMF7_AccessSweep());
+        System.enqueueJob(new SMF7_AccessSweep.Job());
         Test.stopTest();
     }
 

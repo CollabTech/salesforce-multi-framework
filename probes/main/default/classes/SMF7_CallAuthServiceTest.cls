@@ -26,7 +26,8 @@ private class SMF7_CallAuthServiceTest {
     }
 
     private static User persona(String alias) {
-        return [SELECT Id FROM User WHERE Alias = :alias LIMIT 1];
+        // Scoped to this test's users: real SMF-3 personas in the org share these aliases.
+        return [SELECT Id FROM User WHERE Alias = :alias AND Username LIKE 'smf7.%' LIMIT 1];
     }
 
     private static Id caseId(String subject) {
@@ -42,6 +43,26 @@ private class SMF7_CallAuthServiceTest {
         SMF7_RealtimeKitMock mock = new SMF7_RealtimeKitMock();
         Test.setMock(HttpCalloutMock.class, mock);
         return mock;
+    }
+
+    /**
+     * State left by an earlier successful request of this persona for this case: the room with the
+     * provider meeting and the persona's participant mapping (as SMF7_CallRoomStore persists them).
+     * Seeded directly because a test cannot make a callout after the DML of an earlier request in
+     * the same transaction ("uncommitted work pending"), which silently broke the two-request tests.
+     */
+    private static void seedEarlierIssue(String alias, Id targetCase) {
+        SMF7_Call_Room__c room = new SMF7_Call_Room__c(Case__c = targetCase, CaseKey__c = String.valueOf(targetCase),
+            MeetingId__c = SMF7_RealtimeKitMock.MEETING_ID);
+        Database.insert(room, AccessLevel.SYSTEM_MODE);
+        Id userId = persona(alias).Id;
+        Database.insert(new SMF7_Call_Participant__c(Room__c = room.Id, User__c = userId,
+            UniqueKey__c = SMF7_CallRoomStore.participantKey(targetCase, userId),
+            ParticipantId__c = SMF7_RealtimeKitMock.PARTICIPANT_ID), AccessLevel.SYSTEM_MODE);
+    }
+
+    private static Integer rowCount(String sobjectName) {
+        return Database.countQuery('SELECT COUNT() FROM ' + sobjectName, AccessLevel.SYSTEM_MODE);
     }
 
     private static SMF7_CallAuthService.Result issueAs(String alias, Id targetCase) {
@@ -62,33 +83,38 @@ private class SMF7_CallAuthServiceTest {
         Assert.areEqual(SMF7_RealtimeKitMock.TOKEN_NEW, r.authToken, 'participant token returned');
         Assert.areEqual(1, mock.count('/meetings'), 'one meeting created');
         Assert.areEqual(1, mock.count('/participants'), 'one participant added');
-        Assert.areEqual(1, [SELECT COUNT() FROM SMF7_Call_Room__c], 'room persisted server-side');
-        Assert.areEqual(SMF7_RealtimeKitMock.MEETING_ID, [SELECT MeetingId__c FROM SMF7_Call_Room__c LIMIT 1].MeetingId__c, 'meeting id stored');
+        Assert.areEqual(1, rowCount('SMF7_Call_Room__c'), 'room persisted server-side');
+        Assert.areEqual(SMF7_RealtimeKitMock.MEETING_ID, [SELECT MeetingId__c FROM SMF7_Call_Room__c WITH SYSTEM_MODE LIMIT 1].MeetingId__c, 'meeting id stored');
     }
 
     @IsTest
     static void shouldRefreshNotDuplicate_WhenSameUserRequestsAgain() {
         SMF7_RealtimeKitMock mock = configure();
-        issueAs('mftech', caseId(CASE1));
+        seedEarlierIssue('mftech', caseId(CASE1));
         Test.startTest();
         SMF7_CallAuthService.Result again = issueAs('mftech', caseId(CASE1));
         Test.stopTest();
+        Assert.areEqual(SMF7_CallAuthService.Code.OK, again.code, 'repeat request authorized');
         Assert.areEqual(SMF7_RealtimeKitMock.TOKEN_REFRESHED, again.authToken, 'existing participant refreshed');
-        Assert.areEqual(1, mock.count('/meetings'), 'meeting created once');
-        Assert.areEqual(1, mock.count('/participants'), 'participant added once (no duplicate)');
-        Assert.areEqual(1, [SELECT COUNT() FROM SMF7_Call_Participant__c], 'one participant row');
+        Assert.areEqual(0, mock.count('/meetings'), 'no second meeting created');
+        Assert.areEqual(0, mock.count('/participants'), 'no duplicate participant added');
+        Assert.areEqual(1, mock.count('/token'), 'token refreshed once');
+        Assert.areEqual(1, rowCount('SMF7_Call_Participant__c'), 'one participant row');
     }
 
     @IsTest
     static void shouldShareMeeting_WhenSupportJoinsSameCase() {
         SMF7_RealtimeKitMock mock = configure();
-        issueAs('mftech', caseId(CASE1));
+        seedEarlierIssue('mftech', caseId(CASE1));
         Test.startTest();
         SMF7_CallAuthService.Result r = issueAs('mfsupp', caseId(CASE1));
         Test.stopTest();
         Assert.areEqual(SMF7_CallAuthService.Code.OK, r.code, 'SUPPORT shares MF-CASE-001');
-        Assert.areEqual(1, mock.count('/meetings'), 'same meeting reused');
-        Assert.areEqual(2, [SELECT COUNT() FROM SMF7_Call_Participant__c], 'one participant per persona');
+        Assert.areEqual(0, mock.count('/meetings'), 'same meeting reused (none created)');
+        Assert.areEqual(1, mock.count('/participants'), 'SUPPORT added to the existing meeting');
+        Assert.isTrue(mock.requests[0].getEndpoint().contains('/meetings/' + SMF7_RealtimeKitMock.MEETING_ID + '/participants'), 'added to the stored meeting');
+        Assert.areEqual(1, rowCount('SMF7_Call_Room__c'), 'one room');
+        Assert.areEqual(2, rowCount('SMF7_Call_Participant__c'), 'one participant per persona');
     }
 
     @IsTest
@@ -157,20 +183,21 @@ private class SMF7_CallAuthServiceTest {
         Assert.isNull(r.authToken, 'no token');
         String serialized = JSON.serialize(r);
         Assert.isFalse(serialized.contains('SECRET') || serialized.contains('Bearer'), 'provider body never echoed');
-        Assert.areEqual(0, [SELECT COUNT() FROM SMF7_Call_Room__c], 'nothing persisted');
+        Assert.areEqual(0, rowCount('SMF7_Call_Room__c'), 'nothing persisted');
     }
 
     @IsTest
     static void shouldReaddParticipant_WhenProviderNoLongerKnowsIt() {
         SMF7_RealtimeKitMock mock = configure();
-        issueAs('mftech', caseId(CASE1));
+        seedEarlierIssue('mftech', caseId(CASE1));
         mock.refreshStatus = 404;
         Test.startTest();
         SMF7_CallAuthService.Result r = issueAs('mftech', caseId(CASE1));
         Test.stopTest();
         Assert.areEqual(SMF7_RealtimeKitMock.TOKEN_NEW, r.authToken, 're-added participant token');
-        Assert.areEqual(2, mock.count('/participants'), 'participant added again');
-        Assert.areEqual(1, [SELECT COUNT() FROM SMF7_Call_Participant__c], 'mapping updated, not duplicated');
+        Assert.areEqual(1, mock.count('/token'), 'refresh attempted first');
+        Assert.areEqual(1, mock.count('/participants'), 'participant added again');
+        Assert.areEqual(1, rowCount('SMF7_Call_Participant__c'), 'mapping updated, not duplicated');
     }
 
     @IsTest

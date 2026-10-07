@@ -66,12 +66,14 @@ def set_parameter(org, ext, principal, param, value, runner=subprocess.run):
     status, data = request(org, "PUT" if exists else "POST", f"{base}/credential", body, runner=runner)
     if status not in (200, 201):
         return False, f"{'PUT' if exists else 'POST'} credential returned HTTP {status} ({error_code(data)})"
-    status, info = request(org, "GET", f"{base}/external-credentials/{ext}", runner=runner)
-    principals = info.get("principals", []) if isinstance(info, dict) else []
-    st = next((p.get("authenticationStatus") for p in principals if p.get("principalName") == principal), None)
-    if st != "Configured":
-        return False, f"principal {principal} authenticationStatus={st!r} after write"
-    return True, f"{ext}/{principal}.{param} configured (value not shown)"
+    # Verify by reading the stored credential back. For the Custom protocol Salesforce reports
+    # authenticationStatus 'Unknown' even when the parameter is stored (observed 2026-10-07), so
+    # the check is that the parameter exists, encrypted, with a revision. Values are never returned.
+    status, stored = request(org, "GET", q, runner=runner)
+    entry = (stored.get("credentials") or {}).get(param) if isinstance(stored, dict) else None
+    if status != 200 or not isinstance(entry, dict) or not entry.get("encrypted") or not entry.get("revision"):
+        return False, f"{ext}/{principal}.{param} not found stored (encrypted) after write (HTTP {status})"
+    return True, f"{ext}/{principal}.{param} stored, encrypted, revision {entry.get('revision')} (value not shown)"
 
 
 def main(argv=None):

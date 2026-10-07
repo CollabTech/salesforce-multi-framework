@@ -32,7 +32,7 @@ private class SMF11_MarkupServiceTest {
     }
 
     private static Id imageVersionId(String title) {
-        return [SELECT Id FROM ContentVersion WHERE Title = :title LIMIT 1].Id;
+        return visibleVersions(title)[0].Id;
     }
 
     private static SMF11_MarkupService.Source inline(String text) {
@@ -44,6 +44,29 @@ private class SMF11_MarkupServiceTest {
             inline('{"document":{}}'), inline('png-bytes'));
     }
 
+    /**
+     * Reads test Files as a user who may see them: the running admin first (it created the
+     * negative-control file), then the test TECH user who created the case files. Users without
+     * "Query All Files" only see files shared with them, so an admin-only read misses TECH's files.
+     */
+    private static List<ContentVersion> visibleVersions(String title) {
+        List<ContentVersion> rows = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+        if (rows.isEmpty()) {
+            System.runAs([SELECT Id FROM User WHERE Alias = :TECH_ALIAS.left(8) LIMIT 1][0]) {
+                rows = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+            }
+        }
+        return rows;
+    }
+
+    private static Integer snapshotCountAsTech() {
+        Integer n;
+        System.runAs([SELECT Id FROM User WHERE Alias = :TECH_ALIAS.left(8) LIMIT 1][0]) {
+            n = [SELECT COUNT() FROM ContentVersion WHERE Title LIKE 'MF-MARKUP-001 snapshot r%'];
+        }
+        return n;
+    }
+
     @IsTest
     static void shouldCreateRevisionOne_WhenFirstSave() {
         SMF11_MarkupService.Revision rev;
@@ -53,8 +76,8 @@ private class SMF11_MarkupServiceTest {
         }
         Test.stopTest();
         Assert.areEqual(1, rev.rev, 'First save is revision 1');
-        ContentVersion export = [SELECT Description FROM ContentVersion WHERE Id = :rev.exportVersionId];
-        Assert.isTrue(export.Description.contains('snapshot=' + rev.snapshotVersionId), 'Export must reference its snapshot');
+        ContentVersion exportVersion = [SELECT Description FROM ContentVersion WHERE Id = :rev.exportVersionId];
+        Assert.isTrue(exportVersion.Description.contains('snapshot=' + rev.snapshotVersionId), 'Export must reference its snapshot');
     }
 
     @IsTest
@@ -86,7 +109,7 @@ private class SMF11_MarkupServiceTest {
             }
         }
         Test.stopTest();
-        Integer snapshots = [SELECT COUNT() FROM ContentVersion WHERE Title LIKE 'MF-MARKUP-001 snapshot r%'];
+        Integer snapshots = snapshotCountAsTech();
         Assert.areEqual(2, snapshots, 'The conflicting save must not write anything');
     }
 
@@ -117,7 +140,7 @@ private class SMF11_MarkupServiceTest {
         Test.stopTest();
         Assert.isTrue(retry.reused, 'Retry must reuse the committed revision');
         Assert.areEqual(first.snapshotVersionId, retry.snapshotVersionId, 'Same snapshot version');
-        Integer snapshots = [SELECT COUNT() FROM ContentVersion WHERE Title LIKE 'MF-MARKUP-001 snapshot r%'];
+        Integer snapshots = snapshotCountAsTech();
         Assert.areEqual(1, snapshots, 'Retry must not duplicate');
     }
 

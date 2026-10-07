@@ -76,8 +76,8 @@ public with sharing class SMF11_MarkupService {
      * committed (idempotent retry returns the existing revision).
      */
     public static Revision save(Id caseId, Id baseSnapshotVersionId, String saveKey, Id imageVersionId,
-            Source snapshot, Source export) {
-        if (caseId == null || String.isBlank(saveKey) || imageVersionId == null || snapshot == null || export == null) {
+            Source snapshot, Source exportImage) {
+        if (caseId == null || String.isBlank(saveKey) || imageVersionId == null || snapshot == null || exportImage == null) {
             throw new BadRequestException('caseId, saveKey, imageVersionId, snapshot and export are required.');
         }
         if (!Pattern.matches('[A-Za-z0-9-]{8,64}', saveKey)) {
@@ -108,7 +108,7 @@ public with sharing class SMF11_MarkupService {
             + ';image=' + imageVersionId + ';base=' + (baseId ?? 'none');
         Database.insert(snapshotVersion, AccessLevel.USER_MODE);
 
-        ContentVersion exportVersion = newVersion(caseId, EXPORT_TITLE + rev, 'png', export);
+        ContentVersion exportVersion = newVersion(caseId, EXPORT_TITLE + rev, 'png', exportImage);
         exportVersion.Description = META_PREFIX + 'kind=export;rev=' + rev + ';save=' + saveKey
             + ';snapshot=' + snapshotVersion.Id;
         Database.insert(exportVersion, AccessLevel.USER_MODE);

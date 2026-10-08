@@ -6,10 +6,10 @@ actions in `testing/HUMAN-ACTIONS.md`; nothing else waits on a local machine.
 
 ```
 session start ─► bash scripts/cloud/session-setup.sh  (sf CLI, skills, Microsoft Edge, deps,
-                                                    Dev Hub login + vault restore)
+                                                    Dev Hub login + recovery via the Dev Hub)
              ─► scripts/cloud/pipeline.sh all      (stages/NN-*.sh, in order)
                   10 readiness  SMF-2  ENV-01..03 report
-                  20 orgs       SMF-2  scratch orgs smf-dev / smf-install-test, vault save
+                  20 orgs       SMF-2  recover or create smf-dev / smf-install-test (no duplicates)
                   30 provision  SMF-3  personas, grants, fixtures, access checks (DATA-*)
                   40 deploy     SMF-4  build + deploy app, app permission baseline
                   5x cloud-e2e  SMF-4+ Playwright as real personas in Edge/Chromium
@@ -32,7 +32,7 @@ device tester ─► testing/device-results/*.md  ─► ingested by the agent n
 | Camera/mic in browsers | **Fake devices only** (`--use-fake-device-for-media-stream`) | Proves code paths and track lifecycle; never camera/mic/A-V capability on a host |
 | WebGL | **Software only** (SwiftShader) | Functional 3D checks; performance numbers are not device evidence |
 | Reaching Salesforce / Cloudflare / tldraw | **Blocked until H1** | Egress proxy denies these hosts today |
-| Org credentials | **Missing until H2** | One secret; the rest via the vault (ADR-0004) |
+| Org credentials | **Missing until H2** | JWT trio (preferred) or auth URL; no vault (ADR-0004 rev 2) |
 | Physical Salesforce mobile (iOS/Android) | **Not available in any cloud** | Human-only (`testing/HUMAN-ACTIONS.md`) |
 | Observed audio/video quality, permission prompts on device | **Not automatable** | Human-only |
 

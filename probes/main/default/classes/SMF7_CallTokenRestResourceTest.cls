@@ -35,7 +35,7 @@ private class SMF7_CallTokenRestResourceTest {
         RestContext.request = req;
         RestContext.response = new RestResponse();
         SMF7_CallTokenRestResource.ApiResponse out;
-        System.runAs([SELECT Id FROM User WHERE Alias = :alias LIMIT 1]) {
+        System.runAs([SELECT Id FROM User WHERE Alias = :alias AND Username LIKE 'smf7.%' LIMIT 1][0]) {
             out = SMF7_CallTokenRestResource.issue();
         }
         return out;

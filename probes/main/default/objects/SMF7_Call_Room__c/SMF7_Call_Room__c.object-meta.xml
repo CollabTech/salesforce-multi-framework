@@ -9,7 +9,7 @@
     <enableReports>false</enableReports>
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
-    <enableStreamingApi>false</enableStreamingApi>
+    <enableStreamingApi>true</enableStreamingApi>
     <label>SMF7 Call Room</label>
     <nameField>
         <displayFormat>R-{000000}</displayFormat>

@@ -43,6 +43,11 @@ def manifest_file(lid):
     return next(f for f in m["fixtures"] if f["logical_id"] == lid and f["media_type"] == "image/png" and f["committed"])
 
 
+# Describe reports these as required without a default, but Salesforce assigns them on insert
+# (Case.BusinessHoursId = the org's default business hours; verified in a scratch org 2026-10-07).
+PLATFORM_FILLED = {"Case": ("BusinessHoursId",)}
+
+
 def preflight(org):
     problems = []
     for obj, fields in USES.items():
@@ -52,6 +57,8 @@ def preflight(org):
             if f not in fmap:
                 problems.append(f"{obj}.{f} missing")
         for f in d["fields"]:   # required on create, no default, not set by the seed
+            if f["name"] in PLATFORM_FILLED.get(obj, ()):
+                continue
             if (f["createable"] and not f["nillable"] and not f["defaultedOnCreate"]
                     and f["type"] != "boolean" and obj in SETS and f["name"] not in SETS[obj]):
                 problems.append(f"{obj}.{f['name']} is required on create but the seed does not set it")

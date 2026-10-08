@@ -95,6 +95,10 @@ def verify_target(target_org, allow_devhub=False):
     ident = {"edition": org["OrganizationType"], "sandbox": org["IsSandbox"], "instance": org["InstanceName"],
              "language": org["LanguageLocaleKey"], "api_version": disp.get("apiVersion"),
              "is_scratch": bool(disp.get("devHubId") or disp.get("expirationDate")), "is_devhub": is_hub}
+    # `sf org display` reports the ORG id as "id"; the running user's own Id is resolved here so
+    # ownership checks compare user Ids (an org id never matches OwnerId; see running_user).
+    me = query(target_org, f"SELECT Id FROM User WHERE Username = {soql_str(disp['username'])}")
+    disp["userId"] = me[0]["Id"] if me else None
     write_private(f"smf3/org-display-{target_org}.json", {"display": disp, "organization": org, "checked": now()})
     if is_hub and not allow_devhub:
         raise SfError("target org is a Dev Hub. The Dev Hub is not the application test org (SMF-2 ENV-03). "
@@ -104,7 +108,8 @@ def verify_target(target_org, allow_devhub=False):
 
 
 def running_user(disp):
-    return disp.get("username"), disp.get("id")
+    """(username, User Id) of the CLI user. Never disp["id"]: that is the org id."""
+    return disp.get("username"), disp.get("userId")
 
 
 def apex(target_org, file_path):

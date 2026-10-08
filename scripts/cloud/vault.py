@@ -18,6 +18,10 @@ DEVHUB = "smf-devhub"
 TITLE = "smf-cloud-vault"
 ROOT = Path(__file__).resolve().parents[2]
 
+if os.environ.get("SMF_VAULT_APPROVED") != "yes" or os.environ.get("SMF_VAULT_ENABLE") != "yes":
+    sys.exit("vault.py is disabled (ADR-0004 rev 2): cross-session recovery uses JWT Dev Hub auth "
+             "via scripts/cloud/orgs.py. Not used for the first run.")
+
 
 def sf(*args, stdin=None):
     r = subprocess.run(["sf", *args, "--json"], input=stdin, capture_output=True, text=True,

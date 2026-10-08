@@ -28,7 +28,7 @@ const serverLog: string[] = [];
 
 async function startServer(recheckMs = 1000): Promise<void> {
   server = spawn(process.execPath, ['--no-warnings', SERVER_JS], {
-    env: { ...process.env, PORT: String(PORT), HOST: '127.0.0.1', SMF12_ROOM_TOKEN_SECRET: TEST_KEY, SMF12_DATA_DIR: dataDir, SMF12_RECHECK_MS: String(recheckMs) },
+    env: { ...process.env, PORT: String(PORT), HOST: '127.0.0.1', SMF12_ROOM_TOKEN_SECRET: TEST_KEY, SMF12_DATA_DIR: dataDir, SMF12_RECHECK_MS: String(recheckMs), SMF12_ALLOW_ANY_ORIGIN: '1' /* loopback only */ },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   server.stdout?.on('data', (d: Buffer) => serverLog.push(d.toString()));

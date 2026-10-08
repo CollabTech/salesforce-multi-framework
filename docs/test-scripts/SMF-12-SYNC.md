@@ -5,7 +5,7 @@ rows are automated by `testing/cloud-e2e/tests/smf-12-sync.spec.ts` (stage 72).
 **Personas:** MF-TECH and MF-SUPPORT simultaneously (separate devices or browser profiles),
 MF-RESTRICTED. **Fixtures:** MF-CASE-001 (room MF-ROOM-001), MF-CASE-002 (MF-ROOM-002),
 MF-IMAGE-001, MF-MARKUP-001. **App:** Field Support PoC → Probes → "SMF-12 · Live two-user markup".
-Prerequisites: stages 46, 48, 49 green (Worker deployed, S1/S2 secrets set, licence key).
+Prerequisites: stages 46, 48, 49 green (Worker deployed for the observed app origin, secrets set and verified by stage 49, licence key).
 Record per pair: both devices' env rows (see `SMF-10-FILES.md`), network type (Wi-Fi/cellular,
 signal), and paste both evidence blocks.
 

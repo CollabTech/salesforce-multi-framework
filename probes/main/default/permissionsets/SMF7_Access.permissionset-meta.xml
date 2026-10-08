@@ -8,11 +8,20 @@
         <enabled>true</enabled>
         <name>SMF7_Join_Call</name>
     </customPermissions>
-    <description>SMF-7: call the case-bound RealtimeKit token endpoint. Grants no record access: the endpoint still requires user-mode read access to the Case. No object permissions on the SMF7 room/participant objects (provider ids stay server-side). Assigned to MF-TECH, MF-SUPPORT and MF-RESTRICTED so denial comes from case access, not from a missing permission.</description>
+    <description>SMF-7: call the case-bound RealtimeKit token endpoint. Grants no record access (the endpoint still checks Case read access in user mode). Assigned to TECH, SUPPORT and RESTRICTED so denial comes from case access.</description>
     <externalCredentialPrincipalAccesses>
         <enabled>true</enabled>
         <externalCredentialPrincipal>SMF7_Cloudflare-SMF7_Principal</externalCredentialPrincipal>
     </externalCredentialPrincipalAccesses>
     <hasActivationRequired>false</hasActivationRequired>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>UserExternalCredential</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <label>SMF7 Call Access</label>
 </PermissionSet>

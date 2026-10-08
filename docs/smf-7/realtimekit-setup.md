@@ -12,30 +12,26 @@ the docs were read from the `cloudflare/cloudflare-docs` GitHub repository at co
 | # | Prerequisite | Who | Notes |
 |---|---|---|---|
 | P1 | Cloudflare account | Brandon | RealtimeKit is part of Cloudflare Realtime. |
-| P2 | API token with **Realtime: Edit** (docs: "Realtime / Realtime Admin") scoped to that account | Brandon | Two uses: the pipeline (env `CF_API_TOKEN`, HUMAN-SETUP H4) and the org (owner step O-SMF7-1). A separate token with only Realtime permission is recommended for the org. |
+| P2 | API token with **Realtime: Edit** (docs: "Realtime / Realtime Admin") scoped to that account | Brandon | Two tokens (HUMAN-SETUP H4): `CF_API_TOKEN` for the pipeline, and `CF_RTK_ORG_TOKEN` (Realtime: Edit only), which stage 45 stores in the org. |
 | P3 | RealtimeKit app + a GROUP_CALL preset allowing audio, video (and screen share for SMF-8) | Agent (stage 45) or Brandon | Stage 45 finds/creates app `smf-field-support-poc`. **Apps created in the dashboard ship default presets; API-created apps may not** — if preset `group_call_host` is missing the stage stops BLOCKED and names the fix (create in dashboard and set `SMF7_RTK_APP_ID`, or create the preset, or set `SMF7_RTK_PRESET`). |
 | P4 | Pricing acknowledged | Brandon | Audio/video participant **$0.002 / participant-minute**; audio-only $0.0005; recording/export $0.010 (not used). Meetings and tokens are free; a rejected/expired token is not billed. One 5-minute two-person CALL-01 run ≈ 10 participant-minutes ≈ $0.02; the full SMF-7/8/9 device plan is well under 500 participant-minutes (≈ $1). |
 | P5 | Org: Named Credential `SMF7_Cloudflare` → External Credential `SMF7_Cloudflare` (Custom protocol, principal `SMF7_Principal`, header `Authorization: Bearer {!$Credential.SMF7_Cloudflare.ApiToken}`) | Agent (deploy) | In source control without any secret. |
-| P6 | **O-SMF7-1 (owner step): set the org-side secret** | Brandon | See below. Never scripted. |
+| P6 | Org-side secret `ApiToken` on principal `SMF7_Principal` | Agent (stage 45) | Set from `CF_RTK_ORG_TOKEN` through the Connect REST credential API (`scripts/cloud/sf_credential.py`; value on stdin, never printed) and verified by a live readiness check. Replaces former owner step O-SMF7-1. |
 | P7 | Config record `SMF7_RealtimeKit_Config__mdt.Default` (account id, app id, preset) | Agent (stage 45) | Generated into git-ignored `private/smf7-deploy/` and deployed; never committed. |
 | P8 | CSP Trusted Sites for the SDK's hosts | Agent (deploy) | `cspTrustedSites/SMF7_RTK_*` (below). |
 | P9 | Cloud-environment egress: `api.cloudflare.com`, `*.realtime.cloudflare.com` (already in HUMAN-SETUP H1); for media in the cloud browser also `stun.cloudflare.com`, `turn.cloudflare.com` (UDP/TCP 3478, 5349/443) | Brandon | If the environment proxy cannot pass UDP/TURN, cloud CALL-01/02 media checks fail with an ICE/transport error — a finding, not a pass. |
 
-### O-SMF7-1 — set the Cloudflare token in the org (owner, once per `smf-dev` org)
+### Org-side token (automated; formerly owner step O-SMF7-1)
+Stage `45-smf7-realtimekit.sh` writes authentication parameter `ApiToken` on principal
+`SMF7_Principal` from `CF_RTK_ORG_TOKEN`:
+- It uses `scripts/cloud/sf_credential.py`, which calls the Connect REST `named-credentials/credential`
+  POST or PUT.
+- It then verifies that the principal's `authenticationStatus` is `Configured`.
+- It finally runs `SMF7_CallAuthService.checkConfiguration()` through the Named Credential.
 
-1. Log in to `smf-dev` as MF-ADMIN (or the scratch-org admin) → **Setup** → Quick Find
-   **Named Credentials** → tab **External Credentials** → **SMF7 Cloudflare**.
-2. Section **Principals** → row **SMF7_Principal** → **Edit** (or *Add* if the row has no
-   parameters) → **Authentication Parameters** → **Add**: Name **`ApiToken`**, Value = the
-   Cloudflare API token from P2 → **Save**.
-3. Nothing else: permission set `SMF7_Access` already grants principal access.
-
-Detection: stage `45-smf7-realtimekit.sh` reads only the principal's
-`authenticationStatus` (Connect REST `/named-credentials/external-credentials/SMF7_Cloudflare`)
-and then runs `SMF7_CallAuthService.checkConfiguration()` through the Named Credential. Not
-configured → exit 2 `BLOCKED: … O-SMF7-1`; token rejected (HTTP 401/403) → exit 2 with the same
-instruction. Scratch orgs are recreated every ≤30 days (stage 20); **repeat O-SMF7-1 after each
-recreation** (the stage detects it).
+`CF_API_TOKEN` (which also has Workers edit) is used only with `SMF_ORG_TOKEN_FALLBACK=yes`. With
+neither token, the stage is BLOCKED and names H4. It repeats automatically for every recreated
+scratch org.
 
 ## Server-side boundary (AC1, AC2, CALL-03)
 

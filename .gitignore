@@ -37,6 +37,9 @@ deploy-options.json
 **/lwc/jsconfig.json
 logs
 *.log
+# Sanitized evidence logs are committed on purpose (evidence/SMF-*/logs/*.txt)
+!/evidence/*/logs/
+!/evidence/*/logs/*.txt
 .pmdCache
 .eslintcache
 *.tsbuildinfo

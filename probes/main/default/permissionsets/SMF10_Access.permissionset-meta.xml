@@ -4,7 +4,7 @@
         <apexClass>SMF10_CaseFilesResource</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <description>SMF-10 probe: lets a user call the user-context Files read-back endpoint. Grants no record, object or File access; Case and File visibility still come from the SMF-3 baseline sharing. Assign to MF-TECH, MF-SUPPORT and MF-RESTRICTED alike so denials are decided by sharing, not by Apex class access.</description>
+    <description>SMF-10 probe: lets a user call the user-context Files read-back endpoint. Grants no record, object or File access; Case and File visibility come from sharing. Assigned to TECH, SUPPORT and RESTRICTED alike.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>SMF-10 Files Probe Access</label>
 </PermissionSet>

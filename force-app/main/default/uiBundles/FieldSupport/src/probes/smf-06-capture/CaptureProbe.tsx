@@ -80,6 +80,54 @@ export default function CaptureProbe() {
   const policy = useMemo(() => readPolicyReport(), []);
 
   const addLog = useCallback((m: string) => setLog(l => [...l, logEntry(m)].slice(-60)), []);
+  const [recording, setRecording] = useState(false);
+  const [clip, setClip] = useState<{ url: string; mime: string; bytes: number; ms: number } | null>(null);
+
+  /** Records a short clip from the live mic track and offers it for playback (SMF-6 audio check). */
+  const recordClip = useCallback(
+    async (seconds: number) => {
+      const audio = tracksRef.current.find(t => t.kind === 'audio' && t.readyState === 'live');
+      if (!audio) {
+        addLog('record clip: no live microphone track; start the microphone first');
+        return;
+      }
+      if (typeof MediaRecorder === 'undefined') {
+        addLog('record clip: MediaRecorder is not available in this host');
+        return;
+      }
+      const chunks: Blob[] = [];
+      let rec: MediaRecorder;
+      try {
+        rec = new MediaRecorder(new MediaStream([audio]));
+      } catch (e) {
+        addLog(`record clip: MediaRecorder could not start — ${String(e)}`);
+        return;
+      }
+      rec.ondataavailable = e => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+      const stopped = new Promise<void>(resolve => {
+        rec.onstop = () => resolve();
+      });
+      const t0 = performance.now();
+      rec.start();
+      setRecording(true);
+      addLog(`record clip: recording ${seconds} s (${rec.mimeType || 'default type'})`);
+      window.setTimeout(() => {
+        if (rec.state !== 'inactive') rec.stop();
+      }, seconds * 1000);
+      await stopped;
+      setRecording(false);
+      const blob = new Blob(chunks, { type: rec.mimeType || chunks[0]?.type || 'audio/webm' });
+      const ms = Math.round(performance.now() - t0);
+      setClip(prev => {
+        if (prev) URL.revokeObjectURL(prev.url);
+        return { url: URL.createObjectURL(blob), mime: blob.type, bytes: blob.size, ms };
+      });
+      addLog(`record clip: ${blob.size} bytes in ${ms} ms (${blob.type}); press play to hear it`);
+    },
+    [addLog],
+  );
 
   const refreshPermissions = useCallback(() => {
     void readPermissionStates().then(setPermissions);
@@ -391,6 +439,25 @@ export default function CaptureProbe() {
             <p className="mt-2 text-sm" data-testid="mic-peak">
               Peak since start: <strong>{peak.toFixed(3)}</strong> · audio context: {audioCtxState}
             </p>
+            <Button className="mt-3 min-h-11" disabled={!hasAudio || recording} onClick={() => void recordClip(5)} data-testid="record-clip">
+              {recording ? 'Recording 5 s…' : 'Record 5 s clip'}
+            </Button>
+            {clip && (
+              <div className="mt-3">
+                <p className="text-sm" data-testid="clip-info">
+                  Clip: {clip.bytes} bytes, {(clip.ms / 1000).toFixed(1)} s, {clip.mime || 'unknown type'}
+                </p>
+                <audio
+                  className="mt-2 w-full"
+                  controls
+                  src={clip.url}
+                  data-testid="clip-audio"
+                  onPlay={() => addLog('clip playback started')}
+                  onEnded={e => addLog(`clip playback ended (${e.currentTarget.duration.toFixed(1)} s)`)}
+                  onError={e => addLog(`clip playback error: code ${e.currentTarget.error?.code ?? '?'} ${e.currentTarget.error?.message ?? ''}`)}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

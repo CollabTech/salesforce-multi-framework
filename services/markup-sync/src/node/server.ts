@@ -6,12 +6,14 @@
  * Endpoints
  *   GET  /health                         liveness (no room data)
  *   POST /mint   (X-SMF-Mint-Key)        Salesforce-side token mint (called by Apex via Named Credential)
- *   WS   /connect/<room>?token=…&sessionId=…   requires a valid, unexpired token for that room
+ *   POST /revoke (X-SMF-Mint-Key)        Salesforce-side push revocation {userId, caseId} (SMF12_AccessSweep)
+ *   WS   /connect/<room>?token=…&sessionId=…   requires a valid, unexpired, unrevoked token for that room
  *
  * Authorization: token verified on upgrade (signature, expiry, room) and re-checked every
  * SMF12_RECHECK_MS; an expired session is closed (non-fatal, so an authorized client
- * reconnects with a fresh token; a revoked user cannot mint one). Worst-case revocation
- * delay = token TTL + re-check interval.
+ * reconnects with a fresh token; a revoked user cannot mint one). Without push revocation the
+ * worst-case delay is token TTL + re-check interval; /revoke closes the user's sessions in the
+ * room at once and refuses tokens issued before it (see Revocations in shared/token.ts).
  */
 import { createServer, type IncomingMessage, type Server } from 'node:http';
 import { mkdirSync } from 'node:fs';
@@ -22,7 +24,7 @@ import type { Duplex } from 'node:stream';
 import { WebSocketServer, type WebSocket } from 'ws';
 import { NodeSqliteWrapper, SQLiteSyncStorage, TLSocketRoom } from '@tldraw/sync-core';
 import { createTLSchema, defaultBindingSchemas, defaultShapeSchemas, type TLRecord } from '@tldraw/tlschema';
-import { assertSecret, mint, roomFromPath, safeEqual, verifyToken, type RoomClaims } from '../shared/token.js';
+import { assertSecret, mint, originAllowed, parseOrigins, parseRevoke, Revocations, roomFromPath, roomIdForCase, safeEqual, userKey, verifyToken, type RoomClaims } from '../shared/token.js';
 
 export interface SyncServerConfig {
   port: number;
@@ -31,6 +33,8 @@ export interface SyncServerConfig {
   dataDir: string;
   recheckMs: number;
   allowedOrigins: string[];
+  /** Loopback tests only (SMF12_ALLOW_ANY_ORIGIN=1); otherwise an empty allowlist denies every connection. */
+  allowAnyOrigin?: boolean;
   publicWsUrl?: string;
   log?: (event: Record<string, unknown>) => void;
 }
@@ -63,6 +67,7 @@ export async function startSyncServer(config: SyncServerConfig): Promise<Running
   mkdirSync(config.dataDir, { recursive: true });
   const rooms = new Map<string, RoomHandle>();
   const connections = new Set<Connection>();
+  const revocations = new Revocations();
   const wss = new WebSocketServer({ noServer: true, maxPayload: 4 * 1024 * 1024 });
 
   function getRoom(roomId: string): RoomHandle {
@@ -107,6 +112,32 @@ export async function startSyncServer(config: SyncServerConfig): Promise<Running
       }
       return;
     }
+    if (req.method === 'POST' && url.pathname === '/revoke') {
+      if (!safeEqual(header(req, 'x-smf-mint-key'), secret)) {
+        log({ event: 'revoke-denied', reason: 'bad-mint-key' });
+        res.writeHead(401).end();
+        return;
+      }
+      try {
+        const r = parseRevoke(JSON.parse(await readBody(req)) as unknown);
+        const room = await roomIdForCase(r.caseId);
+        const at = nowSeconds();
+        revocations.revoke(room, r.userId, at);
+        let closed = 0;
+        for (const c of connections) {
+          if (c.room === room && userKey(c.claims.sub) === userKey(r.userId)) {
+            connections.delete(c);
+            c.ws.close(4003, 'access revoked');
+            closed++;
+          }
+        }
+        log({ event: 'revoke', room, closed });
+        res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ revokedAt: at, closed }));
+      } catch (e) {
+        res.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ message: e instanceof Error ? e.message : 'bad request' }));
+      }
+      return;
+    }
     res.writeHead(404).end();
   });
 
@@ -116,7 +147,7 @@ export async function startSyncServer(config: SyncServerConfig): Promise<Running
       const roomId = roomFromPath(url.pathname);
       if (!roomId) return reject(socket, 404, 'Not Found');
       const origin = header(req, 'origin');
-      if (config.allowedOrigins.length && (!origin || !config.allowedOrigins.includes(origin))) {
+      if (!originAllowed(origin, config.allowedOrigins, config.allowAnyOrigin === true)) {
         log({ event: 'connect-denied', reason: 'origin', room: roomId });
         return reject(socket, 403, 'Forbidden');
       }
@@ -124,6 +155,10 @@ export async function startSyncServer(config: SyncServerConfig): Promise<Running
       if (!result.ok) {
         log({ event: 'connect-denied', reason: result.reason, room: roomId });
         return reject(socket, result.reason === 'wrong-room' ? 403 : 401, result.reason === 'wrong-room' ? 'Forbidden' : 'Unauthorized');
+      }
+      if (revocations.blocks(result.claims)) {
+        log({ event: 'connect-denied', reason: 'revoked', room: roomId });
+        return reject(socket, 401, 'Unauthorized');
       }
       const sessionId = url.searchParams.get('sessionId') ?? randomUUID();
       wss.handleUpgrade(req, socket, head, ws => {
@@ -201,7 +236,8 @@ export function configFromEnv(env: NodeJS.ProcessEnv = process.env): SyncServerC
     secret: assertSecret(env.SMF12_ROOM_TOKEN_SECRET),
     dataDir: env.SMF12_DATA_DIR ?? './data',
     recheckMs: Number(env.SMF12_RECHECK_MS ?? 15_000),
-    allowedOrigins: (env.SMF12_ALLOWED_ORIGINS ?? '').split(',').map(s => s.trim()).filter(Boolean),
+    allowedOrigins: parseOrigins(env.SMF12_ALLOWED_ORIGINS),
+    allowAnyOrigin: env.SMF12_ALLOW_ANY_ORIGIN === '1',
     publicWsUrl: env.SMF12_PUBLIC_WS_URL,
   };
 }

@@ -18,3 +18,17 @@
 | Evidence link | evidence/SMF-2/readiness-2026-10-03.md; docs/smf-2/platform-requirements.md |
 | Tester | Implementing agent (Claude Code cloud session) |
 | Limitation / follow-up | Unblock: (1) allow egress to login.salesforce.com, test.salesforce.com, *.my.salesforce.com, *.salesforce.com, *.force.com, *.my.salesforce.app in the environment's network settings, and (2) provide an SFDX auth URL for the Dev Hub as a secret environment variable (SF_AUTH_URL_DEVHUB) — or run docs/smf-2/setup-path.md steps 2–6 on a contributor machine. Then rerun the readiness script. Salesforce app domain, Edge Network and Hyperforce need Brandon's Setup observations (setup-path step 5). |
+
+## Re-check 2026-10-04 (outcome unchanged: BLOCKED)
+- **Credentials:** no Dev Hub credential (neither the JWT trio nor `SF_AUTH_URL_DEVHUB`) is
+  present in the environment.
+- **Network:** every Salesforce, Cloudflare and Google host fails with curl exit 56 ("CONNECT
+  tunnel failed, response 403"). The egress proxy's own reply body states the reason:
+  `request blocked: no rule or allowlist entry allows host "<host>"`. That is an environment
+  network-policy (allowlist) denial, not an upstream failure. Package registries
+  (`registry.npmjs.org`, `packages.microsoft.com`) open the tunnel and return 200.
+- **Stages:** stage 10 and `scripts/cloud/orgs.py devhub` report BLOCKED (exit 2).
+- **Log** (sanitized; written by `scripts/cloud/net_readiness.py`):
+  `evidence/SMF-2/logs/readiness-2026-10-04.txt`.
+- **Smallest unblocking action:** HUMAN-SETUP H1 (allowlist the listed domains) and H2 (the JWT
+  trio).

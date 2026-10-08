@@ -1,0 +1,82 @@
+{
+  "command": "seed-twice",
+  "timestamp": "2026-10-07T23:40:02Z",
+  "commit": "e641164",
+  "org": {
+    "edition": "Enterprise Edition",
+    "sandbox": true,
+    "is_scratch": true,
+    "api_version": "67.0"
+  },
+  "before": {
+    "MF-ACCOUNT-001": 1,
+    "MF-ASSET-001": 1,
+    "MF-ASSET-002": 1,
+    "MF-CASE-001": 1,
+    "MF-CASE-001.owner_is_MF-ADMIN": true,
+    "MF-CASE-001.open": true,
+    "MF-CASE-002": 1,
+    "MF-CASE-002.owner_is_MF-ADMIN": true,
+    "MF-IMAGE-001": 1,
+    "MF-IMAGE-001.md5_matches_manifest": true,
+    "MF-IMAGE-001.linked_to_MF-CASE-001_sharetype_V": true,
+    "MF-IMAGE-001.other_record_links": 0,
+    "MF-IMAGE-001.public_links": 0,
+    "MF-FILE-DENIED": 1,
+    "MF-FILE-DENIED.md5_matches_manifest": true,
+    "MF-FILE-DENIED.linked_to_MF-CASE-002_sharetype_V": true,
+    "MF-FILE-DENIED.other_record_links": 0,
+    "MF-FILE-DENIED.public_links": 0
+  },
+  "runs": [
+    {
+      "counts": {
+        "MF-ACCOUNT-001": 1,
+        "MF-ASSET-001": 1,
+        "MF-ASSET-002": 1,
+        "MF-CASE-001": 1,
+        "MF-CASE-001.owner_is_MF-ADMIN": true,
+        "MF-CASE-001.open": true,
+        "MF-CASE-002": 1,
+        "MF-CASE-002.owner_is_MF-ADMIN": true,
+        "MF-IMAGE-001": 1,
+        "MF-IMAGE-001.md5_matches_manifest": true,
+        "MF-IMAGE-001.linked_to_MF-CASE-001_sharetype_V": true,
+        "MF-IMAGE-001.other_record_links": 0,
+        "MF-IMAGE-001.public_links": 0,
+        "MF-FILE-DENIED": 1,
+        "MF-FILE-DENIED.md5_matches_manifest": true,
+        "MF-FILE-DENIED.linked_to_MF-CASE-002_sharetype_V": true,
+        "MF-FILE-DENIED.other_record_links": 0,
+        "MF-FILE-DENIED.public_links": 0
+      },
+      "summary": ""
+    },
+    {
+      "counts": {
+        "MF-ACCOUNT-001": 1,
+        "MF-ASSET-001": 1,
+        "MF-ASSET-002": 1,
+        "MF-CASE-001": 1,
+        "MF-CASE-001.owner_is_MF-ADMIN": true,
+        "MF-CASE-001.open": true,
+        "MF-CASE-002": 1,
+        "MF-CASE-002.owner_is_MF-ADMIN": true,
+        "MF-IMAGE-001": 1,
+        "MF-IMAGE-001.md5_matches_manifest": true,
+        "MF-IMAGE-001.linked_to_MF-CASE-001_sharetype_V": true,
+        "MF-IMAGE-001.other_record_links": 0,
+        "MF-IMAGE-001.public_links": 0,
+        "MF-FILE-DENIED": 1,
+        "MF-FILE-DENIED.md5_matches_manifest": true,
+        "MF-FILE-DENIED.linked_to_MF-CASE-002_sharetype_V": true,
+        "MF-FILE-DENIED.other_record_links": 0,
+        "MF-FILE-DENIED.public_links": 0
+      },
+      "summary": ""
+    }
+  ],
+  "counts_stable": true,
+  "logical_identities_stable": true,
+  "no_duplicates": true
+}

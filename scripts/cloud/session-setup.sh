@@ -47,6 +47,6 @@ if [ -f "$B/package.json" ]; then
 fi
 
 # 5. Orgs
-if [ -n "${SF_AUTH_URL_DEVHUB:-}" ]; then bash scripts/cloud/connect-orgs.sh || log "BLOCKED org connection failed (see output above)"
+if [ -n "${SF_AUTH_URL_DEVHUB:-}" ] || [ -n "${SF_DEVHUB_JWT_KEY:-}" ]; then bash scripts/cloud/connect-orgs.sh || log "BLOCKED org connection failed (see output above)"
 else log "SKIP orgs: SF_AUTH_URL_DEVHUB not set (docs/cloud/HUMAN-SETUP.md H1+H2)"; fi
 exit 0

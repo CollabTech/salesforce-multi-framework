@@ -206,3 +206,107 @@ test.describe('SMF-7 CALL-01/02 desktop↔desktop (fake devices)', () => {
     await supCtx.close();
   });
 });
+
+// CALL-03 / SMF-7 AC2 "deny unauthorized room access" after an ACCESS CHANGE (finding A1).
+// Two independent runs, baseline first: enforcement OFF (SMF7_AccessSweep stopped), then ON
+// (sweep every minute). Each run removes one kind of access from a user who already holds a token
+// and measures (a) an EXISTING connection: is it cut, and after how long; (b) a NEW JOIN with the
+// previously issued token: rejected, and after how long. Access kinds, recorded separately:
+// SMF7_Access unassigned (join permission) and the manual CaseShare removed (case sharing).
+// The assertion is the criterion (must not join / must be cut), never relaxed; the baseline is
+// expected to fail it and is recorded as such.
+const LIMIT_MS = 6 * 60_000;
+
+function apexAdmin(code: string): string {
+  const file = `/tmp/smf7-apex-${Date.now()}.apex`;
+  execFileSync('bash', ['-c', `cat > ${file}`], { input: code });
+  return execFileSync('sf', ['apex', 'run', '--file', file, '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' });
+}
+function sfJson(args: string[]): { result: { records: Array<Record<string, string>> } } {
+  return JSON.parse(execFileSync('sf', [...args, '--target-org', 'smf-dev', '--json'], { encoding: 'utf8' }));
+}
+function personaUsername(alias: string): string {
+  return JSON.parse(execFileSync('sf', ['org', 'display', 'user', '--target-org', alias, '--json'], { encoding: 'utf8' })).result.username as string;
+}
+
+type AccessKind = 'join-permission' | 'case-sharing';
+interface Removal { restore: () => void }
+
+function removeAccess(kind: AccessKind, persona: 'support', caseId: string): Removal {
+  const username = personaUsername(`smf-dev-${persona}`);
+  if (kind === 'join-permission') {
+    const psa = sfJson(['data', 'query', '--query', `SELECT Id FROM PermissionSetAssignment WHERE PermissionSet.Name = 'SMF7_Access' AND Assignee.Username = '${username}'`]).result.records;
+    for (const a of psa) execFileSync('sf', ['data', 'delete', 'record', '--sobject', 'PermissionSetAssignment', '--record-id', a.Id, '--target-org', 'smf-dev', '--json']);
+    return { restore: () => execFileSync('sf', ['org', 'assign', 'permset', '--name', 'SMF7_Access', '--on-behalf-of', username, '--target-org', 'smf-dev', '--json']) };
+  }
+  // UserOrGroup is polymorphic, so resolve the user Id first. The SMF-3 baseline grants MF-SUPPORT a
+  // manual Edit share on MF-CASE-001 (testing/provisioning/apex/seed.apex); without it the run is invalid.
+  const userId = sfJson(['data', 'query', '--query', `SELECT Id FROM User WHERE Username = '${username}'`]).result.records[0].Id;
+  const shares = sfJson(['data', 'query', '--query', `SELECT Id, CaseAccessLevel, UserOrGroupId FROM CaseShare WHERE CaseId = '${caseId}' AND RowCause = 'Manual' AND UserOrGroupId = '${userId}'`]).result.records;
+  if (shares.length === 0) throw new Error('No manual CaseShare for MF-SUPPORT on MF-CASE-001: SMF-3 baseline not in place; nothing to revoke.');
+  for (const sh of shares) execFileSync('sf', ['data', 'delete', 'record', '--sobject', 'CaseShare', '--record-id', sh.Id, '--target-org', 'smf-dev', '--json']);
+  return { restore: () => { for (const sh of shares) execFileSync('sf', ['data', 'create', 'record', '--sobject', 'CaseShare', '--values', `CaseId=${caseId} UserOrGroupId=${sh.UserOrGroupId} CaseAccessLevel=${sh.CaseAccessLevel}`, '--target-org', 'smf-dev', '--json']); } };
+}
+
+async function waitFor(pred: () => Promise<boolean>, limitMs: number, stepMs = 5_000): Promise<number | null> {
+  const t0 = Date.now();
+  while (Date.now() - t0 < limitMs) {
+    if (await pred()) return Date.now() - t0;
+    await new Promise(r => setTimeout(r, stepMs));
+  }
+  return null;
+}
+
+for (const enforcement of ['baseline (sweep off)', 'enforced (sweep every 1 min)'] as const) {
+  for (const kind of ['join-permission', 'case-sharing'] as const) {
+    test(`CALL-03 access change, ${kind}, ${enforcement}: existing connection and old token`, async ({ browser }, info) => {
+      test.setTimeout(20 * 60_000);
+      apexAdmin(enforcement.startsWith('baseline') ? 'SMF7_AccessSweep.stop();' : 'SMF7_AccessSweep.start(1);');
+      const caseId = adminCaseId('Pump overheating — remote diagnosis');
+      // (a) existing connection
+      const live = await personaContext(browser, 'support');
+      const { app: liveApp } = await probeFor(live);
+      await joinRoom1(liveApp, 'SUPPORT');
+      // (b) a second session that joins, leaves, and keeps its issued token for a later rejoin
+      const old = await personaContext(browser, 'support');
+      const { app: oldApp } = await probeFor(old);
+      await joinRoom1(oldApp, 'SUPPORT');
+      await oldApp.getByTestId('leave-call').click();
+      await expect(oldApp.getByTestId('phase')).toHaveText('left');
+
+      const removal = removeAccess(kind, 'support', caseId);
+      const tRemoved = Date.now();
+      let existingCutMs: number | null = null;
+      let oldTokenRejectedMs: number | null = null;
+      let rejoinCode = '';
+      try {
+        const cut = waitFor(async () => (await cell(liveApp, 'phase')) !== 'joined', LIMIT_MS);
+        const rejected = waitFor(async () => {
+          await oldApp.getByTestId('rejoin-last').click();
+          await expect(oldApp.getByTestId('phase')).toHaveText(/failed|joined/, { timeout: 60_000 });
+          if ((await cell(oldApp, 'phase')) === 'joined') {
+            await oldApp.getByTestId('leave-call').click();
+            await expect(oldApp.getByTestId('phase')).toHaveText('left');
+            return false;
+          }
+          rejoinCode = await cell(oldApp, 'failure-code');
+          return true;
+        }, LIMIT_MS, 20_000);
+        [existingCutMs, oldTokenRejectedMs] = await Promise.all([cut, rejected]);
+      } finally {
+        removal.restore();
+        apexAdmin('SMF7_AccessSweep.stop();');
+        await live.close();
+        await old.close();
+      }
+      record(info, {
+        case: 'CALL-03', persona: 'MF-SUPPORT', browserVersion: browser.version(), finding: 'A1', accessChange: kind, enforcement,
+        existingConnection: existingCutMs === null ? `still joined after ${LIMIT_MS / 1000} s` : `cut after ${Math.round(existingCutMs / 1000)} s`,
+        newJoinWithOldToken: oldTokenRejectedMs === null ? `still joined after ${LIMIT_MS / 1000} s` : `rejected (${rejoinCode}) after ${Math.round(oldTokenRejectedMs / 1000)} s`,
+        observedAt: new Date(tRemoved).toISOString(),
+      });
+      expect.soft(oldTokenRejectedMs, 'SMF-7 AC2: a previously issued token must not join after the access change').not.toBeNull();
+      expect.soft(existingCutMs, 'SMF-7 AC2: an existing connection must not continue after the access change').not.toBeNull();
+    });
+  }
+}

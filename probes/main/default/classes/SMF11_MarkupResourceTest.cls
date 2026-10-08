@@ -41,6 +41,22 @@ private class SMF11_MarkupResourceTest {
         return RestContext.response;
     }
 
+    /**
+     * Reads test Files as a user who may see them: the running admin first (it created the
+     * negative-control file), then the test TECH user who created the case files. Users without
+     * "Query All Files" only see files shared with them, so an admin-only read misses TECH's files.
+     */
+    private static List<ContentVersion> visibleVersions(String title) {
+        List<ContentVersion> rows = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+        if (rows.isEmpty()) {
+            System.runAs([SELECT Id FROM User WHERE Alias = :TECH_ALIAS.left(8) LIMIT 1][0]) {
+                rows = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+            }
+        }
+        return rows;
+    }
+
+
     @IsTest
     static void shouldReturnRevision_WhenTechReadsMarkup() {
         Case permitted = [SELECT Id FROM Case LIMIT 1];
@@ -69,7 +85,7 @@ private class SMF11_MarkupResourceTest {
     @IsTest
     static void shouldReturn409_WhenBaseIsStale() {
         Case permitted = [SELECT Id FROM Case LIMIT 1];
-        Id imageId = [SELECT Id FROM ContentVersion WHERE Title = 'MF-IMAGE-001' LIMIT 1].Id;
+        Id imageId = visibleVersions('MF-IMAGE-001')[0].Id;
         RestResponse res;
         Test.startTest();
         System.runAs(userByAlias(TECH_ALIAS)) {

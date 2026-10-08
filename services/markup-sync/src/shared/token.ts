@@ -134,3 +134,65 @@ export function roomFromPath(pathname: string): string | null {
   const m = /^\/connect\/(mf-[0-9a-f]{32})$/.exec(pathname);
   return m ? m[1] : null;
 }
+
+/**
+ * WebSocket Origin policy (fail closed): a connection is allowed only when its Origin header is
+ * in the configured allowlist. An empty allowlist denies everything unless allowAny is set, which
+ * is only for loopback tests (SMF12_ALLOW_ANY_ORIGIN=1). Deploy stage 49 sets the allowlist to the
+ * Salesforce origin it observed and verifies it before any live-sync test.
+ */
+export function parseOrigins(value: string | undefined): string[] {
+  return (value ?? '').split(',').map(s => s.trim().replace(/\/+$/, '')).filter(Boolean);
+}
+
+export function originAllowed(origin: string | null | undefined, allowed: readonly string[], allowAny = false): boolean {
+  if (allowAny) return true;
+  return !!origin && allowed.includes(origin);
+}
+
+/**
+ * Push revocation (finding A2; SMF-12 AC4, SYNC-03). Salesforce (SMF12_AccessSweep) calls
+ * POST /revoke {userId, caseId} with the mint key when a user who was issued a token for that
+ * case no longer passes the issuance checks. The service then closes that user's live sessions
+ * in the case room and refuses every token for (user, room) issued at or before the revocation.
+ * A token minted afterwards (access restored, Apex check passed again) is accepted. Entries can
+ * be dropped after MAX_TTL_SECONDS, because every token they block has expired by then.
+ */
+export interface RevokeRequest {
+  userId: string;
+  caseId: string;
+}
+
+export function parseRevoke(req: unknown): RevokeRequest {
+  const r = req as Partial<RevokeRequest> | null;
+  if (!r || !isSalesforceId(r.userId) || !isSalesforceId(r.caseId)) throw new Error('userId and caseId must be Salesforce Ids');
+  return { userId: r.userId, caseId: r.caseId };
+}
+
+/** Key for a revoked user (15-char Id, so 15/18-char forms match). */
+export function userKey(userId: string): string {
+  return userId.slice(0, 15);
+}
+
+/** True when a revocation recorded at revokedAt (epoch s) blocks a token with these claims. */
+export function revokedBy(claims: Pick<RoomClaims, 'iat'>, revokedAt: number | undefined): boolean {
+  return typeof revokedAt === 'number' && claims.iat <= revokedAt;
+}
+
+/** In-memory revocation list keyed by (room, user), for the Node server. */
+export class Revocations {
+  private readonly byKey = new Map<string, number>();
+
+  revoke(room: string, userId: string, at: number): void {
+    this.prune(at);
+    this.byKey.set(`${room}|${userKey(userId)}`, at);
+  }
+
+  blocks(claims: Pick<RoomClaims, 'room' | 'sub' | 'iat'>): boolean {
+    return revokedBy(claims, this.byKey.get(`${claims.room}|${userKey(claims.sub)}`));
+  }
+
+  prune(now: number): void {
+    for (const [k, at] of this.byKey) if (at + MAX_TTL_SECONDS < now) this.byKey.delete(k);
+  }
+}

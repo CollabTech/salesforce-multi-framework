@@ -1,0 +1,71 @@
+# SMF-2 readiness probe 2026-10-04T03:26:45Z (cloud container; secret values never printed)
+
+## Credentials present in the environment (names only)
+- SF_DEVHUB_USERNAME: unset
+- SF_DEVHUB_CLIENT_ID: unset
+- SF_DEVHUB_JWT_KEY: unset
+- SF_AUTH_URL_DEVHUB: unset
+- SMF_DEVHUB_ENABLE_OK: unset
+- CF_ACCOUNT_ID: unset
+- CF_API_TOKEN: unset
+- CF_RTK_ORG_TOKEN: unset
+- TLDRAW_LICENSE_KEY: unset
+- SMF_TESTER_EMAIL: unset
+
+## Egress per host
+| Host | curl exit | curl error | HTTP via tunnel | Proxy CONNECT reply | Proxy diagnostic | Classification |
+|---|---|---|---|---|---|---|
+| login.salesforce.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "login.salesforce.com" | denied by environment network policy (allowlist) |
+| test.salesforce.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "test.salesforce.com" | denied by environment network policy (allowlist) |
+| developer.salesforce.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "developer.salesforce.com" | denied by environment network policy (allowlist) |
+| api.cloudflare.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "api.cloudflare.com" | denied by environment network policy (allowlist) |
+| stun.cloudflare.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "stun.cloudflare.com" | denied by environment network policy (allowlist) |
+| workers.dev | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "workers.dev" | denied by environment network policy (allowlist) |
+| dl.google.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "dl.google.com" | denied by environment network policy (allowlist) |
+| packages.microsoft.com | 0 | — | 200 | HTTP/1.1 200 Connection Established | — | reachable |
+| registry.npmjs.org | 0 | — | 200 | HTTP/1.1 200 Connection Established | — | reachable |
+
+## Tool versions
+- sf CLI: @salesforce/cli/2.152.14 linux-x64 node-v22.22.0
+- python: 3.11.15
+
+## Pipeline and recovery script on this container
+```
+== 10-readiness.sh
+BLOCKED: smf-devhub not authenticated (HUMAN-SETUP H1/H2)
+== 20-orgs.sh: BLOCKED (depends on blocked stage 10)
+$ python3 scripts/cloud/orgs.py devhub
+[orgs] BLOCKED no Dev Hub credential in the environment (SF_DEVHUB_* JWT trio or SF_AUTH_URL_DEVHUB)
+exit 2 (2 = BLOCKED)
+```
+# SMF-2 readiness probe 2026-10-04T03:42:59Z (cloud container; secret values never printed)
+
+## Credentials present in the environment (names only)
+- SF_DEVHUB_USERNAME: unset
+- SF_DEVHUB_CLIENT_ID: unset
+- SF_DEVHUB_JWT_KEY: unset
+- SF_AUTH_URL_DEVHUB: unset
+- SMF_DEVHUB_ENABLE_OK: unset
+- CF_ACCOUNT_ID: unset
+- CF_API_TOKEN: unset
+- CF_RTK_ORG_TOKEN: unset
+- TLDRAW_LICENSE_KEY: unset
+- SMF_TESTER_EMAIL: unset
+
+## Egress per host
+| Host | curl exit | curl error | HTTP via tunnel | Proxy CONNECT reply | Proxy diagnostic | Classification |
+|---|---|---|---|---|---|---|
+| login.salesforce.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "login.salesforce.com" | denied by environment network policy (allowlist) |
+| test.salesforce.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "test.salesforce.com" | denied by environment network policy (allowlist) |
+| developer.salesforce.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "developer.salesforce.com" | denied by environment network policy (allowlist) |
+| api.cloudflare.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "api.cloudflare.com" | denied by environment network policy (allowlist) |
+| stun.cloudflare.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "stun.cloudflare.com" | denied by environment network policy (allowlist) |
+| workers.dev | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "workers.dev" | denied by environment network policy (allowlist) |
+| dl.google.com | 56 | curl: (56) CONNECT tunnel failed, response 403 | 000 | HTTP/1.1 403 Forbidden | request blocked: no rule or allowlist entry allows host "dl.google.com" | denied by environment network policy (allowlist) |
+| packages.microsoft.com | 0 | — | 200 | HTTP/1.1 200 Connection Established | — | reachable |
+| registry.npmjs.org | 0 | — | 200 | HTTP/1.1 200 Connection Established | — | reachable |
+
+## Tool versions
+- sf CLI: @salesforce/cli/2.152.14 linux-x64 node-v22.22.0
+- python: 3.11.15
+

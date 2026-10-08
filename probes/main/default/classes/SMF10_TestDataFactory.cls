@@ -29,7 +29,7 @@ public class SMF10_TestDataFactory {
             Email = unique + '@smf.test.invalid',
             LastName = 'SMF ' + alias,
             Alias = alias.left(8),
-            TimeZoneSidKey = 'UTC',
+            TimeZoneSidKey = 'GMT',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'UTF-8',
             LanguageLocaleKey = 'en_US'

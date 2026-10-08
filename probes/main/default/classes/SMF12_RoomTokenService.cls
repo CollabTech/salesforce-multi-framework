@@ -61,6 +61,7 @@ public with sharing class SMF12_RoomTokenService {
         if (String.isBlank(token.token) || String.isBlank(token.room)) {
             throw new ServiceException('Markup sync service returned no token.');
         }
+        SMF12_RoomGrantStore.recordIssued(caseId, token.expiresAt); // A2: lets SMF12_AccessSweep re-check this holder
         return token;
     }
 

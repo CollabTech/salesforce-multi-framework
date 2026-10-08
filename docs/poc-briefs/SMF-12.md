@@ -23,12 +23,20 @@ snapshot/version — desktop and physical mobile?
 | Probe UI | `/probes/markup-sync` (`src/probes/markup-sync/`), `@tldraw/sync@5.5.2` |
 | Cloud stages | `49-smf12-sync-deploy.sh` (Worker + metadata + grants + Apex tests + token check), `72-smf12-sync-e2e.sh` |
 
-## Owner secret steps (scripts never write secrets)
-| Step | Secret | Where | Detected by stage 49 |
-|---|---|---|---|
-| S1 | `SMF12_ROOM_TOKEN_SECRET` (≥ 32 random chars) | Cloudflare Worker `smf-markup-sync`: `npx wrangler secret put SMF12_ROOM_TOKEN_SECRET` in `services/markup-sync` (or Dashboard → Workers → smf-markup-sync → Settings → Variables and Secrets) | `GET /health` → `secretConfigured:false` ⇒ **BLOCKED** |
-| S2 | the same value as **MintKey** | smf-dev Setup → Named Credentials → External Credentials → `SMF12_MarkupSync` → Principals → `SMF12Mint` → Authentication Parameters → add `MintKey` | MF-TECH token request answered "refused the request (401)" ⇒ **BLOCKED** |
-Prerequisites: H1 (egress incl. `*.workers.dev`, `api.cloudflare.com`), H2 (Dev Hub), H4 (`CF_API_TOKEN` with Workers Scripts: Edit, `CF_ACCOUNT_ID`), H5 (`TLDRAW_LICENSE_KEY`, stage 48).
+## Secrets and origin (automated by stage 49; formerly owner steps S1/S2)
+Each deploy, stage 49 does the following:
+1. Generates a fresh signing secret in memory.
+2. Sets it on the Worker (`wrangler secret put`, stdin).
+3. Sets the same value as `MintKey` on principal `SMF12Mint` through the Connect REST credential
+   API (`scripts/cloud/sf_credential.py`). The value is never printed or stored.
+4. Deploys the Worker allowing only the app origin observed as MF-TECH in the real host. An
+   empty allowlist denies everything.
+5. Verifies the chain: `/health`, a real Apex-minted token for MF-TECH, and origin enforcement
+   (allowed origin 101, other origin 403, no Origin 403).
+
+Stage 72 does not run unless stage 49 passes.
+
+Prerequisites: H1 (egress incl. `*.workers.dev`, `api.cloudflare.com`), H2 (Dev Hub), H4 (`CF_API_TOKEN` with Workers Scripts: Edit, `CF_ACCOUNT_ID`; no Salesforce Setup step), H5 (`TLDRAW_LICENSE_KEY`, stage 48).
 
 ## Hosting options
 1. **Cloudflare Workers** (stage 49; Durable Objects with SQLite; `workers.dev` origin) — blocked

@@ -75,7 +75,7 @@ these results, each against a localhost-scoped statement written before the run:
 | SMF-13 | 3D-02 interactive / median / p5 / p95 fps | 333 ms / 24.4 / 10.6 / 42.9 | Headless Chromium 141, SwiftShader, 4 vCPU container |
 | SMF-14 | SMALL vs REP model: open time, median fps | 143–435 ms, 44.1 fps vs 1.26–1.62 s, 3.9 fps | Same; JS heap 34→45 MiB across cycles |
 | SMF-12 | Propagation median / p95; reconnect; crash recovery | 63–65 / ≤77 ms; 69–84 ms; 90/90 shapes from SQLite | Loopback, Node build of the sync service |
-| SMF-12 | Revocation enforcement | 4.8–5.3 s after revocation (8 s token, 1 s re-check); default settings bound ≈315 s | Loopback |
+| SMF-12 | Revocation enforcement | Token expiry: cut 4.8–5.3 s (8 s token, 1 s re-check). Push `/revoke`: cut in under 1 s (Node), 11 ms (Worker under workerd). Without push, the default bound is ≈315 s (not accepted) | Loopback |
 | SMF-7 | Service cost | $0.002 per A/V participant-minute (Cloudflare docs, 2026-10-03); ≈$1 estimated for SMF-7..9 testing | Not yet billed |
 
 No scene budget is published (BUDGET-04): the budget logic refuses software-rendered and
@@ -96,7 +96,7 @@ Otherwise the named fallback is the supported behaviour, and the exclusion is re
 | Recovery (SMF-9) | REC-01..03 recorded with ≤60 s automatic recovery | Documented manual leave/rejoin | No claim of background capture |
 | Files (SMF-10) | FILE-01..04 PASS | None: Files is the system of record | ≤5 MiB images through the Apex path |
 | Markup (SMF-11) | MARK-01..04 PASS, with the tldraw licence in place | Annotated image exported as a File (no editable snapshot) | tldraw licence gates production |
-| Live markup (SMF-12) | SYNC-01..04 PASS; revocation bound accepted | Turn-based markup: save and reopen through SMF-11 | Owner accepts or tightens the ≈315 s revocation bound |
+| Live markup (SMF-12) | SYNC-01..04 PASS; measured access-change enforcement (`SMF12_AccessSweep` + `/revoke`) meets AC4 | Turn-based markup: save and reopen through SMF-11 | Reviewer judges the measured SYNC-03 access-change times against AC4 |
 | 3D view (SMF-13/14) | 3D-01..03 and BUDGET-01..03 PASS; budget published | Static equipment image (built in; fallback trigger in `budget.ts`) | Defer 3D if no device meets 30 fps median |
 
 Devices proposed for the supported set, pending the device rows:
@@ -139,17 +139,16 @@ Mobile Safari, mobile Chrome, cloud Chromium and localhost stay exploratory or s
 - **H4:** Cloudflare account and token.
 - **H5:** tldraw licence key.
 - **H6:** tester mailbox.
-- **H7:** ADR-0004 vault decision.
-- **H8:** secrets entered in Salesforce, covering O-SMF7-1 and the SMF-12 mint key.
+- Secrets inside Salesforce and on the Worker are now set by the agent (stages 45 and 49); the former H7/H8 steps are gone (ADR-0004 rev 2).
 - **H9:** v1 promotion, only if needed.
 - **Org settings:** Salesforce Edge Network and the Multi-Framework domain on each org (SMF-2).
 
 ### Access-control findings (to accept, or fix before SMF-16)
 | # | Finding | Source | Proposed handling |
 |---|---|---|---|
-| A1 | RealtimeKit participant tokens outlive a removal of case access unless the participant is deleted | SMF-7 setup doc | Delete participants when access is removed; owner decides |
-| A2 | Live-sync access is re-checked periodically; a revoked user can stay up to ≈315 s with defaults | SMF-12 SYNC-03 | Accept the bound or shorten the token lifetime and re-check interval (cost: more Apex calls) |
-| A3 | `SMF12_ALLOWED_ORIGINS` is empty (any origin); only the room token protects the socket | SMF-12 `wrangler.toml` | Set it to the Salesforce app origin once known (stage 49) |
+| A1 | RealtimeKit participant tokens outlive a removal of case access unless the participant is deleted | SMF-7 setup doc; assessed in `docs/findings/token-revocation.md` | Enforcement implemented: `SMF7_AccessSweep` deletes participants that fail the issuance rules. CALL-03 access-change runs (join permission and case sharing, separately) record a baseline (expected FAIL), then the enforced result with timing. Live runs pending (BLOCKED). Not accepted. |
+| A2 | Live-sync access outlived an access change until token expiry (≈315 s) | SMF-12 SYNC-03; assessed in `docs/findings/token-revocation.md` | Enforcement implemented: `SMF12_AccessSweep` pushes `/revoke`, which closes live sessions and refuses earlier tokens. Verified locally (Node and workerd). SYNC-03 runs for case sharing and permission removal, separately, record the existing connection, the earlier token, and file access with timing: baseline, then enforced. Live runs pending (BLOCKED). The 315 s bound is not accepted. |
+| A3 | Was: empty `SMF12_ALLOWED_ORIGINS` allowed any origin | SMF-12 | **Changed:** empty now denies; stage 49 deploys the observed app origin and verifies 101/403/403 with a real token before stage 72. Host verification pending access. |
 | A4 | The bundled MF-MODEL-SMALL app asset can be loaded by anyone who can open the app, with no case or Files check | SMF-14 BUDGET-03 | Serve case models only through Files in SMF-16; bundle only non-sensitive demo assets |
 | A5 | The Apex read path holds files on the 6 MB heap: 8.25 MiB models fail; 5 MiB images fit narrowly | SMF-10, C-SMF14-01 | Use Connect REST file content for large files; measured at the host run |
 | A6 | `MF_AccessBaselineTest` uses `SeeAllData=true` to verify provisioned access | C-06 | Reviewer accepts the exception for this class only |

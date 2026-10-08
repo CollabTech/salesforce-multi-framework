@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>SMF-12: one row per (Case, User) holding an unexpired live-sync room token, so SMF12_AccessSweep can push a revocation when that user loses access. No token is stored. Server-side only.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>SMF12 Room Grant</label>
+    <nameField>
+        <displayFormat>G-{000000}</displayFormat>
+        <label>SMF12 Room Grant Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>SMF12 Room Grants</pluralLabel>
+    <sharingModel>Private</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

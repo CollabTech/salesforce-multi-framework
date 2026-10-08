@@ -34,8 +34,24 @@ private class SMF10_CaseFilesServiceTest {
     }
 
     private static ContentVersion versionByTitle(String title) {
-        return [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+        return visibleVersions(title)[0];
     }
+
+    /**
+     * Reads test Files as a user who may see them: the running admin first (it created the
+     * negative-control file), then the test TECH user who created the case files. Users without
+     * "Query All Files" only see files shared with them, so an admin-only read misses TECH's files.
+     */
+    private static List<ContentVersion> visibleVersions(String title) {
+        List<ContentVersion> rows = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+        if (rows.isEmpty()) {
+            System.runAs([SELECT Id FROM User WHERE Alias = :TECH_ALIAS.left(8) LIMIT 1][0]) {
+                rows = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title = :title AND IsLatest = TRUE LIMIT 1];
+            }
+        }
+        return rows;
+    }
+
 
     @IsTest
     static void shouldListLinkedFile_WhenCallerOwnsCase() {

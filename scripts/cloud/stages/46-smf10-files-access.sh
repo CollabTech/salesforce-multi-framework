@@ -18,8 +18,11 @@ sf project deploy start "${args[@]}" --target-org smf-dev --wait 30 --json > pri
   || { echo "probe metadata deploy failed (details in private/smf10-11-probe-deploy.json)"; exit 1; }
 echo "deployed SMF-10/11 probe metadata (${#SOURCES[@]} sources) to smf-dev"
 for p in tech support restricted; do
+  # CLI alias when the persona was authorized in this container; otherwise the username stage 31
+  # recorded in private/personas.json (personas without CLI auth, e.g. auth-URL Dev Hub setups).
   u=$(sf org display user --target-org "smf-dev-$p" --json 2>/dev/null | python3 -c 'import json,sys;print(json.load(sys.stdin)["result"]["username"])') \
-    || { echo "BLOCKED: persona alias smf-dev-$p missing (stage 30)"; exit 2; }
+    || u=$(python3 -c 'import json,sys;print(json.load(open("private/personas.json"))["MF-"+sys.argv[1].upper()]["username"])' "$p" 2>/dev/null) \
+    || { echo "BLOCKED: persona MF-${p^^} has neither a CLI alias nor an entry in private/personas.json (stage 31)"; exit 2; }
   for ps in $PERMSETS; do
     out=$(sf org assign permset --name "$ps" --on-behalf-of "$u" --target-org smf-dev --json 2>&1)
     if ! grep -q '"status": 0' <<<"$out" && ! grep -qi 'duplicate' <<<"$out"; then echo "assign $ps to MF-${p^^} failed"; exit 1; fi

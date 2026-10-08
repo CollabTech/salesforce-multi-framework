@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UniqueKey__c</fullName>
+    <description>CaseId:UserId (upsert key).</description>
+    <externalId>true</externalId>
+    <unique>true</unique>
+    <caseSensitive>true</caseSensitive>
+    <label>Unique Key</label>
+    <length>40</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

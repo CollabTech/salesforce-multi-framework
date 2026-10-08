@@ -13,6 +13,7 @@ public class SMF7_RealtimeKitMock implements HttpCalloutMock {
     public Integer participantStatus = 201;
     public Integer refreshStatus = 200;
     public Integer presetStatus = 200;
+    public Integer deleteStatus = 200;
     public final List<HttpRequest> requests = new List<HttpRequest>();
 
     public HttpResponse respond(HttpRequest req) {
@@ -20,6 +21,9 @@ public class SMF7_RealtimeKitMock implements HttpCalloutMock {
         String path = req.getEndpoint();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
+        if (req.getMethod() == 'DELETE') {
+            return reply(res, deleteStatus, '{"success":true,"data":{}}');
+        }
         if (path.endsWith('/token')) {
             return reply(res, refreshStatus, '{"success":true,"data":{"token":"' + TOKEN_REFRESHED + '"}}');
         }
@@ -41,6 +45,17 @@ public class SMF7_RealtimeKitMock implements HttpCalloutMock {
         // Error bodies deliberately contain secret-looking text so tests prove it is never echoed.
         res.setBody(status >= 200 && status < 300 ? okBody : '{"success":false,"errors":[{"message":"echo Bearer SECRET-API-TOKEN"}]}');
         return res;
+    }
+
+    /** @return number of DELETE requests (participant revocations) */
+    public Integer deletes() {
+        Integer n = 0;
+        for (HttpRequest r : requests) {
+            if (r.getMethod() == 'DELETE') {
+                n++;
+            }
+        }
+        return n;
     }
 
     /** @return number of requests whose endpoint ends with the suffix */

@@ -19,7 +19,7 @@ const events: Array<Record<string, unknown>> = [];
 
 beforeAll(async () => {
   dir = mkdtempSync(join(tmpdir(), 'smf12-'));
-  srv = await startSyncServer({ port: 0, host: '127.0.0.1', secret: TEST_KEY, dataDir: dir, recheckMs: 250, allowedOrigins: [], log: e => events.push(e) });
+  srv = await startSyncServer({ port: 0, host: '127.0.0.1', secret: TEST_KEY, dataDir: dir, recheckMs: 250, allowedOrigins: [], allowAnyOrigin: true, log: e => events.push(e) });
 });
 afterAll(async () => {
   await srv.close();
@@ -99,4 +99,98 @@ describe('server authorization', () => {
     expect(lateBy).toBeLessThan(1.5);
     events.push({ event: 'measured-revocation', lateBySeconds: Number(lateBy.toFixed(3)) });
   }, 15_000);
+});
+
+describe('origin policy (fail closed)', () => {
+  it('denies every origin when the allowlist is empty and allowAny is off', async () => {
+    const { originAllowed } = await import('../src/shared/token');
+    expect(originAllowed('https://x.my.salesforce.com', [], false)).toBe(false);
+    expect(originAllowed(null, [], false)).toBe(false);
+  });
+  it('allows only listed origins (exact match)', async () => {
+    const { originAllowed, parseOrigins } = await import('../src/shared/token');
+    const list = parseOrigins(' https://a.lightning.force.com/ ,https://b.my.salesforce.app');
+    expect(list).toEqual(['https://a.lightning.force.com', 'https://b.my.salesforce.app']);
+    expect(originAllowed('https://a.lightning.force.com', list)).toBe(true);
+    expect(originAllowed('https://evil.example', list)).toBe(false);
+    expect(originAllowed(undefined, list)).toBe(false);
+  });
+  it('a server with an empty allowlist rejects a valid token (403)', async () => {
+    const d = mkdtempSync(join(tmpdir(), 'smf12-o-'));
+    const s = await startSyncServer({ port: 0, host: '127.0.0.1', secret: TEST_KEY, dataDir: d, recheckMs: 250, allowedOrigins: [], log: () => undefined });
+    try {
+      const m = await fetch(`http://127.0.0.1:${s.port}/mint`, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-smf-mint-key': TEST_KEY },
+        body: JSON.stringify({ userId: USER, caseId: CASE_A }),
+      }).then(r => r.json() as Promise<Record<string, string>>);
+      const status = await new Promise<number>(resolve => {
+        const ws = new WebSocket(`ws://127.0.0.1:${s.port}/connect/${m.room}?token=${encodeURIComponent(m.token)}`, { origin: 'https://x.my.salesforce.com' });
+        ws.on('open', () => { ws.close(); resolve(101); });
+        ws.on('unexpected-response', (_q, r) => resolve(r.statusCode ?? 0));
+        ws.on('error', () => undefined);
+      });
+      expect(status).toBe(403);
+    } finally {
+      await s.close();
+      rmSync(d, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('push revocation (/revoke, finding A2)', () => {
+  const USER2 = ['005', 'TESTUSER0002AAA'].join('');
+  async function revokeHttp(body: unknown, key = TEST_KEY): Promise<{ status: number; json: Record<string, number> }> {
+    const res = await fetch(`http://127.0.0.1:${srv.port}/revoke`, {
+      method: 'POST', headers: { 'content-type': 'application/json', 'x-smf-mint-key': key }, body: JSON.stringify(body),
+    });
+    return { status: res.status, json: res.status === 200 ? ((await res.json()) as Record<string, number>) : {} };
+  }
+
+  it('requires the mint key and valid Ids', async () => {
+    expect((await revokeHttp({ userId: USER2, caseId: CASE_A }, 'wrong')).status).toBe(401);
+    expect((await revokeHttp({ userId: 'x', caseId: CASE_A })).status).toBe(400);
+  });
+
+  it('closes the live session at once, refuses the earlier token, accepts a token issued afterwards, leaves others alone', async () => {
+    const issued = await mintHttp({ userId: USER2, caseId: CASE_A, ttlSeconds: 300 });
+    const other = await mintHttp({ userId: USER, caseId: CASE_A, ttlSeconds: 300 });
+    const elsewhere = await mintHttp({ userId: USER2, caseId: CASE_B, ttlSeconds: 300 });
+    const room = issued.json.room as string;
+    const live = await connect(room, issued.json.token as string);
+    const bystander = await connect(room, other.json.token as string);
+    const otherRoom = await connect(elsewhere.json.room as string, elsewhere.json.token as string);
+    expect([live.status, bystander.status, otherRoom.status]).toEqual([101, 101, 101]);
+    const closed = new Promise<{ code: number; at: number }>(resolve => live.ws!.on('close', code => resolve({ code, at: Date.now() })));
+    const t0 = Date.now();
+    const r = await revokeHttp({ userId: USER2.slice(0, 15), caseId: CASE_A });
+    expect(r.status).toBe(200);
+    expect(r.json.closed).toBe(1);
+    const c = await closed;
+    expect(c.code).toBe(4003);
+    events.push({ event: 'measured-push-revocation', cutAfterMs: c.at - t0 });
+    expect(c.at - t0).toBeLessThan(1000);
+    // previously issued token, new join: refused
+    expect((await connect(room, issued.json.token as string)).status).toBe(401);
+    // other user in the same room and the same user in another case: unaffected
+    expect(bystander.ws!.readyState).toBe(WebSocket.OPEN);
+    expect(otherRoom.ws!.readyState).toBe(WebSocket.OPEN);
+    // access restored: Apex mints a new token after the revocation; it is accepted
+    const fresh = await mint({ userId: USER2, caseId: CASE_A, ttlSeconds: 60 }, TEST_KEY, r.json.revokedAt + 1, 'after');
+    const again = await connect(room, fresh.token);
+    expect(again.status).toBe(101);
+    for (const s of [bystander, otherRoom, again]) s.ws!.close();
+  });
+
+  it('Revocations: blocks iat <= revokedAt only, per room and user, and prunes after MAX_TTL', async () => {
+    const { Revocations, MAX_TTL_SECONDS } = await import('../src/shared/token');
+    const rv = new Revocations();
+    rv.revoke('mf-a', USER2, 1000);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2, iat: 1000 })).toBe(true);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2.slice(0, 15), iat: 999 })).toBe(true);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2, iat: 1001 })).toBe(false);
+    expect(rv.blocks({ room: 'mf-b', sub: USER2, iat: 900 })).toBe(false);
+    expect(rv.blocks({ room: 'mf-a', sub: USER, iat: 900 })).toBe(false);
+    rv.prune(1000 + MAX_TTL_SECONDS + 1);
+    expect(rv.blocks({ room: 'mf-a', sub: USER2, iat: 900 })).toBe(false);
+  });
 });

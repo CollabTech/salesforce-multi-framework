@@ -31,13 +31,30 @@ The Lightning path `/lightning/app/c__FieldSupport` shows "no navigation items" 
 | MF-SUPPORT reads markup state of MF-CASE-001 | 200 (no revision yet) |
 | MF-RESTRICTED reads markup state of MF-CASE-001 | 404 |
 
-## Not verified (blocked here) — needs human testing
+## Verified in the real host (salesforce.app), 2026-10-08, after `*.salesforce.app` was allowed
+Headless Chromium, persona logins through the org login page. Fake camera/microphone: media results
+below are not real capture.
+
+| Check | Result |
+|---|---|
+| Call page loads as MF-TECH (`/probes/call`) | Yes, build `f074341` shown in diagnostics |
+| Find MF-CASE-001 in the page | MF-TECH and MF-SUPPORT: "MF-CASE-001 visible to you"; MF-RESTRICTED: lookup refused (GraphQL `FieldUndefined` on `Case`: no Case access; correct outcome, technical message) |
+| Join in the page | Authorization obtained; RealtimeKit SDK then fails `SDK_ERROR` because this environment cannot reach `api.realtime.cloudflare.com` (`ERR_TUNNEL_CONNECTION_FAILED`). No CSP violation for that host. **Not a media result.** |
+| Markup page loads as MF-TECH (`/probes/markup`) | Yes; no licence-blocked or mock banner |
+| Draw → save to Salesforce Files → read back | MF-TECH drew a red ellipse on MF-IMAGE-001, saved revision r3; the annotated export read back from Files shows the ellipse |
+| Reopen in a new session | MF-TECH and MF-SUPPORT reopen r3: `geo/ellipse/red` over the image; MF-RESTRICTED: "DENIED: Not found or no access." |
+| tldraw licence | Key accepted at build; at runtime tldraw reports `license_type=evaluation` / `sku=evaluation`. No watermark visible in screenshots. Its watermark-tracker request to `cdn.tldraw.com` is blocked by the org CSP (`connect-src`). |
+| Other console errors | CSP blocks a `data:application/json` fetch (`connect-src`); a Lightning Out container request returns 400 (`/lwr/application/amd/.../lightningout/container`); neither stopped the probes |
+
+Markup revisions now on MF-CASE-001: r1 and r2 (automation, image only) and r3 (red ellipse).
+Testers continue from r3.
+
+## Still needs human testing
 | Item | Why |
 |---|---|
-| Opening the call and markup pages | `*.salesforce.app` is not on this environment's network allowlist (proxy: "no rule or allowlist entry allows host") |
-| Two-person audio/video, mute, camera toggle, leave/rejoin | Requires real devices; token issuance does not establish media success |
-| Draw → save to Salesforce Files → reopen | The save commits bodies from the app's browser upload handler, which only accepts the app's own session/origin (from this environment: "The action you performed was invalid for your session"; REST-created bodies are rejected with "The specified content bodies aren't available..."). No markup revision exists yet on MF-CASE-001. |
-| tldraw licence in the host | Key is in the build; whether tldraw accepts it on the salesforce.app domain is visible only in the page (watermark/console) |
+| Two-person audio/video, mute, camera toggle, leave/rejoin | Real devices; this environment cannot reach RealtimeKit media hosts |
+| Markup on iPhone (Salesforce app and Safari), SUPPORT annotation (arrow + "Inspect inlet") | Device/touch |
+| Licence decision | tldraw reports an evaluation licence; confirm the intended production key, and whether `cdn.tldraw.com` should be a CSP trusted site |
 
 ## Defects fixed in this pass (all found on the first live run)
 SMF-7: `allowMergeFieldsInHeader` on `SMF7_Cloudflare` (header formula was not sent → Cloudflare 400);
